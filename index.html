@@ -78,7 +78,7 @@ main{max-width:850px;margin:auto}.section{padding:0 15px}.section-heading{displa
   </div>
   <div class="results-head"><h2 id="list-title">今日情報</h2><span class="count" id="result-count">載入中…</span></div>
   <div id="news-container"><div class="loading"><strong>⏳ 正在讀取公開情報…</strong>第一次讀取可能需要幾秒鐘。若瀏覽器或免費 RSS 服務限制連線，可改用上方搜尋入口。</div></div>
-  <div class="notice">資料說明：這個版本透過公開新聞 RSS 與免費轉換服務讀取搜尋結果，不是直接爬取所有 PTT／Dcard 貼文；服務可能有流量限制或延遲。標題出現優惠關鍵字不代表活動仍有效，使用前請確認原文、期限、門市與適用條件。</div>
+  <div class="notice">資料說明：本站會嘗試透過公開新聞 RSS 與免費轉換服務讀取搜尋結果；若服務無法連線，會提供 Google 新聞、Google、PTT 與 Dcard 的替代搜尋連結。本站不是直接爬取所有 PTT／Dcard 貼文。標題出現優惠關鍵字不代表活動仍有效，使用前請確認原文、期限、門市與適用條件。</div>
  </section>
 </main>
 <div class="footer">省咖啡・個人使用版｜免費前端原型<br>不保證涵蓋全網優惠，也不代表品牌官方立場。</div>
@@ -136,9 +136,35 @@ async function fetchAllData(){
  $('#refresh-btn').disabled=false;$('#refresh-btn').textContent='↻ 重新整理';
  renderDeals();
  if(!successes){
-  box.innerHTML=`<div class="empty">⚠️ 目前無法連線到免費 RSS 服務。<br>可能是網路、跨網域限制或服務流量限制。<br><button class="retry" onclick="fetchAllData()">再試一次</button></div>`;
-  $('#result-count').textContent='暫無資料';
+  $('#status-text').textContent='RSS 來源暫時無法連線，已提供替代搜尋';
+  $('#result-count').textContent='替代搜尋';
+  renderFallbackSearches();
  }
+}
+function renderFallbackSearches(){
+ const box=$('#news-container');
+ const terms = queryText || (activeFilter==='buy' ? '咖啡 買一送一 第二杯優惠' :
+   activeFilter==='coffee' ? '台灣 咖啡 優惠 星巴克 路易莎 超商' :
+   activeFilter==='convenience' ? '超商咖啡 寄杯 優惠' :
+   activeFilter==='life' ? '台灣 生活省錢 優惠券 限時' : '台灣 咖啡優惠 買一送一 寄杯');
+ const searches = [
+   {label:'Google 新聞：近期優惠', url:'https://news.google.com/search?q='+encodeURIComponent(terms)+'&hl=zh-TW&gl=TW&ceid=TW%3Azh-Hant'},
+   {label:'Google 搜尋：近期優惠', url:'https://www.google.com/search?q='+encodeURIComponent(terms+' 最新 台灣')},
+   {label:'PTT 省錢板搜尋', url:'https://www.google.com/search?q='+encodeURIComponent('site:ptt.cc/bbs/Lifeismoney '+terms)},
+   {label:'Dcard 優惠搜尋', url:'https://www.google.com/search?q='+encodeURIComponent('site:dcard.tw '+terms)}
+ ];
+ box.innerHTML='';
+ const intro=document.createElement('div'); intro.className='empty';
+ intro.innerHTML='⚠️ 免費 RSS 轉換服務目前沒有回應，因此暫時無法在本站直接列出新聞。<br>你仍可使用以下按鈕查看即時搜尋結果；這些連結會開啟原始搜尋網站。';
+ box.appendChild(intro);
+ searches.forEach(s=>{
+   const a=document.createElement('a');
+   a.className='news-card';
+   a.href=s.url; a.target='_blank'; a.rel='noopener';
+   a.textContent='🔎 '+s.label;
+   a.style.fontWeight='800'; a.style.display='block';
+   box.appendChild(a);
+ });
 }
 function renderDeals(){
  const box=$('#news-container');box.innerHTML='';
@@ -153,7 +179,11 @@ function renderDeals(){
  $('#list-title').textContent=({all:'今日情報',coffee:'咖啡優惠',buy:'買一送一／第二杯優惠',life:'生活省錢情報',convenience:'超商優惠'})[activeFilter];
  $('#result-count').textContent=`${arr.length} 筆`;
  if(!arr.length){
-  box.innerHTML=`<div class="empty">${allDeals.length?'目前沒有符合條件的結果。試試其他關鍵字或分類。':'目前尚未取得 RSS 資料。可點上方官方入口，或用社群搜尋查最新貼文。'}<br><button class="retry" onclick="fetchAllData()">重新讀取</button></div>`;
+  if(!allDeals.length){
+   renderFallbackSearches();
+  } else {
+   box.innerHTML=`<div class="empty">目前沒有符合條件的結果。試試其他關鍵字或分類。<br><button class="retry" onclick="fetchAllData()">重新讀取</button></div>`;
+  }
   return;
  }
  arr.slice(0,60).forEach(d=>{
