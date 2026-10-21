@@ -1,29 +1,47 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-咖啡優惠候選擷取器：
-- 搜尋 Applealmond、NOWnews 及其他公開新聞 RSS
-- 嘗試抽取優惠行、日期、價格和原文連結
-- 只有能從同一行/附近內容辨識明確起訖日期，且日期包含今天，才標為 active
-- 日期不明的資料保留為 verify，不應冒充今日有效優惠
-"""
-import json, re, time, html
+
+import json
+import re
+import time
+import html
 from datetime import datetime, date, timezone, timedelta
 from urllib.parse import quote
 import xml.etree.ElementTree as ET
+
 import requests
 from bs4 import BeautifulSoup
 
 TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TZ).date()
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; CoffeeDealDigest/1.0)"}
-MAX_ARTICLES = 30
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+    )
+}
+
+MAX_ARTICLES = 40
+
+# 直接加入你提供的中天新聞文章
+SEED_ARTICLES = [
+    {
+        "title": "中天新聞咖啡優惠整理",
+        "url": "https://ctinews.com/news/items/bKxrXQKYW9",
+        "published": ""
+    }
+]
+
 QUERIES = [
     'site:applealmond.com/posts 咖啡優惠',
     'site:nownews.com 超商咖啡優惠',
-    '咖啡優惠 7-ELEVEN 全家 萊爾富 美廉社 星巴克',
-    '買一送一 咖啡 寄杯 優惠 台灣',
+    'site:ctinews.com/news 咖啡優惠',
+    'site:ctinews.com/news 超商咖啡 買一送一',
+    '台灣超商咖啡優惠 7-ELEVEN 全家 萊爾富',
+    '星巴克 路易莎 咖啡優惠 寄杯 買一送一',
 ]
+
 STORE_PATTERNS = [
     ("7-ELEVEN", r"7\s*[-－]?\s*ELEVEN|7-11|CITY\s*CAFE"),
     ("全家", r"全家|Let'?s\s*Café|Let'?s\s*Cafe"),
@@ -33,92 +51,186 @@ STORE_PATTERNS = [
     ("星巴克", r"星巴克|Starbucks"),
     ("路易莎", r"路易莎|LOUISA"),
     ("85°C", r"85\s*°?\s*C"),
-    (" cama ", r"cama"),
+    ("cama", r"\bcama\b"),
+    ("全聯", r"全聯|大全聯"),
 ]
-OFFER_RE = re.compile(r"買\s*[一1]\s*送\s*[一1]|買\s*\d+\s*送\s*\d+|第\s*二\s*杯|第二杯|任選\s*\d+\s*杯|[兩二三四五六七八九十\d]+\s*杯\s*\d+\s*元|寄杯|折\s*扣|[特大中小]杯.{0,15}\d+\s*元|優惠價|組合價")
-DATE_RE = re.compile(r"(?:(20\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?\s*(?:至|到|～|~|－|—|-|–)\s*(?:(20\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?")
-SINGLE_DATE_RE = re.compile(r"(?:(20\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日")
+
+OFFER_RE = re.compile(
+    r"買\s*[一1]\s*送\s*[一1]"
+    r"|買\s*\d+\s*送\s*\d+"
+    r"|第\s*二\s*杯"
+    r"|第二杯"
+    r"|任選\s*\d+\s*杯"
+    r"|[兩二三四五六七八九十\d]+\s*杯\s*\d+\s*元"
+    r"|寄杯"
+    r"|折\s*扣"
+    r"|優惠價"
+    r"|組合價"
+    r"|現折"
+    r"|咖啡.*\d+\s*元"
+    r"|大杯.{0,15}\d+\s*元"
+)
+
+DATE_RE = re.compile(
+    r"(?:(20\d{2})\s*[年/.-]\s*)?"
+    r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
+    r"\s*(?:至|到|～|~|－|—|-|–|起至|起～)\s*"
+    r"(?:(20\d{2})\s*[年/.-]\s*)?"
+    r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
+)
 
 def rss(query):
-    url = "https://news.google.com/rss/search?q=" + quote(query) + "&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
-    res = requests.get(url, headers=HEADERS, timeout=25)
-    res.raise_for_status()
-    root = ET.fromstring(res.content)
-    items = []
-    for it in root.findall(".//item"):
-        title = it.findtext("title") or ""
-        link = it.findtext("link") or ""
-        pub = it.findtext("pubDate") or ""
+    url = (
+        "https://news.google.com/rss/search?q="
+        + quote(query)
+        + "&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
+    )
+    r = requests.get(url, headers=HEADERS, timeout=25)
+    r.raise_for_status()
+    root = ET.fromstring(r.content)
+    result = []
+
+    for item in root.findall(".//item"):
+        title = html.unescape(item.findtext("title") or "")
+        link = item.findtext("link") or ""
+        published = item.findtext("pubDate") or ""
         if link:
-            items.append({"title": html.unescape(title), "url": link, "published": pub})
-    return items
+            result.append({
+                "title": title,
+                "url": link,
+                "published": published
+            })
+
+    return result
 
 def fetch(article):
     try:
-        r = requests.get(article["url"], headers=HEADERS, timeout=25, allow_redirects=True)
+        r = requests.get(
+            article["url"],
+            headers=HEADERS,
+            timeout=30,
+            allow_redirects=True
+        )
         r.raise_for_status()
         soup = BeautifulSoup(r.text, "html.parser")
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "form"]):
+
+        # 優先取文章正文，移除不相關區域
+        for tag in soup([
+            "script", "style", "nav", "footer",
+            "header", "aside", "form", "noscript"
+        ]):
             tag.decompose()
-        root = soup.find("article") or soup.find("main") or soup.body or soup
-        lines = [re.sub(r"\s+", " ", x).strip(" •◾▪●　\t") for x in root.get_text("\n", strip=True).splitlines()]
-        lines = [x for x in lines if x]
-        title = soup.title.get_text(" ", strip=True) if soup.title else article["title"]
+
+        root = (
+            soup.find("article")
+            or soup.find("main")
+            or soup.find(attrs={"itemprop": "articleBody"})
+            or soup.body
+            or soup
+        )
+
+        lines = [
+            re.sub(r"\s+", " ", line).strip(" •◾▪●　\t")
+            for line in root.get_text("\n", strip=True).splitlines()
+        ]
+        lines = [line for line in lines if line]
+
+        title = article["title"]
+        if soup.title:
+            title = soup.title.get_text(" ", strip=True)
+
+        print("FETCH OK:", r.url, "lines:", len(lines))
         return r.url, title, lines
+
     except Exception as exc:
-        print("FETCH ERROR", article["url"], exc)
+        print("FETCH ERROR:", article["url"], str(exc))
         return article["url"], article["title"], []
 
-def make_date(y, m, d, fallback_year):
-    y = int(y) if y else fallback_year
+def make_date(year, month, day, fallback_year):
     try:
-        return date(y, int(m), int(d))
-    except ValueError:
+        y = int(year) if year else fallback_year
+        return date(y, int(month), int(day))
+    except (ValueError, TypeError):
         return None
 
-def parse_range(s):
-    m = DATE_RE.search(s)
-    if not m:
+def parse_range(text):
+    match = DATE_RE.search(text)
+    if not match:
         return None
-    y1, m1, d1, y2, m2, d2 = m.groups()
-    # If no year is given, use current year; handle year crossing.
+
+    y1, m1, d1, y2, m2, d2 = match.groups()
+
     start = make_date(y1, m1, d1, TODAY.year)
     end = make_date(y2 or y1, m2, d2, TODAY.year)
-    if start and end and not y2 and end < start and start.month >= 11 and end.month <= 2:
-        end = date(start.year + 1, end.month, end.day)
+
     if start and end:
-        return start, end, m.group(0)
+        if not y2 and end < start and start.month >= 11 and end.month <= 2:
+            end = date(start.year + 1, end.month, end.day)
+
+        if end >= start:
+            return start, end, match.group(0)
+
     return None
 
-def get_store(s):
+def get_store(text):
     for name, pattern in STORE_PATTERNS:
-        if re.search(pattern, s, re.I):
-            return name.strip()
+        if re.search(pattern, text, re.I):
+            return name
     return "綜合／待確認"
 
+def is_coffee_related(text):
+    # 避免大量無關科技、汽車等新聞進入結果
+    coffee_words = (
+        "咖啡", "cafe", "café", "星巴克", "路易莎",
+        "萊爾富", "美廉社", "cama", "寄杯"
+    )
+    t = text.lower()
+    return any(word.lower() in t for word in coffee_words)
+
 def extract(article, url, title, lines):
-    out = []
-    # Context windows help connect an activity date line with the following offer line.
+    results = []
+    full_text = " ".join(lines)
+
+    if not is_coffee_related(title + " " + full_text):
+        print("SKIP unrelated article:", title)
+        return results
+
     for i, line in enumerate(lines):
         if not OFFER_RE.search(line):
             continue
-        if len(line) > 220 or len(line) < 5:
+
+        if len(line) > 300 or len(line) < 5:
             continue
-        context = " ".join(lines[max(0, i-2):min(len(lines), i+3)])
+
+        # 不跨太大範圍取日期，降低把其他優惠日期套過來的風險
+        context_lines = lines[max(0, i - 1):min(len(lines), i + 2)]
+        context = " ".join(context_lines)
         parsed = parse_range(line) or parse_range(context)
+
         status = "verify"
-        start_iso = end_iso = ""
+        start_iso = ""
+        end_iso = ""
         date_text = ""
+
         if parsed:
             start, end, date_text = parsed
-            start_iso, end_iso = start.isoformat(), end.isoformat()
-            status = "active" if start <= TODAY <= end else ("upcoming" if TODAY < start else "expired")
-        # A date appearing in a headline alone is not enough to prove every offer is active.
-        store = get_store(line + " " + " ".join(lines[max(0, i-3):i+1]))
-        offer = line
-        out.append({
+            start_iso = start.isoformat()
+            end_iso = end.isoformat()
+
+            if start <= TODAY <= end:
+                status = "active"
+            elif TODAY < start:
+                status = "upcoming"
+            else:
+                status = "expired"
+
+        # 店名可從當前行與前一行辨識
+        store_context = " ".join(lines[max(0, i - 2):i + 1])
+        store = get_store(line + " " + store_context)
+
+        results.append({
             "store": store,
-            "offer": offer,
+            "offer": line,
             "status": status,
             "start_date": start_iso,
             "end_date": end_iso,
@@ -129,39 +241,69 @@ def extract(article, url, title, lines):
             "source": "新聞文章自動擷取",
             "needs_check": True
         })
-    return out
+
+    return results
 
 def main():
-    found = []
-    for q in QUERIES:
+    found = list(SEED_ARTICLES)
+
+    for query in QUERIES:
         try:
-            found.extend(rss(q))
-        except Exception as e:
-            print("RSS ERROR", q, e)
-    uniq = {}
-    for a in found:
-        uniq.setdefault(a["title"], a)
-    articles = list(uniq.values())[:MAX_ARTICLES]
+            items = rss(query)
+            print("RSS OK:", query, "items:", len(items))
+            found.extend(items)
+        except Exception as exc:
+            print("RSS ERROR:", query, str(exc))
+
+    # 依文章網址去重
+    unique_articles = {}
+    for article in found:
+        unique_articles.setdefault(article["url"], article)
+
+    articles = list(unique_articles.values())[:MAX_ARTICLES]
     deals = []
-    for i, a in enumerate(articles, 1):
-        print(f"[{i}/{len(articles)}] {a['title']}")
-        url, title, lines = fetch(a)
+
+    for i, article in enumerate(articles, 1):
+        print(f"[{i}/{len(articles)}] {article['title']}")
+        url, title, lines = fetch(article)
+
         if lines:
-            deals.extend(extract(a, url, title, lines))
-        time.sleep(1)
-    dedup = {}
-    for d in deals:
-        dedup.setdefault((d["store"], d["offer"], d["article_url"]), d)
+            deals.extend(extract(article, url, title, lines))
+
+        time.sleep(0.5)
+
+    unique_deals = {}
+    for deal in deals:
+        key = (
+            deal["store"],
+            deal["offer"],
+            deal["article_url"]
+        )
+        unique_deals.setdefault(key, deal)
+
+    final_deals = list(unique_deals.values())
+
     data = {
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
-        "disclaimer": "自動擷取可能漏抓、誤判或將文章中的其他日期套用到優惠。首頁只顯示明確日期判定為有效的項目；日期不明者請點原文確認。這不是官方即時庫存或價格保證。",
-        "count": len(dedup),
-        "deals": list(dedup.values())
+        "disclaimer": (
+            "資料由公開新聞文章自動擷取，可能漏抓或誤判。"
+            "只有可辨識明確起訖日期且包含今天的優惠標示為有效；"
+            "日期不明者請點原文確認。實際優惠依店家官方公告為準。"
+        ),
+        "count": len(final_deals),
+        "deals": final_deals
     }
-    with open("deals.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print("Saved", len(dedup), "candidate rows to deals.json")
+
+    with open("deals.json", "w", encoding="utf-8") as file:
+        json.dump(data, file, ensure_ascii=False, indent=2)
+
+    active_count = sum(d["status"] == "active" for d in final_deals)
+    verify_count = sum(d["status"] == "verify" for d in final_deals)
+
+    print("Saved", len(final_deals), "candidate rows to deals.json")
+    print("Active:", active_count)
+    print("Needs verification:", verify_count)
 
 if __name__ == "__main__":
     main()
