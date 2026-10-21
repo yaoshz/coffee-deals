@@ -42,7 +42,20 @@ main{max-width:850px;margin:auto}.section{padding:0 15px}.section-heading{displa
  <div class="status-line"><span><i class="status-dot"></i><span id="status-text">準備讀取公開新聞 RSS</span></span><span class="status-right" id="updated">尚未更新</span></div>
 </header>
 <main>
- <section class="section">
+ 
+ 
+<section class="section">
+  <div class="section-heading">
+    <div>
+      <h2>☕ 今日有效咖啡優惠</h2>
+      <p>自動整理新聞優惠，請以商家官方公告為準</p>
+    </div>
+  </div>
+  <div id="todayCoffeeDeals">
+    <p>正在載入今日咖啡優惠…</p>
+  </div>
+</section>
+<section class="section">
   <div class="section-heading"><div><h2>🏪 官方活動快速入口</h2><p>點選後前往品牌網站或優惠搜尋</p></div></div>
   <div class="portals">
    <a class="portal" href="https://www.7-11.com.tw/" target="_blank" rel="noopener"><span class="emoji">🏪</span><strong>7-ELEVEN</strong><span>官方活動</span></a>
@@ -203,5 +216,6 @@ $('#search-form').addEventListener('submit',e=>{e.preventDefault();queryText=$('
 $('#search-input').addEventListener('input',()=>{queryText=$('#search-input').value.trim();renderDeals()});
 fetchAllData();
 </script>
+ <script src="./today-widget.js"></script>
 </body>
 </html>
