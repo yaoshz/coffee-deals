@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-10-22T13:38:42.933863+08:00",
+  "updated_at": "2026-10-22T14:13:28.601998+08:00",
   "today": "2026-10-22",
   "disclaimer": "資料由公開新聞文章自動擷取，可能漏抓或誤判。只有可辨識明確起訖日期且包含今天的優惠標示為有效；日期不明者請點原文確認。實際優惠依店家官方公告為準。",
-  "count": 22,
+  "count": 21,
   "deals": [
     {
       "store": "全家",
@@ -63,19 +63,6 @@
       "start_date": "2026-10-14",
       "end_date": "2026-10-27",
       "date_text": "10/14~10/27",
-      "article_title": "快來喝！超商咖啡寄杯買30送30　限今天加10元多1杯 | 中天新聞網",
-      "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
-      "published": "",
-      "source": "新聞文章自動擷取",
-      "needs_check": true
-    },
-    {
-      "store": "全家",
-      "offer": "週三咖啡日，大單品、大特濃咖啡同品項+10元多1杯。",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "",
       "article_title": "快來喝！超商咖啡寄杯買30送30　限今天加10元多1杯 | 中天新聞網",
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
