@@ -71,13 +71,20 @@ OFFER_RE = re.compile(
     r"|大杯.{0,15}\d+\s*元"
 )
 
+
 DATE_RE = re.compile(
-    r"(?:(20\d{2})\s*[年/.-]\s*)?"
+    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
     r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
     r"\s*(?:至|到|～|~|－|—|-|–|起至|起～)\s*"
-    r"(?:(20\d{2})\s*[年/.-]\s*)?"
+    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
     r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
 )
+
+SINGLE_DATE_RE = re.compile(
+    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
+    r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
+)
+
 
 def rss(query):
     url = (
@@ -146,15 +153,23 @@ def fetch(article):
         print("FETCH ERROR:", article["url"], str(exc))
         return article["url"], article["title"], []
 
-def make_date(year, month, day, fallback_year):
-    try:
-        y = int(year) if year else fallback_year
-        return date(y, int(month), int(day))
-    except (ValueError, TypeError):
-        return None
+
 
 def parse_range(text):
+    # 情況一：即日起至指定日期，例如「即日起 ~ 115/11/10」
+    if re.search(r"即日起", text):
+        match = SINGLE_DATE_RE.search(text)
+
+        if match:
+            year, month, day = match.groups()
+            end = make_date(year, month, day, TODAY.year)
+
+            if end:
+                return TODAY, end, match.group(0)
+
+    # 情況二：一般起訖日期，例如「10/14~10/27」
     match = DATE_RE.search(text)
+
     if not match:
         return None
 
@@ -164,13 +179,21 @@ def parse_range(text):
     end = make_date(y2 or y1, m2, d2, TODAY.year)
 
     if start and end:
-        if not y2 and end < start and start.month >= 11 and end.month <= 2:
+        # 跨年優惠，例如 12/20 至 1/10
+        if (
+            not y2
+            and not y1
+            and end < start
+            and start.month >= 11
+            and end.month <= 2
+        ):
             end = date(start.year + 1, end.month, end.day)
 
         if end >= start:
             return start, end, match.group(0)
 
     return None
+
 
 
 def get_store(text):
