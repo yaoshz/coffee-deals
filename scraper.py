@@ -172,11 +172,21 @@ def parse_range(text):
 
     return None
 
+
 def get_store(text):
+    """只在優惠文字明確指向單一品牌時分類，避免跨品牌誤判。"""
+    matches = []
+
     for name, pattern in STORE_PATTERNS:
         if re.search(pattern, text, re.I):
-            return name
-    return "綜合／待確認"
+            matches.append(name.strip())
+
+    # 沒有品牌，或同時出現多個品牌，都先列為待確認
+    if len(matches) != 1:
+        return "綜合／待確認"
+
+    return matches[0]
+
 
 def is_coffee_related(text):
     # 避免大量無關科技、汽車等新聞進入結果
