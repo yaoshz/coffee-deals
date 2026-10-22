@@ -1,8 +1,8 @@
 {
-  "updated_at": "2026-10-23T01:19:30.417706+08:00",
+  "updated_at": "2026-10-23T05:45:20.260105+08:00",
   "today": "2026-10-23",
   "disclaimer": "資料由指定新聞文章與公開新聞搜尋結果自動擷取，可能漏抓或誤判。日期狀態依文章文字推算，不代表店家官方確認；日期不明或只有截止日的優惠列為待確認。實際優惠、適用門市、品項及兌換規則以店家公告為準。",
-  "count": 411,
+  "count": 412,
   "deals": [
     {
       "store": "7-ELEVEN",
@@ -2327,6 +2327,19 @@
       "date_text": "",
       "article_title": "2026 本週咖啡優惠 10/19～10/25：星巴克買一送一、7-11、全家、萊爾富優惠一次看 - 蘋果仁 - 果仁 iPhone/iOS/好物推薦科技媒體",
       "article_url": "https://applealmond.com/posts/329295",
+      "published": "",
+      "source": "新聞文章自動擷取",
+      "needs_check": true
+    },
+    {
+      "store": "星巴克",
+      "offer": "「星巴克買1送1」10/26快閃1天，週一好友分享日星巴克大杯飲料免費多一杯",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "",
+      "article_title": "萊爾富咖啡買1送1、買30送30即日起開賣！特大美式、重乳拿鐵喝起來！",
+      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/",
       "published": "",
       "source": "新聞文章自動擷取",
       "needs_check": true
