@@ -41,40 +41,57 @@ MAX_ARTICLES = 160
 REQUEST_DELAY_SECONDS = 0.35
 
 SEED_ARTICLES = [
+    # 使用者明確指定的文章：直接抓取，不依賴 Google News RSS 是否回傳。
     {
-        "title": "中天新聞咖啡優惠整理",
+        "title": "Cosmopolitan Taiwan｜萊爾富咖啡優惠",
+        "url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/",
+        "published": "",
+    },
+    {
+        "title": "Yahoo 新聞｜四大超商光復節連假咖啡優惠",
+        "url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
+        "published": "",
+    },
+    {
+        "title": "中天新聞｜超商咖啡優惠整理",
         "url": "https://ctinews.com/news/items/bKxrXQKYW9",
+        "published": "",
+    },
+    {
+        "title": "NOWnews｜本周咖啡優惠 10/19～10/25",
+        "url": "https://www.nownews.com/news/6884698",
+        "published": "",
+    },
+    {
+        "title": "蘋果仁｜2026 本週咖啡優惠 10/19～10/25",
+        "url": "https://applealmond.com/posts/329295",
+        "published": "",
+    },
+    {
+        "title": "蘋果仁｜2026 雙十國慶咖啡優惠懶人包",
+        "url": "https://applealmond.com/posts/328076",
         "published": "",
     },
 ]
 
+# 以指定文章 + 多媒體網站 RSS 搜尋並行；RSS 只是發現新文章的補充，不是唯一入口。
 QUERIES = [
-    # 各店品牌 + 常見優惠形式
-    '7-ELEVEN CITY CAFE 咖啡 優惠 買一送一 寄杯',
-    '全家 Let’s Café 咖啡 優惠 寄杯 組合價',
-    '全家 Let\'s Tea 第二杯 優惠 咖啡',
-    '萊爾富 Hi Café 咖啡 優惠 寄杯',
-    'OKmart OKCAFE 咖啡 優惠',
-    '美廉社 咖啡 優惠',
-    '星巴克 Starbucks 台灣 優惠 咖啡',
-    '台灣超商咖啡優惠 買一送一 第二杯折扣',
-    '台灣超商咖啡優惠 寄杯 組合價 特價',
-    '台灣咖啡優惠 2026年10月',
-    '7-ELEVEN CITY CAFE 2026 10月 11月 優惠 第二杯',
-    '全家 Let’s Cafe Let’s Tea 2026 10月 11月 優惠 第二杯 8折',
-    '萊爾富 Hi Café 2026 10月 11月 優惠 第二杯',
-    'OKmart OKCAFE 2026 10月 11月 優惠 第二杯',
-    '美廉社 咖啡 2026 10月 11月 優惠',
-    '星巴克 台灣 2026 10月 11月 優惠 買一送一',
-    '超商咖啡優惠 115年11月10日 第二杯 折扣',
-    '全家 Let’s Tea 第二杯8折 11/10 中天新聞網', 
-    'site:applealmond.com/posts 全家 咖啡優惠',
-    'site:applealmond.com/posts 萊爾富 咖啡優惠',
-    'site:applealmond.com/posts 7-ELEVEN 咖啡優惠',
-    'site:applealmond.com/posts OKmart 咖啡優惠',
-    'site:applealmond.com/posts 星巴克 咖啡優惠',
-    'site:ctinews.com/news 超商咖啡優惠',
-    'site:nownews.com 超商咖啡優惠',
+    '超商咖啡優惠 2026 10月 11月 買一送一',
+    '7-ELEVEN CITY CAFE 咖啡優惠 寄杯 2026 10月',
+    '全家 Let’s Café 咖啡優惠 寄杯 2026 10月',
+    '全家 Let’s Tea 第二杯8折 11/10',
+    '萊爾富 Hi Café 買一送一 2026 10月 11月',
+    'OKmart OKCAFE 咖啡優惠 2026 10月',
+    '美廉社 咖啡優惠 2026 10月 11月',
+    '星巴克 台灣 咖啡優惠 2026 10月 11月',
+    'site:cosmopolitan.com/tw/lifestyle/hot-topics/ 萊爾富 咖啡優惠',
+    'site:applealmond.com/posts 本週咖啡優惠 2026',
+    'site:nownews.com 超商咖啡優惠 2026 10月',
+    'site:ctinews.com/news 超商咖啡優惠 2026 10月',
+    'site:tw.news.yahoo.com 超商咖啡優惠 2026 10月',
+    'site:nownews.com 萊爾富 買一送一 咖啡',
+    'site:ctinews.com 萊爾富 咖啡 買一送一',
+    'site:tw.news.yahoo.com 萊爾富 咖啡 買一送一',
 ]
 
 # 品牌名稱及產品系列。較具體的名稱放前面，避免 CITY CAFE 被判成其他店。
@@ -156,9 +173,9 @@ def fetch(article):
             tag.decompose()
 
         root = (
-            soup.find("article")
+            soup.find(attrs={"itemprop": "articleBody"})
+            or soup.find("article")
             or soup.find("main")
-            or soup.find(attrs={"itemprop": "articleBody"})
             or soup.body
             or soup
         )
@@ -166,7 +183,7 @@ def fetch(article):
         lines = []
         for raw in root.get_text("\n", strip=True).splitlines():
             line = re.sub(r"\s+", " ", raw).strip(" •◾▪●　\t")
-            if line and len(line) <= 600:
+            if line and len(line) <= 900:
                 lines.append(line)
 
         title = article.get("title", "")
@@ -339,10 +356,15 @@ def extract(article, url, title, lines):
 
         # 將緊鄰的日期行併入判讀文字，但優惠名稱仍保留原句。
         date_context = line
-        if idx + 1 < len(lines) and re.search(r"\d{1,2}\s*[月/.-]\s*\d{1,2}", lines[idx + 1]):
-            date_context += " " + lines[idx + 1]
-        elif idx > 0 and re.search(r"\d{1,2}\s*[月/.-]\s*\d{1,2}", lines[idx - 1]):
-            date_context = lines[idx - 1] + " " + date_context
+        # 媒體常把活動日期獨立成一行；只檢查前後各兩行，避免把整篇文章的日期錯套到每筆優惠。
+        nearby = []
+        for j in range(max(0, idx - 2), min(len(lines), idx + 3)):
+            if j == idx:
+                continue
+            candidate = lines[j]
+            if re.search(r"(?:活動(?:期間|日期)|優惠期間|即日起|至|到|\d{1,2}\s*[月/.-]\s*\d{1,2}|20\d{2}[/年.-])", candidate):
+                nearby.append(candidate)
+        date_context = " ".join(nearby + [line])
 
         candidates = split_mixed_store_line(line)
         for line_store, offer_line in candidates:
@@ -541,7 +563,7 @@ def main():
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
         "disclaimer": (
-            "資料由公開新聞文章自動擷取，可能漏抓或誤判。"
+            "資料由指定新聞文章與公開新聞搜尋結果自動擷取，可能漏抓或誤判。"
             "日期狀態依文章文字推算，不代表店家官方確認；"
             "日期不明或只有截止日的優惠列為待確認。"
             "實際優惠、適用門市、品項及兌換規則以店家公告為準。"
@@ -554,8 +576,7 @@ def main():
     temp_path = "deals.json.tmp"
     with open(temp_path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-    import os
-    os.replace(temp_path, "deals.json")
+        os.replace(temp_path, "deals.json")
 
     counts = {
         status: sum(1 for deal in final_deals if deal.get("status") == status)
