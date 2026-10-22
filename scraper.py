@@ -198,6 +198,7 @@ def is_coffee_related(text):
     return any(word.lower() in t for word in coffee_words)
 
 
+
 def extract(article, url, title, lines):
     results = []
     full_text = " ".join(lines)
@@ -206,50 +207,120 @@ def extract(article, url, title, lines):
         print("SKIP unrelated article:", title)
         return results
 
-    for line in lines:
-        if not OFFER_RE.search(line):
+    current_store = ""
+
+    # 只辨識單獨出現的品牌標題
+    heading_map = {
+        "星巴克": "星巴克",
+        "Starbucks": "星巴克",
+        "7-11": "7-ELEVEN",
+        "7－11": "7-ELEVEN",
+        "7-ELEVEN": "7-ELEVEN",
+        "7-Eleven": "7-ELEVEN",
+        "全家": "全家",
+        "萊爾富": "萊爾富",
+        "路易莎": "路易莎",
+        "美廉社": "美廉社",
+        "OKmart": "OKmart",
+        "cama": "cama",
+    }
+
+    for original_line in lines:
+        line = original_line.strip()
+
+        # 移除常見圖片說明，避免干擾品牌判斷
+        heading_line = re.sub(
+            r"（.*?）|\(.*?\)",
+            "",
+            line
+        ).strip(" ：:　")
+
+        if heading_line in heading_map:
+            current_store = heading_map[heading_line]
             continue
 
-        if len(line) > 300 or len(line) < 5:
-            continue
+        # 把文章開頭的全家、萊爾富優惠分開處理
+        candidate_lines = [line]
 
-        # 嚴格模式：日期必須出現在優惠本身那一行
-        parsed = parse_range(line)
+        if "全家推出" in line and "萊爾富則" in line:
+            parts = line.split("萊爾富則", 1)
 
-        status = "verify"
-        start_iso = ""
-        end_iso = ""
-        date_text = ""
+            family_part = parts[0].strip()
+            hilife_part = parts[1].strip()
 
-        if parsed:
-            start, end, date_text = parsed
-            start_iso = start.isoformat()
-            end_iso = end.isoformat()
+            family_part = re.sub(
+                r"^咖啡控快搶！",
+                "",
+                family_part
+            ).strip()
 
-            if start <= TODAY <= end:
-                status = "active"
-            elif TODAY < start:
-                status = "upcoming"
+            candidate_lines = []
+
+            if family_part:
+                candidate_lines.append(
+                    ("全家", family_part)
+                )
+
+            if hilife_part:
+                candidate_lines.append(
+                    ("萊爾富", hilife_part)
+                )
+        else:
+            candidate_lines = [(current_store, line)]
+
+        for heading_store, offer_line in candidate_lines:
+            if not OFFER_RE.search(offer_line):
+                continue
+
+            if len(offer_line) > 300 or len(offer_line) < 5:
+                continue
+
+            parsed = parse_range(offer_line)
+
+            status = "verify"
+            start_iso = ""
+            end_iso = ""
+            date_text = ""
+
+            if parsed:
+                start, end, date_text = parsed
+                start_iso = start.isoformat()
+                end_iso = end.isoformat()
+
+                if start <= TODAY <= end:
+                    status = "active"
+                elif TODAY < start:
+                    status = "upcoming"
+                else:
+                    status = "expired"
+
+            detected_store = get_store(offer_line)
+
+            # 優先使用原文品牌標題；若優惠本身明確標示另一品牌，
+            # 則採用優惠文字中的品牌辨識結果
+            if heading_store:
+                store = heading_store
+                if detected_store != "綜合／待確認":
+                    store = detected_store
             else:
-                status = "expired"
+                store = detected_store
 
-        store = get_store(line)
-
-        results.append({
-            "store": store,
-            "offer": line,
-            "status": status,
-            "start_date": start_iso,
-            "end_date": end_iso,
-            "date_text": date_text,
-            "article_title": title,
-            "article_url": url,
-            "published": article.get("published", ""),
-            "source": "新聞文章自動擷取",
-            "needs_check": True
-        })
+            results.append({
+                "store": store or "綜合／待確認",
+                "offer": offer_line,
+                "status": status,
+                "start_date": start_iso,
+                "end_date": end_iso,
+                "date_text": date_text,
+                "article_title": title,
+                "article_url": url,
+                "published": article.get("published", ""),
+                "source": "新聞文章自動擷取",
+                "needs_check": True
+            })
 
     return results
+
 
 def main():
     found = list(SEED_ARTICLES)
