@@ -355,17 +355,26 @@ def extract(article, url, title, lines):
         if not OFFER_RE.search(line) or not 5 <= len(line) <= 500:
             continue
 
-        # 將緊鄰的日期行併入判讀文字，但優惠名稱仍保留原句。
+        # 日期只優先採用本優惠同一行的日期。
+        # 只有相鄰行明確像「活動期間／優惠期間／即日起」且不是另一項優惠時，
+        # 才納入日期判斷，降低把其他優惠日期錯套過來的機率。
         date_context = line
-        # 媒體常把活動日期獨立成一行；只檢查前後各兩行，避免把整篇文章的日期錯套到每筆優惠。
         nearby = []
-        for j in range(max(0, idx - 2), min(len(lines), idx + 3)):
+        for j in range(max(0, idx - 1), min(len(lines), idx + 2)):
             if j == idx:
                 continue
-            candidate = lines[j]
-            if re.search(r"(?:活動(?:期間|日期)|優惠期間|即日起|至|到|\d{1,2}\s*[月/.-]\s*\d{1,2}|20\d{2}[/年.-])", candidate):
+            candidate = lines[j].strip()
+            if OFFER_RE.search(candidate):
+                continue
+            explicit_period = re.search(
+                r"(?:活動(?:期間|日期)|優惠期間|即日起|限定至|截止(?:日期)?|活動至)",
+                candidate
+            )
+            has_date = DATE_RE.search(candidate) or SINGLE_DATE_RE.search(candidate)
+            if explicit_period and has_date:
                 nearby.append(candidate)
-        date_context = " ".join(nearby + [line])
+        if nearby:
+            date_context = " ".join([line] + nearby)
 
         candidates = split_mixed_store_line(line)
         for line_store, offer_line in candidates:
@@ -577,7 +586,8 @@ def main():
     temp_path = "deals.json.tmp"
     with open(temp_path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-        os.replace(temp_path, "deals.json")
+    # 關閉暫存檔後再替換正式檔案。
+    os.replace(temp_path, "deals.json")
 
     counts = {
         status: sum(1 for deal in final_deals if deal.get("status") == status)
