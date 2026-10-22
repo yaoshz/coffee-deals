@@ -279,13 +279,23 @@ def main():
 
         time.sleep(0.5)
 
+   
     unique_deals = {}
+
     for deal in deals:
+        # 統一空白與常見標點，減少格式不同造成的重複
+        normalized_offer = re.sub(
+            r"[\s　，。；：、！!？?（）()\[\]【】]",
+            "",
+            deal["offer"]
+        )
+
         key = (
             deal["store"],
-            deal["offer"],
+            normalized_offer,
             deal["article_url"]
         )
+
         unique_deals.setdefault(key, deal)
 
     final_deals = list(unique_deals.values())
