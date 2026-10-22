@@ -96,125 +96,385 @@ main{max-width:850px;margin:auto}.section{padding:0 15px}.section-heading{displa
 </main>
 <div class="footer">省咖啡・個人使用版｜免費前端原型<br>不保證涵蓋全網優惠，也不代表品牌官方立場。</div>
 <script>
-const $=s=>document.querySelector(s);
-const today=new Date();
-$('#today').textContent=`📅 ${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
-let allDeals=[], activeFilter='all', queryText='';
-const searches=[
- {q:'台灣 咖啡 買一送一 超商 優惠',days:7,type:'coffee'},
- {q:'星巴克 路易莎 cama 85度C 咖啡 優惠',days:7,type:'coffee'},
- {q:'超商 咖啡 寄杯 優惠 7-ELEVEN 全家 萊爾富 OK mart',days:7,type:'convenience'},
- {q:'台灣 省錢 優惠券 限時免費 特價',days:3,type:'life'},
- {q:'PTT Lifeismoney Dcard 咖啡 優惠',days:7,type:'life'}
+
+const $ = s => document.querySelector(s);
+const today = new Date();
+const todayISO = [
+  today.getFullYear(),
+  String(today.getMonth() + 1).padStart(2, '0'),
+  String(today.getDate()).padStart(2, '0')
+].join('-');
+
+$('#today').textContent =
+  `📅 ${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`;
+
+let allDeals = [];
+let activeFilter = 'all';
+let queryText = '';
+
+const searches = [
+  { q: '台灣 咖啡 買一送一 超商 優惠', days: 7, type: 'coffee' },
+  { q: '星巴克 路易莎 cama 85度C 咖啡 優惠', days: 7, type: 'coffee' },
+  { q: '超商 咖啡 寄杯 優惠 7-ELEVEN 全家 萊爾富 OK mart', days: 7, type: 'convenience' },
+  { q: '台灣 省錢 優惠券 限時免費 特價', days: 3, type: 'life' },
+  { q: 'PTT Lifeismoney Dcard 咖啡 優惠', days: 7, type: 'life' }
 ];
-function newsRssUrl(q,days){
- const after=new Date(Date.now()-days*86400000).toISOString().slice(0,10);
- const query=encodeURIComponent(`${q} after:${after}`);
- return `https://news.google.com/rss/search?q=${query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant`;
+
+// 安全建立文字，避免優惠內容被當成 HTML 執行
+function makeEl(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  if (text !== undefined) el.textContent = text;
+  return el;
 }
-async function fetchOne(s){
- const rss=newsRssUrl(s.q,s.days);
- const endpoint='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss);
- const res=await fetch(endpoint,{cache:'no-store'});
- if(!res.ok) throw new Error('RSS 服務回應 '+res.status);
- const data=await res.json();
- if(data.status!=='ok'||!Array.isArray(data.items)) throw new Error(data.message||'RSS 格式無法讀取');
- return data.items.map(it=>({
-  title:cleanTitle(it.title||'未命名情報'),link:it.link||rss,
-  source:it.author||it.source||'Google 新聞 RSS',
-  date:it.pubDate||it.published||new Date().toISOString(),type:s.type
- }));
+
+function makeLink(url, title) {
+  const a = makeEl('a', 'news-card');
+  a.href = url || '#';
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.appendChild(makeEl('div', 'card-title', title));
+  return a;
 }
-function cleanTitle(t){return String(t).replace(/\\s+-\\s+Google 新聞$/,'').replace(/\\s+-\\s+[^-]{1,50}$/,'').trim()||String(t)}
-function isBuy(t){return /買一送一|買1送1|買二送一|第二杯|第2杯|買一送.*一|同品項.*送/i.test(t)}
-function classify(d){
- const t=d.title.toLowerCase();
- const coffee=/咖啡|拿鐵|美式|星巴克|路易莎|cama|85度c|85°c|丹堤|怡客|寄杯|咖啡券|咖啡寄杯/.test(t);
- const conv=/超商|7.?eleven|統一超商|全家|萊爾富|ok.?mart|便利商店|超商咖啡/.test(t);
- const life=/免費|省錢|優惠券|折價券|折扣|特價|回饋|點數|信用卡|限時|電商/.test(t);
- return {...d,isBuy:isBuy(d.title),coffee:coffee||d.type==='coffee',convenience:conv||d.type==='convenience',life:d.type==='life'||life};
-}
-function dedupe(items){
- const seen=new Set();return items.map(classify).filter(x=>{const k=(x.title+'|'+x.link).toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).sort((a,b)=>new Date(b.date)-new Date(a.date));
-}
-async function fetchAllData(){
- const box=$('#news-container');$('#status-text').textContent='正在更新公開 RSS…';$('#refresh-btn').disabled=true;$('#refresh-btn').textContent='讀取中…';
- if(!allDeals.length)box.innerHTML='<div class="loading"><strong>⏳ 正在讀取公開情報…</strong>正在彙整幾組搜尋結果。</div>';
- let successes=0,errors=0,items=[];
- const results=await Promise.allSettled(searches.map(fetchOne));
- results.forEach(r=>{if(r.status==='fulfilled'){successes++;items.push(...r.value)}else errors++});
- allDeals=dedupe(items);
- $('#updated').textContent='更新 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
- $('#status-text').textContent=successes?`已讀取 ${successes}/${searches.length} 組公開來源`:'RSS 連線未成功';
- $('#refresh-btn').disabled=false;$('#refresh-btn').textContent='↻ 重新整理';
- renderDeals();
- if(!successes){
-  $('#status-text').textContent='RSS 來源暫時無法連線，已提供替代搜尋';
-  $('#result-count').textContent='替代搜尋';
-  renderFallbackSearches();
- }
-}
-function renderFallbackSearches(){
- const box=$('#news-container');
- const terms = queryText || (activeFilter==='buy' ? '咖啡 買一送一 第二杯優惠' :
-   activeFilter==='coffee' ? '台灣 咖啡 優惠 星巴克 路易莎 超商' :
-   activeFilter==='convenience' ? '超商咖啡 寄杯 優惠' :
-   activeFilter==='life' ? '台灣 生活省錢 優惠券 限時' : '台灣 咖啡優惠 買一送一 寄杯');
- const searches = [
-   {label:'Google 新聞：近期優惠', url:'https://news.google.com/search?q='+encodeURIComponent(terms)+'&hl=zh-TW&gl=TW&ceid=TW%3Azh-Hant'},
-   {label:'Google 搜尋：近期優惠', url:'https://www.google.com/search?q='+encodeURIComponent(terms+' 最新 台灣')},
-   {label:'PTT 省錢板搜尋', url:'https://www.google.com/search?q='+encodeURIComponent('site:ptt.cc/bbs/Lifeismoney '+terms)},
-   {label:'Dcard 優惠搜尋', url:'https://www.google.com/search?q='+encodeURIComponent('site:dcard.tw '+terms)}
- ];
- box.innerHTML='';
- const intro=document.createElement('div'); intro.className='empty';
- intro.innerHTML='⚠️ 免費 RSS 轉換服務目前沒有回應，因此暫時無法在本站直接列出新聞。<br>你仍可使用以下按鈕查看即時搜尋結果；這些連結會開啟原始搜尋網站。';
- box.appendChild(intro);
- searches.forEach(s=>{
-   const a=document.createElement('a');
-   a.className='news-card';
-   a.href=s.url; a.target='_blank'; a.rel='noopener';
-   a.textContent='🔎 '+s.label;
-   a.style.fontWeight='800'; a.style.display='block';
-   box.appendChild(a);
- });
-}
-function renderDeals(){
- const box=$('#news-container');box.innerHTML='';
- let arr=allDeals.filter(d=>{
-  if(activeFilter==='coffee'&&!d.coffee)return false;
-  if(activeFilter==='buy'&&!d.isBuy)return false;
-  if(activeFilter==='life'&&!d.life)return false;
-  if(activeFilter==='convenience'&&!d.convenience)return false;
-  if(queryText&&!(`${d.title} ${d.source}`).toLowerCase().includes(queryText.toLowerCase()))return false;
-  return true;
- });
- $('#list-title').textContent=({all:'今日情報',coffee:'咖啡優惠',buy:'買一送一／第二杯優惠',life:'生活省錢情報',convenience:'超商優惠'})[activeFilter];
- $('#result-count').textContent=`${arr.length} 筆`;
- if(!arr.length){
-  if(!allDeals.length){
-   renderFallbackSearches();
-  } else {
-   box.innerHTML=`<div class="empty">目前沒有符合條件的結果。試試其他關鍵字或分類。<br><button class="retry" onclick="fetchAllData()">重新讀取</button></div>`;
+
+// 讀取 scraper.py 產生的 deals.json
+async function loadCoffeeDeals() {
+  const box = $('#todayCoffeeDeals');
+  box.innerHTML = '';
+
+  try {
+    const response = await fetch('./deals.json?t=' + Date.now(), {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error('deals.json 讀取失敗：HTTP ' + response.status);
+    }
+
+    const data = await response.json();
+    const deals = Array.isArray(data.deals) ? data.deals : [];
+
+    // 日期必須完整，而且今天必須介於起訖日之間
+    const active = deals.filter(d =>
+      d.status === 'active' &&
+      /^\d{4}-\d{2}-\d{2}$/.test(d.start_date || '') &&
+      /^\d{4}-\d{2}-\d{2}$/.test(d.end_date || '') &&
+      d.start_date <= todayISO &&
+      todayISO <= d.end_date
+    );
+
+    const verify = deals.filter(d => d.status === 'verify');
+    const upcoming = deals.filter(d => d.status === 'upcoming');
+    const expired = deals.filter(d =>
+      d.status === 'expired' ||
+      (d.end_date && /^\d{4}-\d{2}-\d{2}$/.test(d.end_date) &&
+       d.end_date < todayISO)
+    );
+
+    box.appendChild(makeEl(
+      'p', '',
+      `資料更新：${data.updated_at ? new Date(data.updated_at).toLocaleString('zh-TW') : '未提供'}`
+    ));
+
+    box.appendChild(makeEl(
+      'p', '',
+      `目前找到 ${active.length} 筆日期符合的優惠；${verify.length} 筆待確認。`
+    ));
+
+    if (active.length === 0) {
+      box.appendChild(makeEl(
+        'div', 'empty',
+        '目前沒有日期明確符合今天的優惠。這不代表完全沒有活動，請查看下方待確認項目或官方公告。'
+      ));
+    }
+
+    active.forEach(d => {
+      const card = makeLink(
+        d.article_url,
+        `${d.store || '店家待確認'}｜${d.offer || d.article_title || '優惠詳情'}`
+      );
+      card.classList.add('life');
+
+      const dateText = `活動日期：${d.start_date} ～ ${d.end_date}`;
+      card.appendChild(makeEl('div', 'card-bottom', dateText));
+
+      if (d.needs_check) {
+        card.appendChild(makeEl('div', 'notice', '⚠️ 自動擷取資料，請點入原文核實。'));
+      }
+
+      box.appendChild(card);
+    });
+
+    function addGroup(title, items, emptyText) {
+      const heading = makeEl('h3', '', `${title}（${items.length}）`);
+      heading.style.margin = '18px 0 8px';
+      box.appendChild(heading);
+
+      if (!items.length) {
+        box.appendChild(makeEl('p', '', emptyText));
+        return;
+      }
+
+      items.slice(0, 10).forEach(d => {
+        const name = `${d.store || '店家待確認'}｜${d.offer || d.article_title || '優惠詳情'}`;
+        const card = makeLink(d.article_url, name);
+        const dates = d.date_text ||
+          (d.start_date && d.end_date
+            ? `${d.start_date} ～ ${d.end_date}`
+            : '活動日期尚未確認');
+
+        card.appendChild(makeEl('div', 'card-bottom', dates));
+        box.appendChild(card);
+      });
+    }
+
+    addGroup('🟡 日期待確認', verify, '目前沒有待確認項目。');
+    addGroup('🗓️ 尚未開始', upcoming, '目前沒有尚未開始的項目。');
+    addGroup('⏰ 已過期／不再有效', expired, '目前沒有已過期項目。');
+
+    box.appendChild(makeEl(
+      'p', 'notice',
+      data.disclaimer ||
+      '優惠由程式自動擷取，可能有誤，請以商家官方公告為準。'
+    ));
+
+  } catch (error) {
+    box.appendChild(makeEl(
+      'div', 'empty',
+      '暫時無法讀取 deals.json。請確認檔案存在、JSON 格式正確，並重新整理網站。'
+    ));
+    console.error('讀取咖啡優惠失敗：', error);
   }
-  return;
- }
- arr.slice(0,60).forEach(d=>{
-  const a=document.createElement('a');a.className='news-card'+(d.isBuy?' buy':d.life?' life':'');a.href=d.link;a.target='_blank';a.rel='noopener';
-  const date=new Date(d.date);const validDate=!isNaN(date.getTime());const ds=validDate?`${date.getMonth()+1}/${date.getDate()} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`:'時間未提供';
-  const tag=d.isBuy?'<span class="tag tag-buy">🎯 買一送一／第二杯</span>':d.coffee?'<span class="tag tag-coffee">☕ 咖啡</span>':d.life?'<span class="tag tag-life">💰 生活省錢</span>':'';
-  const title=document.createElement('div');title.className='card-title';title.textContent=d.title;
-  const bottom=document.createElement('div');bottom.className='card-bottom';
-  const source=document.createElement('span');source.className='source';source.textContent='📰 '+d.source;
-  const chips=document.createElement('span');chips.className='chips';chips.innerHTML=tag+`<span>${ds}</span>`;
-  bottom.append(source,chips);a.append(title,bottom);box.appendChild(a);
- });
 }
-$('#filters').addEventListener('click',e=>{const b=e.target.closest('button[data-filter]');if(!b)return;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));activeFilter=b.dataset.filter;renderDeals()});
-$('#refresh-btn').addEventListener('click',fetchAllData);
-$('#search-form').addEventListener('submit',e=>{e.preventDefault();queryText=$('#search-input').value.trim();renderDeals()});
-$('#search-input').addEventListener('input',()=>{queryText=$('#search-input').value.trim();renderDeals()});
+
+function newsRssUrl(q, days) {
+  const after = new Date(Date.now() - days * 86400000)
+    .toISOString().slice(0, 10);
+  const query = encodeURIComponent(`${q} after:${after}`);
+  return `https://news.google.com/rss/search?q=${query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant`;
+}
+
+async function fetchOne(s) {
+  const rss = newsRssUrl(s.q, s.days);
+  const endpoint =
+    'https://api.rss2json.com/v1/api.json?rss_url=' +
+    encodeURIComponent(rss);
+
+  const res = await fetch(endpoint, { cache: 'no-store' });
+  if (!res.ok) throw new Error('RSS 服務回應 ' + res.status);
+
+  const data = await res.json();
+  if (data.status !== 'ok' || !Array.isArray(data.items)) {
+    throw new Error(data.message || 'RSS 格式無法讀取');
+  }
+
+  return data.items.map(it => ({
+    title: cleanTitle(it.title || '未命名情報'),
+    link: it.link || rss,
+    source: it.author || it.source || 'Google 新聞 RSS',
+    date: it.pubDate || it.published || new Date().toISOString(),
+    type: s.type
+  }));
+}
+
+function cleanTitle(t) {
+  return String(t)
+    .replace(/\s+-\s+Google 新聞$/, '')
+    .replace(/\s+-\s+[^-]{1,50}$/, '')
+    .trim() || String(t);
+}
+
+function isBuy(t) {
+  return /買一送一|買1送1|買二送一|第二杯|第2杯|買一送.*一|同品項.*送/i.test(t);
+}
+
+function classify(d) {
+  const t = d.title.toLowerCase();
+  const coffee = /咖啡|拿鐵|美式|星巴克|路易莎|cama|85度c|85°c|丹堤|怡客|寄杯|咖啡券/.test(t);
+  const conv = /超商|7.?eleven|統一超商|全家|萊爾富|ok.?mart|便利商店/.test(t);
+  const life = /免費|省錢|優惠券|折價券|折扣|特價|回饋|點數|信用卡|限時|電商/.test(t);
+
+  return {
+    ...d,
+    isBuy: isBuy(d.title),
+    coffee: coffee || d.type === 'coffee',
+    convenience: conv || d.type === 'convenience',
+    life: d.type === 'life' || life
+  };
+}
+
+function dedupe(items) {
+  const seen = new Set();
+
+  return items.map(classify).filter(x => {
+    const key = (x.title + '|' + x.link).toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function renderFallbackSearches() {
+  const box = $('#news-container');
+  const terms = queryText ||
+    (activeFilter === 'buy' ? '咖啡 買一送一 第二杯優惠' :
+     activeFilter === 'coffee' ? '台灣 咖啡 優惠 星巴克 路易莎 超商' :
+     activeFilter === 'convenience' ? '超商咖啡 寄杯 優惠' :
+     activeFilter === 'life' ? '台灣 生活省錢 優惠券 限時' :
+     '台灣 咖啡優惠 買一送一 寄杯');
+
+  const links = [
+    ['Google 新聞：近期優惠', 'https://news.google.com/search?q=' + encodeURIComponent(terms) + '&hl=zh-TW&gl=TW&ceid=TW%3Azh-Hant'],
+    ['Google 搜尋：近期優惠', 'https://www.google.com/search?q=' + encodeURIComponent(terms + ' 最新 台灣')],
+    ['PTT 省錢板搜尋', 'https://www.google.com/search?q=' + encodeURIComponent('site:ptt.cc/bbs/Lifeismoney ' + terms)],
+    ['Dcard 優惠搜尋', 'https://www.google.com/search?q=' + encodeURIComponent('site:dcard.tw ' + terms)]
+  ];
+
+  box.innerHTML = '';
+  box.appendChild(makeEl(
+    'div', 'empty',
+    '免費 RSS 服務目前無法回應。你仍可使用以下連結查看近期優惠。'
+  ));
+
+  links.forEach(([label, url]) => {
+    const a = makeLink(url, '🔎 ' + label);
+    a.style.fontWeight = '800';
+    box.appendChild(a);
+  });
+}
+
+function renderDeals() {
+  const box = $('#news-container');
+  box.innerHTML = '';
+
+  const arr = allDeals.filter(d => {
+    if (activeFilter === 'coffee' && !d.coffee) return false;
+    if (activeFilter === 'buy' && !d.isBuy) return false;
+    if (activeFilter === 'life' && !d.life) return false;
+    if (activeFilter === 'convenience' && !d.convenience) return false;
+
+    if (queryText &&
+        !(`${d.title} ${d.source}`).toLowerCase()
+          .includes(queryText.toLowerCase())) return false;
+
+    return true;
+  });
+
+  $('#list-title').textContent = ({
+    all: '今日情報',
+    coffee: '咖啡優惠',
+    buy: '買一送一／第二杯優惠',
+    life: '生活省錢情報',
+    convenience: '超商優惠'
+  })[activeFilter];
+
+  $('#result-count').textContent = `${arr.length} 筆`;
+
+  if (!arr.length) {
+    if (!allDeals.length) {
+      renderFallbackSearches();
+    } else {
+      box.appendChild(makeEl(
+        'div', 'empty',
+        '目前沒有符合條件的結果。試試其他關鍵字或分類。'
+      ));
+    }
+    return;
+  }
+
+  arr.slice(0, 60).forEach(d => {
+    const a = makeLink(d.link, d.title);
+    a.className = 'news-card' + (d.isBuy ? ' buy' : d.life ? ' life' : '');
+
+    const date = new Date(d.date);
+    const dateText = isNaN(date.getTime())
+      ? '時間未提供'
+      : `${date.getMonth() + 1}/${date.getDate()} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+    a.appendChild(makeEl('div', 'card-bottom', `📰 ${d.source || '新聞來源'}　${dateText}`));
+    box.appendChild(a);
+  });
+}
+
+async function fetchAllData() {
+  const box = $('#news-container');
+  $('#status-text').textContent = '正在更新公開 RSS…';
+  $('#refresh-btn').disabled = true;
+  $('#refresh-btn').textContent = '讀取中…';
+
+  if (!allDeals.length) {
+    box.innerHTML = '<div class="loading"><strong>⏳ 正在讀取公開情報…</strong>正在彙整搜尋結果。</div>';
+  }
+
+  try {
+    let successes = 0;
+    const items = [];
+    const results = await Promise.allSettled(searches.map(fetchOne));
+
+    results.forEach(r => {
+      if (r.status === 'fulfilled') {
+        successes++;
+        items.push(...r.value);
+      }
+    });
+
+    allDeals = dedupe(items);
+
+    $('#updated').textContent =
+      '更新 ' + new Date().toLocaleTimeString('zh-TW', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+    $('#status-text').textContent = successes
+      ? `已讀取 ${successes}/${searches.length} 組公開來源`
+      : 'RSS 來源暫時無法連線';
+
+    if (!successes) {
+      $('#result-count').textContent = '替代搜尋';
+      renderFallbackSearches();
+    } else {
+      renderDeals();
+    }
+  } catch (error) {
+    console.error('新聞更新失敗：', error);
+    $('#status-text').textContent = 'RSS 暫時無法連線';
+    renderFallbackSearches();
+  } finally {
+    $('#refresh-btn').disabled = false;
+    $('#refresh-btn').textContent = '↻ 重新整理';
+  }
+}
+
+$('#filters').addEventListener('click', e => {
+  const button = e.target.closest('button[data-filter]');
+  if (!button) return;
+
+  document.querySelectorAll('.filter').forEach(el => {
+    el.classList.toggle('active', el === button);
+  });
+
+  activeFilter = button.dataset.filter;
+  renderDeals();
+});
+
+$('#refresh-btn').addEventListener('click', fetchAllData);
+
+$('#search-form').addEventListener('submit', e => {
+  e.preventDefault();
+  queryText = $('#search-input').value.trim();
+  renderDeals();
+});
+
+$('#search-input').addEventListener('input', () => {
+  queryText = $('#search-input').value.trim();
+  renderDeals();
+});
+
+// 同時載入今日優惠資料與新聞
+loadCoffeeDeals();
 fetchAllData();
+
 </script>
  <script src="./today-widget.js"></script>
 </body>
