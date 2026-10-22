@@ -155,13 +155,38 @@ async function loadCoffeeDeals() {
     const deals = Array.isArray(data.deals) ? data.deals : [];
 
     // 日期必須完整，而且今天必須介於起訖日之間
-    const active = deals.filter(d =>
+    const activeRaw = deals.filter(d =>
       d.status === 'active' &&
       /^\d{4}-\d{2}-\d{2}$/.test(d.start_date || '') &&
       /^\d{4}-\d{2}-\d{2}$/.test(d.end_date || '') &&
       d.start_date <= todayISO &&
       todayISO <= d.end_date
     );
+
+    // 去除真正重複的優惠：忽略標點、空白與「中杯」等規格補充；不同日期仍視為不同活動
+    const normalizeOffer = value => String(value || '')
+      .toLowerCase()
+      .replace(/[（(]中杯[）)]/g, '')
+      .replace(/[\s　，。、；：:～~－—–\-\/／]/g, '')
+      .trim();
+    const seenDeals = new Set();
+    const active = activeRaw.filter(d => {
+      const key = [d.store || '', normalizeOffer(d.offer), d.start_date || '', d.end_date || ''].join('|');
+      if (seenDeals.has(key)) return false;
+      seenDeals.add(key);
+      return true;
+    });
+
+    // 同一家店集中顯示；店內先依活動開始日期，再依優惠文字排列
+    const storeOrder = ['7-ELEVEN', '全家', '萊爾富', 'OKmart', '美廉社', '星巴克'];
+    active.sort((a, b) => {
+      const ai = storeOrder.indexOf(a.store);
+      const bi = storeOrder.indexOf(b.store);
+      const ag = ai < 0 ? storeOrder.length : ai;
+      const bg = bi < 0 ? storeOrder.length : bi;
+      return ag - bg || (a.start_date || '').localeCompare(b.start_date || '') ||
+        (a.offer || '').localeCompare(b.offer || '', 'zh-Hant');
+    });
 
     const verify = deals.filter(d => d.status === 'verify');
     const upcoming = deals.filter(d => d.status === 'upcoming');
@@ -188,18 +213,26 @@ async function loadCoffeeDeals() {
       ));
     }
 
+    let currentStore = '';
     active.forEach(d => {
-      const card = makeLink(
-        d.article_url,
-        `${d.store || '店家待確認'}｜${d.offer || d.article_title || '優惠詳情'}`
-      );
+      const store = d.store || '店家待確認';
+      if (store !== currentStore) {
+        currentStore = store;
+        const heading = makeEl('h3', '', store);
+        heading.style.margin = '20px 0 9px';
+        heading.style.color = 'var(--coffee)';
+        heading.style.fontSize = '16px';
+        box.appendChild(heading);
+      }
+
+      const card = makeLink(d.article_url, d.offer || d.article_title || '優惠詳情');
       card.classList.add('life');
 
       const dateText = `活動日期：${d.start_date} ～ ${d.end_date}`;
       card.appendChild(makeEl('div', 'card-bottom', dateText));
 
       if (d.needs_check) {
-        card.appendChild(makeEl('div', 'notice', '⚠️ 自動擷取資料，請點入原文核實。'));
+        card.appendChild(makeEl('div', 'notice', '⚠️ 自動擷取資料，實際優惠請以商家公告為準。'));
       }
 
       box.appendChild(card);
@@ -476,6 +509,5 @@ loadCoffeeDeals();
 fetchAllData();
 
 </script>
- <script src="./today-widget.js"></script>
 </body>
 </html>
