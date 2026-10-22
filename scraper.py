@@ -208,6 +208,7 @@ def extract(article, url, title, lines):
         return results
 
     current_store = ""
+        seen_family_coffee_day = False
 
     # 只辨識單獨出現的品牌標題
     heading_map = {
@@ -268,7 +269,17 @@ def extract(article, url, title, lines):
         else:
             candidate_lines = [(current_store, line)]
 
-        for heading_store, offer_line in candidate_lines:
+               for heading_store, offer_line in candidate_lines:
+
+                      # 全家咖啡日活動只保留第一筆描述，不限定星期幾
+            if (
+                heading_store == "全家"
+                and re.search(r"週[一二三四五六日天]咖啡日|咖啡日", offer_line)
+            ):
+                if seen_family_coffee_day:
+                    continue
+                seen_family_coffee_day = True
+
             if not OFFER_RE.search(offer_line):
                 continue
 
