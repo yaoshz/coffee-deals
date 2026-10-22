@@ -208,7 +208,7 @@ def extract(article, url, title, lines):
         return results
 
     current_store = ""
-        seen_family_coffee_day = False
+    seen_family_coffee_day = False
 
     # 只辨識單獨出現的品牌標題
     heading_map = {
