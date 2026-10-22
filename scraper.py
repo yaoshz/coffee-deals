@@ -187,6 +187,7 @@ def is_coffee_related(text):
     t = text.lower()
     return any(word.lower() in t for word in coffee_words)
 
+
 def extract(article, url, title, lines):
     results = []
     full_text = " ".join(lines)
@@ -195,17 +196,15 @@ def extract(article, url, title, lines):
         print("SKIP unrelated article:", title)
         return results
 
-    for i, line in enumerate(lines):
+    for line in lines:
         if not OFFER_RE.search(line):
             continue
 
         if len(line) > 300 or len(line) < 5:
             continue
 
-        # 不跨太大範圍取日期，降低把其他優惠日期套過來的風險
-        context_lines = lines[max(0, i - 1):min(len(lines), i + 2)]
-        context = " ".join(context_lines)
-        parsed = parse_range(line) or parse_range(context)
+        # 嚴格模式：日期必須出現在優惠本身那一行
+        parsed = parse_range(line)
 
         status = "verify"
         start_iso = ""
@@ -224,9 +223,7 @@ def extract(article, url, title, lines):
             else:
                 status = "expired"
 
-        # 店名可從當前行與前一行辨識
-        store_context = " ".join(lines[max(0, i - 2):i + 1])
-        store = get_store(line + " " + store_context)
+        store = get_store(line)
 
         results.append({
             "store": store,
@@ -239,7 +236,7 @@ def extract(article, url, title, lines):
             "article_url": url,
             "published": article.get("published", ""),
             "source": "新聞文章自動擷取",
-            "needs_check": True
+            "needs_check": status != "active"
         })
 
     return results
