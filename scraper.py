@@ -236,7 +236,7 @@ def extract(article, url, title, lines):
             "article_url": url,
             "published": article.get("published", ""),
             "source": "新聞文章自動擷取",
-            "needs_check": status != "active"
+            "needs_check": True
         })
 
     return results
