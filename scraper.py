@@ -1,25 +1,19 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import html
 import json
 import re
 import time
+import html
+from datetime import datetime, date, timezone, timedelta
+from urllib.parse import quote
 import xml.etree.ElementTree as ET
-from datetime import date, datetime, timedelta, timezone
-from urllib.parse import quote, urlparse
 
 import requests
 from bs4 import BeautifulSoup
 
-# =========================================================
-# 基本設定
-# =========================================================
-
 TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TZ).date()
-
 HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -28,28 +22,28 @@ HEADERS = {
 }
 
 MAX_ARTICLES = 40
-REQUEST_TIMEOUT = 25
 
+# 直接加入你提供的中天新聞文章
 SEED_ARTICLES = [
     {
         "title": "中天新聞咖啡優惠整理",
         "url": "https://ctinews.com/news/items/bKxrXQKYW9",
-        "published": "",
+        "published": ""
     }
 ]
 
 QUERIES = [
-    "site:applealmond.com/posts 咖啡優惠",
-    "site:nownews.com 超商咖啡優惠",
-    "site:ctinews.com/news 咖啡優惠",
-    "site:ctinews.com/news 超商咖啡 買一送一",
-    "台灣超商咖啡優惠 7-ELEVEN 全家 萊爾富",
-    "星巴克 路易莎 咖啡優惠 寄杯 買一送一",
+    'site:applealmond.com/posts 咖啡優惠',
+    'site:nownews.com 超商咖啡優惠',
+    'site:ctinews.com/news 咖啡優惠',
+    'site:ctinews.com/news 超商咖啡 買一送一',
+    '台灣超商咖啡優惠 7-ELEVEN 全家 萊爾富',
+    '星巴克 路易莎 咖啡優惠 寄杯 買一送一',
 ]
 
 STORE_PATTERNS = [
     ("7-ELEVEN", r"7\s*[-－]?\s*ELEVEN|7-11|CITY\s*CAFE"),
-    ("全家", r"全家|Let's\s*Café|Let's\s*Cafe"),
+    ("全家", r"全家|Let'?s\s*Café|Let'?s\s*Cafe"),
     ("萊爾富", r"萊爾富|Hi\s*Cafe|Hi-Life"),
     ("美廉社", r"美廉社"),
     ("OKmart", r"OKmart|OK\s*超商"),
@@ -63,231 +57,33 @@ STORE_PATTERNS = [
 OFFER_RE = re.compile(
     r"買\s*[一1]\s*送\s*[一1]"
     r"|買\s*\d+\s*送\s*\d+"
-    r"|第二杯|第\s*二\s*杯"
+    r"|第\s*二\s*杯"
+    r"|第二杯"
     r"|任選\s*\d+\s*杯"
     r"|[兩二三四五六七八九十\d]+\s*杯\s*\d+\s*元"
-    r"|寄杯|折\s*扣|優惠價|組合價|現折"
-    r"|咖啡.{0,25}\d+\s*元"
-    r"|大杯.{0,25}\d+\s*元"
-    r"|特大杯.{0,25}\d+\s*元",
-    re.I,
+    r"|寄杯"
+    r"|折\s*扣"
+    r"|優惠價"
+    r"|組合價"
+    r"|現折"
+    r"|咖啡.*\d+\s*元"
+    r"|大杯.{0,15}\d+\s*元"
 )
 
-DATE_TOKEN = (
+
+# 支援西元年份（2026）與民國年份（115）
+DATE_RE = re.compile(
+    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
+    r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
+    r"\s*(?:至|到|～|~|－|—|-|–)\s*"
     r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
     r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
 )
 
-DATE_RANGE_RE = re.compile(
-    DATE_TOKEN
-    + r"\s*(?:至|到|～|~|－|—|-|–)\s*"
-    + DATE_TOKEN
+SINGLE_DATE_RE = re.compile(
+    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?"
+    r"(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
 )
-
-SINGLE_DATE_RE = re.compile(DATE_TOKEN)
-
-# =========================================================
-# 日期處理
-# =========================================================
-
-def make_date(year, month, day, fallback_year=None):
-    """支援西元與民國年份；不合法日期回傳 None。"""
-    try:
-        if year:
-            y = int(year)
-            if 1 <= y <= 191:
-                y += 1911
-        else:
-            y = fallback_year or TODAY.year
-
-        return date(y, int(month), int(day))
-    except (ValueError, TypeError):
-        return None
-
-
-def infer_yearless_range(m1, d1, m2, d2):
-    """
-    推測沒有年份的起訖日期。
-    例如目前為 2026/10，7/23～12/31 應推定為 2026 年。
-    跨年區間則允許結束日期落在下一年。
-    """
-    start_month = int(m1)
-    start_day = int(d1)
-    end_month = int(m2)
-    end_day = int(d2)
-
-    start_year = TODAY.year
-
-    # 若整個區間看起來是去年活動，且已結束，
-    # 不要把它自動推成今年的未來活動。
-    start = date(start_year, start_month, start_day)
-    end = date(start_year, end_month, end_day)
-
-    if end < start:
-        if start_month >= 10 and end_month <= 3:
-            end = date(start_year + 1, end_month, end_day)
-        else:
-            # 較可能是跨年或日期文字不完整，交由人工確認。
-            return None, None
-
-    return start, end
-
-
-def parse_range(text):
-    """
-    回傳 (start_date, end_date, 原始日期文字)。
-
-    只有截止日期、沒有起始日期的優惠不會直接判定有效。
-    「即日起」以程式執行當天為起始日，但仍需人工核實。
-    """
-    if "即日起" in text:
-        match = SINGLE_DATE_RE.search(text)
-        if match:
-            year, month, day = match.groups()
-            end = make_date(year, month, day, TODAY.year)
-
-            if end:
-                return TODAY, end, match.group(0)
-
-    match = DATE_RANGE_RE.search(text)
-    if match:
-        y1, m1, d1, y2, m2, d2 = match.groups()
-
-        if y1:
-            start = make_date(y1, m1, d1, TODAY.year)
-        else:
-            start = None
-
-        if y2:
-            end = make_date(y2, m2, d2, TODAY.year)
-        elif y1:
-            end = make_date(y1, m2, d2, TODAY.year)
-        else:
-            start, end = infer_yearless_range(m1, d1, m2, d2)
-
-        if start is None and not y1 and end is None:
-            return None
-
-        if start and end:
-            if end < start:
-                # 明確年份下，無法合理解釋的區間不自動修正。
-                return None
-
-            return start, end, match.group(0)
-
-    # 只有截止日期：保留待確認，不自行推定開始日期。
-    cutoff = re.search(
-        r"(?:至|到|截止(?:日期)?(?:為|：|:)?|限定至)\s*"
-        + DATE_TOKEN,
-        text,
-    )
-
-    if cutoff:
-        year, month, day = cutoff.groups()
-        end = make_date(year, month, day, TODAY.year)
-        if end:
-            return None, end, cutoff.group(0)
-
-    return None
-
-
-def get_status(start, end):
-    """依照日期判斷狀態；日期不完整時一律待確認。"""
-    if not start or not end:
-        return "verify"
-
-    if end < start:
-        return "verify"
-
-    if TODAY < start:
-        return "upcoming"
-
-    if TODAY > end:
-        return "expired"
-
-    return "active"
-
-
-# =========================================================
-# 品牌、商品分類與去重
-# =========================================================
-
-def get_store(text):
-    matches = []
-
-    for name, pattern in STORE_PATTERNS:
-        if re.search(pattern, text, re.I):
-            matches.append(name)
-
-    matches = list(dict.fromkeys(matches))
-
-    if len(matches) == 1:
-        return matches[0]
-
-    return "綜合／待確認"
-
-
-def get_category(text):
-    """分類為咖啡、茶飲、其他飲品或待確認。"""
-    t = text.lower()
-
-    tea_words = (
-        "奶茶", "紅茶", "綠茶", "烏龍茶", "焙茶",
-        "抹茶", "茶飲", "let's tea", "珍珠",
-    )
-
-    coffee_words = (
-        "咖啡", "美式", "拿鐵", "café", "cafe",
-        "咖啡豆", "寄杯", "city cafe", "hi cafe",
-        "星巴克", "路易莎", "cama",
-    )
-
-    other_words = (
-        "果汁", "果茶", "氣泡飲", "冰沙", "星沁爽",
-        "牛奶", "撞奶",
-    )
-
-    # 同一優惠可能同時包含咖啡與茶飲，優先保留混合分類。
-    has_tea = any(word in t for word in tea_words)
-    has_coffee = any(word in t for word in coffee_words)
-
-    if has_tea and has_coffee:
-        return "混合飲品"
-    if has_coffee:
-        return "咖啡"
-    if has_tea:
-        return "茶飲"
-    if any(word in t for word in other_words):
-        return "其他飲品"
-
-    return "待確認"
-
-
-def normalize_offer(offer):
-    """清除空白與一般標點，保留價格、杯數與品項。"""
-    return re.sub(
-        r"[\s　，。；：、！!？?（）()\[\]【】]",
-        "",
-        offer,
-    ).lower()
-
-
-def is_relevant(text):
-    """避免把與咖啡或飲品無關的文章列為優惠。"""
-    keywords = (
-        "咖啡", "cafe", "café", "星巴克", "路易莎",
-        "萊爾富", "美廉社", "cama", "寄杯",
-        "city cafe", "hi cafe", "超商咖啡",
-        "let's café", "let's cafe", "let's tea",
-        "焙茶", "抹茶歐蕾",
-    )
-    t = text.lower()
-    return any(word in t for word in keywords)
-
-
-# =========================================================
-# RSS 與文章擷取
-# =========================================================
 
 def rss(query):
     url = (
@@ -295,47 +91,39 @@ def rss(query):
         + quote(query)
         + "&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
     )
-
-    response = requests.get(
-        url,
-        headers=HEADERS,
-        timeout=REQUEST_TIMEOUT,
-    )
-    response.raise_for_status()
-
-    root = ET.fromstring(response.content)
-    results = []
+    r = requests.get(url, headers=HEADERS, timeout=25)
+    r.raise_for_status()
+    root = ET.fromstring(r.content)
+    result = []
 
     for item in root.findall(".//item"):
-        title = html.unescape(item.findtext("title") or "").strip()
-        link = (item.findtext("link") or "").strip()
+        title = html.unescape(item.findtext("title") or "")
+        link = item.findtext("link") or ""
         published = item.findtext("pubDate") or ""
-
         if link:
-            results.append({
+            result.append({
                 "title": title,
                 "url": link,
-                "published": published,
+                "published": published
             })
 
-    return results
-
+    return result
 
 def fetch(article):
     try:
-        response = requests.get(
+        r = requests.get(
             article["url"],
             headers=HEADERS,
-            timeout=REQUEST_TIMEOUT,
-            allow_redirects=True,
+            timeout=30,
+            allow_redirects=True
         )
-        response.raise_for_status()
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, "html.parser")
 
-        soup = BeautifulSoup(response.text, "html.parser")
-
+        # 優先取文章正文，移除不相關區域
         for tag in soup([
-            "script", "style", "nav", "footer", "header",
-            "aside", "form", "noscript",
+            "script", "style", "nav", "footer",
+            "header", "aside", "form", "noscript"
         ]):
             tag.decompose()
 
@@ -357,176 +145,187 @@ def fetch(article):
         if soup.title:
             title = soup.title.get_text(" ", strip=True)
 
-        print("FETCH OK:", response.url, "lines:", len(lines))
-        return response.url, title, lines
+        print("FETCH OK:", r.url, "lines:", len(lines))
+        return r.url, title, lines
 
     except Exception as exc:
         print("FETCH ERROR:", article["url"], str(exc))
         return article["url"], article["title"], []
 
 
-# =========================================================
-# 優惠擷取
-# =========================================================
 
-HEADINGS = {
-    "星巴克": "星巴克",
-    "Starbucks": "星巴克",
-    "7-11": "7-ELEVEN",
-    "7－11": "7-ELEVEN",
-    "7-ELEVEN": "7-ELEVEN",
-    "7-Eleven": "7-ELEVEN",
-    "全家": "全家",
-    "萊爾富": "萊爾富",
-    "路易莎": "路易莎",
-    "美廉社": "美廉社",
-    "OKmart": "OKmart",
-    "cama": "cama",
-}
+def make_date(year, month, day, fallback_year):
+    """轉換西元或民國日期；日期不合法時回傳 None。"""
+    try:
+        if year:
+            y = int(year)
+            if 1 <= y <= 191:
+                y += 1911
+        else:
+            y = fallback_year
+        return date(y, int(month), int(day))
+    except (ValueError, TypeError):
+        return None
 
 
-def split_mixed_line(line):
-    """
-    針對已知的全家／萊爾富混合句型拆分。
-    其他多品牌句型不猜測，避免把錯誤品牌寫進資料。
-    """
-    if "全家推出" in line and "萊爾富則" in line:
-        parts = line.split("萊爾富則", 1)
-        family_part = re.sub(r"^咖啡控快搶！", "", parts[0]).strip()
-        hilife_part = parts[1].strip()
+def parse_range(text):
+    """解析日期區間、即日起至日期，以及只有截止日的文字。"""
+    # 即日起至 115/11/10：起日採程式執行當天，但仍需人工確認優惠真實性。
+    if "即日起" in text:
+        match = SINGLE_DATE_RE.search(text)
+        if match:
+            year, month, day = match.groups()
+            end = make_date(year, month, day, TODAY.year)
+            if end and end >= TODAY:
+                return TODAY, end, match.group(0)
 
-        result = []
-        if family_part:
-            result.append(("全家", family_part))
-        if hilife_part:
-            result.append(("萊爾富", hilife_part))
-        return result
+    # 一般起訖日期，例如 10/14~10/27、2026/9/9~11/3。
+    match = DATE_RE.search(text)
+    if match:
+        y1, m1, d1, y2, m2, d2 = match.groups()
+        start = make_date(y1, m1, d1, TODAY.year)
+        end = make_date(y2 or y1, m2, d2, TODAY.year)
+        if start and end:
+            if not y1 and not y2 and end < start and start.month >= 11 and end.month <= 2:
+                end = date(start.year + 1, end.month, end.day)
+            if end >= start:
+                return start, end, match.group(0)
 
-    return [(None, line)]
+    # 只有截止日：起始日未知，所以回傳 start=None，status 保持 verify。
+    cutoff = re.search(
+        r"(?:至|到|截止(?:日期)?(?:為|：|:)?|限定至)\s*"
+        r"((?:(?:20\d{2}|1\d{2})\s*[年/.-]\s*)?\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?)",
+        text
+    )
+    if not cutoff:
+        cutoff = re.search(
+            r"((?:(?:20\d{2}|1\d{2})\s*[年/.-]\s*)?\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?)\s*前限定",
+            text
+        )
+    if cutoff:
+        single = SINGLE_DATE_RE.search(cutoff.group(1))
+        if single:
+            year, month, day = single.groups()
+            end = make_date(year, month, day, TODAY.year)
+            if end:
+                return None, end, single.group(0)
+
+    return None
+
+def get_store(text):
+    """只在優惠文字明確指向單一品牌時分類，避免跨品牌誤判。"""
+    matches = []
+
+    for name, pattern in STORE_PATTERNS:
+        if re.search(pattern, text, re.I):
+            matches.append(name.strip())
+
+    # 沒有品牌，或同時出現多個品牌，都先列為待確認
+    if len(matches) != 1:
+        return "綜合／待確認"
+
+    return matches[0]
+
+
+def is_coffee_related(text):
+    # 避免大量無關科技、汽車等新聞進入結果
+    coffee_words = (
+        "咖啡", "cafe", "café", "星巴克", "路易莎",
+        "萊爾富", "美廉社", "cama", "寄杯"
+    )
+    t = text.lower()
+    return any(word.lower() in t for word in coffee_words)
+
+
 
 
 def extract(article, url, title, lines):
     results = []
-
-    if not is_relevant(title + " " + " ".join(lines)):
+    full_text = " ".join(lines)
+    if not is_coffee_related(title + " " + full_text):
         print("SKIP unrelated article:", title)
         return results
 
     current_store = ""
+    heading_map = {
+        "星巴克": "星巴克", "Starbucks": "星巴克",
+        "7-11": "7-ELEVEN", "7－11": "7-ELEVEN",
+        "7-ELEVEN": "7-ELEVEN", "7-Eleven": "7-ELEVEN",
+        "全家": "全家", "萊爾富": "萊爾富", "路易莎": "路易莎",
+        "美廉社": "美廉社", "OKmart": "OKmart", "cama": "cama",
+    }
 
     for original_line in lines:
         line = original_line.strip()
-
-        # 辨認獨立品牌標題。
-        heading_line = re.sub(r"（.*?）|\(.*?\)", "", line)
-        heading_line = heading_line.strip(" ：:　")
-
-        if heading_line in HEADINGS:
-            current_store = HEADINGS[heading_line]
+        heading_line = re.sub(r"（.*?）|\(.*?\)", "", line).strip(" ：:　")
+        if heading_line in heading_map:
+            current_store = heading_map[heading_line]
             continue
 
-        for split_store, offer_line in split_mixed_line(line):
-            if not OFFER_RE.search(offer_line):
-                continue
+        # 同一行同時提到全家與萊爾富時拆開，避免跨品牌合併。
+        if "全家推出" in line and "萊爾富則" in line:
+            parts = line.split("萊爾富則", 1)
+            family_part = re.sub(r"^咖啡控快搶！", "", parts[0]).strip()
+            hilife_part = parts[1].strip()
+            candidates = []
+            if family_part:
+                candidates.append(("全家", family_part))
+            if hilife_part:
+                candidates.append(("萊爾富", hilife_part))
+        else:
+            candidates = [(current_store, line)]
 
-            if not 5 <= len(offer_line) <= 350:
-                continue
-
-            if not is_relevant(offer_line):
+        for heading_store, offer_line in candidates:
+            if not OFFER_RE.search(offer_line) or not 5 <= len(offer_line) <= 300:
                 continue
 
             parsed = parse_range(offer_line)
-
-            start = None
-            end = None
+            status = "verify"
+            start_iso = ""
+            end_iso = ""
             date_text = ""
-
             if parsed:
                 start, end, date_text = parsed
+                if start:
+                    start_iso = start.isoformat()
+                if end:
+                    end_iso = end.isoformat()
+                if start and end and start <= TODAY <= end:
+                    status = "active"
+                elif start and TODAY < start:
+                    status = "upcoming"
+                elif end and TODAY > end:
+                    status = "expired"
+                # 只有截止日而沒有起始日，一律保留 verify，避免誤標為有效。
 
-            status = get_status(start, end)
-
-            # 優先採用已知標題品牌。
-            # 若同一優惠句明確提到另一品牌，則標記為待確認，
-            # 不讓整篇新聞的其他品牌覆蓋目前品牌。
             detected_store = get_store(offer_line)
-
-            if split_store:
-                store = split_store
-            elif detected_store != "綜合／待確認":
+            store = heading_store or detected_store
+            if detected_store != "綜合／待確認":
                 store = detected_store
-            elif current_store:
-                store = current_store
-            else:
-                store = "綜合／待確認"
-
-            # 如果文章段落同時提到多個品牌，不能可靠歸屬時先待確認。
-            brand_count = sum(
-                1 for _, pattern in STORE_PATTERNS
-                if re.search(pattern, offer_line, re.I)
-            )
-            if brand_count > 1 and not split_store:
-                store = "綜合／待確認"
-                status = "verify"
 
             results.append({
-                "store": store,
+                "store": store or "綜合／待確認",
                 "offer": offer_line,
-                "category": get_category(offer_line),
                 "status": status,
-                "start_date": start.isoformat() if start else "",
-                "end_date": end.isoformat() if end else "",
+                "start_date": start_iso,
+                "end_date": end_iso,
                 "date_text": date_text,
                 "article_title": title,
                 "article_url": url,
                 "published": article.get("published", ""),
                 "source": "新聞文章自動擷取",
-                "needs_check": True,
+                "needs_check": True
             })
-
     return results
 
 
-# =========================================================
-# 清理資料與輸出 JSON
-# =========================================================
-
-def deduplicate(deals):
-    """
-    相同店家、相同優惠文字、相同日期才合併。
-    不同價格、杯數、品項或活動日期都保留。
-    """
-    unique = {}
-
-    for deal in deals:
-        key = (
-            deal.get("store", ""),
-            normalize_offer(deal.get("offer", "")),
-            deal.get("start_date", ""),
-            deal.get("end_date", ""),
-        )
-
-        if key not in unique:
-            unique[key] = deal
-        else:
-            # 優先保留有日期、原文較完整的資料。
-            old = unique[key]
-            old_score = (
-                bool(old.get("start_date")),
-                bool(old.get("end_date")),
-                len(old.get("offer", "")),
-            )
-            new_score = (
-                bool(deal.get("start_date")),
-                bool(deal.get("end_date")),
-                len(deal.get("offer", "")),
-            )
-
-            if new_score > old_score:
-                unique[key] = deal
-
-    return list(unique.values())
-
+def normalize_offer(offer):
+    """統一空白與標點，保留價格、杯數等重要資訊。"""
+    normalized = re.sub(r"[\s　，。；：、！!？?（）()\[\]【】]", "", offer)
+    # 不限定星期幾：同樣的咖啡日加價換一杯活動使用穩定去重鍵。
+    if "咖啡日" in offer and re.search(r"加\s*10\s*元.{0,8}多\s*1\s*杯", offer):
+        return "全家咖啡日_加10元多1杯"
+    return normalized
 
 def main():
     found = list(SEED_ARTICLES)
@@ -539,19 +338,16 @@ def main():
         except Exception as exc:
             print("RSS ERROR:", query, str(exc))
 
-    # 同一網址只抓一次。
+    # 依文章網址去重
     unique_articles = {}
     for article in found:
-        url = article.get("url", "").strip()
-        if url:
-            unique_articles.setdefault(url, article)
+        unique_articles.setdefault(article["url"], article)
 
     articles = list(unique_articles.values())[:MAX_ARTICLES]
     deals = []
 
     for i, article in enumerate(articles, 1):
-        print(f"[{i}/{len(articles)}] {article.get('title', '')}")
-
+        print(f"[{i}/{len(articles)}] {article['title']}")
         url, title, lines = fetch(article)
 
         if lines:
@@ -559,72 +355,42 @@ def main():
 
         time.sleep(0.5)
 
-    final_deals = deduplicate(deals)
+   
+    unique_deals = {}
+    for deal in deals:
+        key = (
+            deal["store"],
+            normalize_offer(deal["offer"]),
+            deal["article_url"]
+        )
+        unique_deals.setdefault(key, deal)
 
-    # 讓前端可以直接顯示有效優惠，再依店家及活動日期排序。
-    store_order = {
-        "7-ELEVEN": 1,
-        "全家": 2,
-        "萊爾富": 3,
-        "OKmart": 4,
-        "美廉社": 5,
-        "星巴克": 6,
-        "路易莎": 7,
-        "cama": 8,
-    }
-
-    status_order = {
-        "active": 1,
-        "upcoming": 2,
-        "verify": 3,
-        "expired": 4,
-    }
-
-    final_deals.sort(key=lambda d: (
-        status_order.get(d.get("status"), 9),
-        store_order.get(d.get("store"), 99),
-        d.get("end_date") or "9999-12-31",
-        d.get("offer", ""),
-    ))
-
-    active_count = sum(d["status"] == "active" for d in final_deals)
-    upcoming_count = sum(d["status"] == "upcoming" for d in final_deals)
-    verify_count = sum(d["status"] == "verify" for d in final_deals)
-    expired_count = sum(d["status"] == "expired" for d in final_deals)
+    final_deals = list(unique_deals.values())
 
     data = {
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
-        "timezone": "Asia/Taipei",
         "disclaimer": (
-            "資料由公開新聞文章自動擷取，可能漏抓、重複或誤判。"
-            "日期狀態僅依文章文字推算，不代表店家官方確認。"
-            "日期不明、品牌不明或只有截止日的優惠會列為待確認。"
-            "實際優惠、適用門市、品項、價格及兌換規則，"
-            "請以店家官方公告為準。"
+            "資料由公開新聞文章自動擷取，可能漏抓或誤判。"
+            "日期狀態僅依文章文字推算，不代表店家官方確認；"
+            "日期不明或只有截止日的優惠仍需人工確認。"
+            "實際優惠、適用門市、品項及兌換規則以店家官方公告為準。"
         ),
         "count": len(final_deals),
-        "counts": {
-            "active": active_count,
-            "upcoming": upcoming_count,
-            "verify": verify_count,
-            "expired": expired_count,
-        },
-        "deals": final_deals,
+        "deals": final_deals
     }
 
     with open("deals.json", "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
 
-    print("=" * 45)
-    print("Saved", len(final_deals), "deals to deals.json")
-    print("Today:", TODAY.isoformat())
+    active_count = sum(d["status"] == "active" for d in final_deals)
+    verify_count = sum(d["status"] == "verify" for d in final_deals)
+
+    print("Saved", len(final_deals), "candidate rows to deals.json")
     print("Active:", active_count)
-    print("Upcoming:", upcoming_count)
+    expired_count = sum(d["status"] == "expired" for d in final_deals)
     print("Needs verification:", verify_count)
     print("Expired:", expired_count)
-    print("=" * 45)
-
 
 if __name__ == "__main__":
     main()
