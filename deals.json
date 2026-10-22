@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T12:59:43.965304+08:00",
+  "updated_at": "2026-10-22T13:05:52.175358+08:00",
   "today": "2026-10-22",
   "disclaimer": "資料由公開新聞文章自動擷取，可能漏抓或誤判。只有可辨識明確起訖日期且包含今天的優惠標示為有效；日期不明者請點原文確認。實際優惠依店家官方公告為準。",
   "count": 21,
@@ -15,7 +15,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -28,7 +28,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -41,7 +41,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -54,7 +54,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -132,7 +132,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -145,7 +145,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -158,7 +158,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -223,7 +223,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -236,7 +236,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -249,7 +249,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "綜合／待確認",
@@ -262,7 +262,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": false
+      "needs_check": true
     },
     {
       "store": "美廉社",
