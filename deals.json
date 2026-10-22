@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-22T05:49:08.599615+08:00",
+  "updated_at": "2026-10-22T12:57:04.139408+08:00",
   "today": "2026-10-22",
   "disclaimer": "資料由公開新聞文章自動擷取，可能漏抓或誤判。只有可辨識明確起訖日期且包含今天的優惠標示為有效；日期不明者請點原文確認。實際優惠依店家官方公告為準。",
   "count": 21,
@@ -15,10 +15,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "星巴克",
+      "store": "綜合／待確認",
       "offer": "2026/9/9~11/3，草莓巴西莓風味檸檬/椰奶/冰雪星沁爽、芒果火龍果檸檬/椰奶/冰雪星沁爽、蘋果山竹風味爆爆檸檬/椰奶星沁爽，特大杯單一價99元。",
       "status": "active",
       "start_date": "2026-09-09",
@@ -28,10 +28,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "7-ELEVEN",
+      "store": "綜合／待確認",
       "offer": "10/15~11/30大杯美式7杯組255元，大杯拿鐵7杯組310元，黑糖珍珠撞奶、珍珠奶茶7杯組315元。",
       "status": "active",
       "start_date": "2026-10-15",
@@ -41,10 +41,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "7-ELEVEN",
+      "store": "綜合／待確認",
       "offer": "10/14~10/27，大杯濃萃美式17杯500元、大杯濃萃拿鐵17杯700元、特大杯厚乳拿鐵17杯850元。",
       "status": "active",
       "start_date": "2026-10-14",
@@ -54,7 +54,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
       "store": "綜合／待確認",
@@ -70,7 +70,7 @@
       "needs_check": true
     },
     {
-      "store": "全家",
+      "store": "綜合／待確認",
       "offer": "10/19-10/21，蘭韻梨山烏龍茶特價39元、黑糖QQ鮮露紅茶/焙韻隱山烏龍茶任選2杯59元、冰磚拿鐵特價49元。",
       "status": "expired",
       "start_date": "2026-10-19",
@@ -83,7 +83,7 @@
       "needs_check": true
     },
     {
-      "store": "全家",
+      "store": "綜合／待確認",
       "offer": "10/19-10/21，冰冰仙草蜜/燒燒仙草任選、單品美式/拿鐵同品項、霜淇淋系列任選、酷繽果系列任選買1送1。",
       "status": "expired",
       "start_date": "2026-10-19",
@@ -96,7 +96,7 @@
       "needs_check": true
     },
     {
-      "store": "全家",
+      "store": "綜合／待確認",
       "offer": "即日起 ~ 115/11/10，Let's Tea任選第二杯8折。商品依店舖實際供應為準，數量有限，售完為止。",
       "status": "verify",
       "start_date": "",
@@ -109,7 +109,7 @@
       "needs_check": true
     },
     {
-      "store": "全家",
+      "store": "綜合／待確認",
       "offer": "Fami!ce Fami！奶昔買1送1。Let’s Café／Let’s Tea指定飲品任選3杯 159元、任選6杯 269元。",
       "status": "verify",
       "start_date": "",
@@ -122,7 +122,7 @@
       "needs_check": true
     },
     {
-      "store": "全家",
+      "store": "綜合／待確認",
       "offer": "10/14-11/10抹茶歐蕾、焙茶歐蕾任選買1送1。",
       "status": "active",
       "start_date": "2026-10-14",
@@ -132,10 +132,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "10/14～11/10大杯特濃美式/大杯特濃拿鐵同品項買30送30。",
       "status": "active",
       "start_date": "2026-10-14",
@@ -145,10 +145,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "10/16～10/31大杯特濃美式/拿鐵同品項買30送30。",
       "status": "active",
       "start_date": "2026-10-16",
@@ -158,10 +158,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "即日起～11/10，大杯拿鐵6杯280元、55杯2255元、80杯3080元。",
       "status": "verify",
       "start_date": "",
@@ -174,7 +174,7 @@
       "needs_check": true
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "即日起～11/10，大杯特濃拿鐵6杯330元、55杯2690元、80杯3640元。",
       "status": "verify",
       "start_date": "",
@@ -187,7 +187,7 @@
       "needs_check": true
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "即日起～11/10，大杯美式6杯230元、55杯1850元、80杯2520元。",
       "status": "verify",
       "start_date": "",
@@ -200,7 +200,7 @@
       "needs_check": true
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "即日起～11/10，大杯特濃美式6杯280元、55杯2255元、80杯3100元。",
       "status": "verify",
       "start_date": "",
@@ -213,7 +213,7 @@
       "needs_check": true
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "10/14－11/10，抹茶歐蕾（中杯）、焙茶歐蕾（中杯）任選買1送1。",
       "status": "active",
       "start_date": "2026-10-14",
@@ -223,10 +223,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "萊爾富",
+      "store": "綜合／待確認",
       "offer": "7/23~12/31，極淬莊園美式/拿鐵大杯買10送10。",
       "status": "active",
       "start_date": "2026-07-23",
@@ -236,10 +236,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "OKmart",
+      "store": "綜合／待確認",
       "offer": "7/23~12/31，大杯莊園美式/拿鐵大杯買10送10。",
       "status": "active",
       "start_date": "2026-07-23",
@@ -249,10 +249,10 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
-      "store": "OKmart",
+      "store": "綜合／待確認",
       "offer": "7/23~12/31，特大杯莊園美式/拿鐵大杯買10送10。",
       "status": "active",
       "start_date": "2026-07-23",
@@ -262,7 +262,7 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "published": "",
       "source": "新聞文章自動擷取",
-      "needs_check": true
+      "needs_check": false
     },
     {
       "store": "美廉社",
