@@ -199,6 +199,7 @@ def is_coffee_related(text):
 
 
 
+
 def extract(article, url, title, lines):
     results = []
     full_text = " ".join(lines)
@@ -240,9 +241,7 @@ def extract(article, url, title, lines):
             current_store = heading_map[heading_line]
             continue
 
-        # 把文章開頭的全家、萊爾富優惠分開處理
-        candidate_lines = [line]
-
+        # 將文章開頭同時提到全家與萊爾富的優惠分開
         if "全家推出" in line and "萊爾富則" in line:
             parts = line.split("萊爾富則", 1)
 
@@ -269,15 +268,20 @@ def extract(article, url, title, lines):
         else:
             candidate_lines = [(current_store, line)]
 
-               for heading_store, offer_line in candidate_lines:
+        # 逐筆處理優惠
+        for heading_store, offer_line in candidate_lines:
 
-                      # 全家咖啡日活動只保留第一筆描述，不限定星期幾
+            # 全家咖啡日只保留第一筆描述，不限定星期幾
             if (
                 heading_store == "全家"
-                and re.search(r"週[一二三四五六日天]咖啡日|咖啡日", offer_line)
+                and re.search(
+                    r"週[一二三四五六日天]咖啡日|咖啡日",
+                    offer_line
+                )
             ):
                 if seen_family_coffee_day:
                     continue
+
                 seen_family_coffee_day = True
 
             if not OFFER_RE.search(offer_line):
@@ -307,10 +311,11 @@ def extract(article, url, title, lines):
 
             detected_store = get_store(offer_line)
 
-            # 優先使用原文品牌標題；若優惠本身明確標示另一品牌，
-            # 則採用優惠文字中的品牌辨識結果
+            # 優先採用文章品牌標題；
+            # 若優惠文字明確指出另一品牌，則採用文字中的品牌
             if heading_store:
                 store = heading_store
+
                 if detected_store != "綜合／待確認":
                     store = detected_store
             else:
