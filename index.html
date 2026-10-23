@@ -238,32 +238,40 @@ async function loadCoffeeDeals() {
       box.appendChild(card);
     });
 
-    function addGroup(title, items, emptyText) {
-      const heading = makeEl('h3', '', `${title}（${items.length}）`);
-      heading.style.margin = '18px 0 8px';
-      box.appendChild(heading);
+    function addGroup(title, items, emptyText, collapsed = false) {
+      // details 讓大量待確認/過期資料預設收合，不刪除 JSON 裡的紀錄。
+      const details = document.createElement('details');
+      details.className = 'deal-group';
+      details.open = !collapsed;
+      details.style.margin = '18px 0 8px';
+      const summary = document.createElement('summary');
+      summary.textContent = `${title}（${items.length}）`;
+      summary.style.cursor = 'pointer';
+      summary.style.fontWeight = '700';
+      summary.style.padding = '10px 0';
+      details.appendChild(summary);
+      box.appendChild(details);
 
       if (!items.length) {
-        box.appendChild(makeEl('p', '', emptyText));
+        details.appendChild(makeEl('p', '', emptyText));
         return;
       }
 
-      items.slice(0, 10).forEach(d => {
+      items.forEach(d => {
         const name = `${d.store || '店家待確認'}｜${d.offer || d.article_title || '優惠詳情'}`;
         const card = makeLink(d.article_url, name);
         const dates = d.date_text ||
           (d.start_date && d.end_date
             ? `${d.start_date} ～ ${d.end_date}`
             : '活動日期尚未確認');
-
         card.appendChild(makeEl('div', 'card-bottom', dates));
-        box.appendChild(card);
+        details.appendChild(card);
       });
     }
 
-    addGroup('🟡 日期待確認', verify, '目前沒有待確認項目。');
-    addGroup('🗓️ 尚未開始', upcoming, '目前沒有尚未開始的項目。');
-    addGroup('⏰ 已過期／不再有效', expired, '目前沒有已過期項目。');
+    addGroup('🟡 日期待確認', verify, '目前沒有待確認項目。', true);
+    addGroup('🗓️ 尚未開始', upcoming, '目前沒有尚未開始的項目。', true);
+    addGroup('⏰ 已過期／不再有效', expired, '目前沒有已過期項目。', true);
 
     box.appendChild(makeEl(
       'p', 'notice',
