@@ -17,6 +17,7 @@ button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}
 main{max-width:850px;margin:auto}.section{padding:0 15px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:22px 0 11px}.section-heading h2{font-size:16px;margin:0;font-weight:850}.section-heading p{font-size:11px;color:var(--muted);margin:4px 0 0}
 .portals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.portal{min-height:91px;background:var(--paper);border:1px solid var(--line);border-radius:15px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;padding:10px 5px;box-shadow:0 2px 5px #3c251009}.portal .emoji{font-size:24px}.portal strong{font-size:12px}.portal span:last-child{font-size:10px;color:var(--muted)}
 .quick-links{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.quick-links::-webkit-scrollbar{display:none}.quick{flex:0 0 auto;border:1px solid var(--line);background:#fffaf6;color:var(--coffee);border-radius:99px;padding:9px 12px;text-decoration:none;font-size:12px;font-weight:750}
+.brand-nav{display:flex;gap:7px;overflow-x:auto;padding:8px 0 4px;margin:8px 0 4px;scrollbar-width:none}.brand-nav::-webkit-scrollbar{display:none}.brand-chip{flex:0 0 auto;border:1px solid var(--line);background:#fffaf6;color:var(--coffee);border-radius:99px;padding:7px 11px;text-decoration:none;font-size:11px;font-weight:800;white-space:nowrap}.brand-heading{scroll-margin-top:180px}
 .filter-bar{display:flex;gap:7px;overflow-x:auto;white-space:nowrap;padding:2px 0 5px;scrollbar-width:none}.filter{border:0;background:#eadbce;color:#5c4436;border-radius:99px;padding:9px 13px;font-size:12px;font-weight:800}.filter.active{background:var(--coffee);color:#fff}
 .results-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:17px 0 10px}.results-head h2{font-size:17px;margin:0}.count{font-size:11px;color:var(--muted)}
 .refresh{border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--coffee);padding:7px 10px;font-size:12px;font-weight:800}
@@ -93,7 +94,7 @@ main{max-width:850px;margin:auto}.section{padding:0 15px}.section-heading{displa
   <div class="notice">資料說明：本站會嘗試透過公開新聞 RSS 與免費轉換服務讀取搜尋結果；若服務無法連線，會提供 Google 新聞、Google、PTT 與 Dcard 的替代搜尋連結。本站不是直接爬取所有 PTT／Dcard 貼文。標題出現優惠關鍵字不代表活動仍有效，使用前請確認原文、期限、門市與適用條件。</div>
  </section>
 </main>
-<div class="footer">省咖啡・個人使用版｜免費前端原型<br>不保證涵蓋全網優惠，也不代表品牌官方立場。</div>
+<div class="footer">省咖啡・個人使用版｜免費前端原型<br>優惠清洗與去重由後端爬蟲負責，網頁只展示 deals.json。<br>不保證涵蓋全網優惠，也不代表品牌官方立場。</div>
 <script>
 
 const $ = s => document.querySelector(s);
@@ -142,421 +143,57 @@ function makeLink(url, title) {
   return a;
 }
 
-// 把文字中的編輯補充與品牌前綴移除，只保留產品／優惠條件供前端去重。
-function normalizeDealCore(value) {
-  let text = String(value || '').toLowerCase().replace(/let’s/g, "let's");
-  text = text.replace(/(?:20\d{2}|1\d{2})?\s*\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?\s*(?:至|到|～|~|－|—|–|-)?\s*(?:(?:20\d{2}|1\d{2})?\s*\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?)?/g, ' ');
-  text = text.replace(/[（(][^）)]*(?:原價|平均(?:每杯)?|限量\s*[\d,]|每會員限購|依原文|原文註明|待確認|請查原文)[^）)]*[）)]/g, ' ');
-  text = text.replace(/平均(?:每杯)?(?:約|不到)?\s*\d+(?:\.\d+)?\s*元?\s*(?:／\s*杯|\/\s*杯|每杯)?/g, ' ');
-  text = text.replace(/每杯(?:約|平均)?\s*\d+(?:\.\d+)?\s*元/g, ' ');
-  text = text.replace(/原價\s*[\d,]+\s*元/g, ' ');
-  text = text.replace(/限量\s*[\d,]*\s*(?:萬)?組|每會員限購\s*\d+\s*組/g, ' ');
-  text = text.replace(/商品依店舖實際供應為準|數量有限|售完為止|原文註明|依文章標題|依原文/g, ' ');
-  for (const [from, to] of [['十','10'],['一','1'],['二','2'],['三','3'],['四','4'],['五','5'],['六','6'],['七','7'],['八','8'],['九','9'],['零','0']]) {
-    text = text.split(from).join(to);
-  }
-  text = text.replace(/city\s*tea|let's\s*tea/gi, ' 茶品 ');
-  text = text.replace(/city\s*caf[eé]|let's\s*caf[eé]/gi, ' 咖啡品項 ');
-  text = text.replace(/7\s*[-－]?\s*(?:eleven|11)|city\s*pearl|city\s*prima|openpoint|hi\s*[- ]?life|hi\s*caf[eé]|showba\s*caf[eé]/gi, ' ');
-  text = text.replace(/特大(?!杯)/g, '特大杯').replace(/特大杯/g, 'ZZSUPER_CUPZZ').replace(/大杯/g, ' ').replace(/ZZSUPER_CUPZZ/g, '特大杯');
-  text = text.replace(/咖啡優惠(?:懶人包)?|優惠情報/g, ' ').replace(/杯組/g, '杯').replace(/[圖照片圖片]\s*[／/]\s*[^，。；]*/g, ' ');
-  return text.replace(/[\s，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]/g, '');
-}
-
-function productSignature(core) {
-  const terms = [
-    '咖啡珍珠歐蕾','珍珠奶茶','珍珠撞奶','珍珠歐蕾','香椰厚拿鐵','厚濃抹茶拿鐵',
-    '燕麥拿鐵','重乳拿鐵','濃萃美式','特濃美式','特濃拿鐵','檸檬青茶','檸檬紅茶',
-    '青梅冰茶','冰淇淋紅茶','黃金蕎麥奶茶','蕎麥奶茶','水果茶','果昔','霜淇淋',
-    '瑪奇朵','拿鐵','美式','抹茶','珍珠','紅茶','綠茶','青茶','奶茶','歐蕾','可可','冰沙','蕎麥茶','星沁爽','星巴克','starbucks','路易莎','louisa','cama','丹堤','怡客','85°c'
-  ];
-  let found = terms.filter(t => core.includes(t));
-  if (!found.length) {
-    if (core.includes('咖啡')) found = ['咖啡'];
-    else if (/(茶|茶品|tea)/i.test(core)) found = ['茶'];
-    else if (/咖啡品項|coffee/i.test(core)) found = ['咖啡'];
-  } else {
-    found = found.filter(t => !['咖啡','茶'].includes(t));
-  }
-  const modifiers = ['燕麥','重乳','特濃','濃萃','精品','厚乳','椰奶','特大杯'].filter(t => core.includes(t));
-  return [...new Set([...found, ...modifiers])].sort().join('+') || 'unknown-product';
-}
-
-function productIdentity(value) {
-  let text = normalizeDealCore(value).replace(/特大(?!杯)/g, '特大杯')
-    .replace(/[\s，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]/g, '');
-  const terms = [
-    '咖啡珍珠歐蕾','厚濃抹茶拿鐵','香椰厚拿鐵','黃金蕎麥奶茶','冰淇淋紅茶',
-    '珍珠奶茶','珍珠撞奶','珍珠歐蕾','燕麥拿鐵','重乳拿鐵','濃萃美式',
-    '特濃美式','特濃拿鐵','檸檬青茶','檸檬紅茶','青梅冰茶','蕎麥奶茶',
-    '水果茶','瑪奇朵','霜淇淋','蕎麥茶','星沁爽','美式','拿鐵','抹茶',
-    '珍珠','紅茶','綠茶','青茶','奶茶','歐蕾','可可','冰沙','咖啡','茶品','茶'
-  ];
-  const hits = [];
-  const occupied = [];
-  for (const term of [...terms].sort((a,b) => b.length - a.length)) {
-    let from = 0;
-    while (true) {
-      const idx = text.indexOf(term, from);
-      if (idx < 0) break;
-      const end = idx + term.length;
-      if (!occupied.some(([a,b]) => idx < b && end > a)) {
-        hits.push(term);
-        occupied.push([idx,end]);
-      }
-      from = idx + 1;
-    }
-  }
-  let products = new Set(hits);
-  if ([...products].some(x => !['咖啡','茶','茶品'].includes(x))) {
-    products = new Set([...products].filter(x => !['咖啡','茶','茶品'].includes(x)));
-  }
-  const modifiers = new Set(['特大杯','特濃','濃萃','燕麥','重乳','精品','厚乳','椰奶','特選','厚濃'].filter(x => text.includes(x)));
-  return { products, modifiers };
-}
-
-function productsCompatible(a, b) {
-  const pa = productIdentity(a), pb = productIdentity(b);
-  if (!pa.products.size || !pb.products.size) return false;
-  if (pa.modifiers.size !== pb.modifiers.size || [...pa.modifiers].some(x => !pb.modifiers.has(x))) return false;
-  return [...pa.products].some(x => pb.products.has(x));
-}
-
-// 使用者已確認「3 杯 77 元」為誤植：全站優惠卡片與新擷取資料都排除這組條件，
-// 不會排除「2 杯 77 元」或其他價格。
-function isBlacklistedPromotion(value) {
-  return /(?:^|[^\d])3\s*杯(?:組)?\s*77\s*元/i.test(String(value || ''));
-}
-
-function primaryPromotionMatches(value) {
-  const pattern = /買\s*[一二三四五六七八九十\d]+\s*送\s*[一二三四五六七八九十\d]+|第\s*[二2]\s*杯\s*[\d.]+\s*(?:元|折)|第\s*[二2]\s*件\s*[\d.]+\s*折|(?<!\d)\d+\s*杯(?:組)?[^，,、；;。\n]{0,22}?[\d,]+\s*元|(?<!\d)\d+\s*(?:支|隻|件)\s*[^，,、；;。\n]{0,16}?[\d,]+\s*元/gi;
-  const matches = [];
-  for (const m of String(value || '').matchAll(pattern)) {
-    const fragment = m[0];
-    if (/平均|每杯約|原價|特價|折數/.test(fragment)) continue;
-    matches.push({start:m.index, end:m.index+fragment.length, fragment, sig:fragment.replace(/[\s,]/g,'').toLowerCase()});
-  }
-  return matches;
-}
-
-function splitMultiplePromotions(value) {
-  const original = String(value || '').trim();
-  const allMatches = primaryPromotionMatches(original);
-  const hasBlacklisted = allMatches.some(x => isBlacklistedPromotion(x.fragment));
-  const matches = allMatches.filter(x => !isBlacklistedPromotion(x.fragment));
-  if (!matches.length) return hasBlacklisted ? [] : [original];
-  if (new Set(matches.map(x => x.sig)).size < 2 && !hasBlacklisted) return [original];
-  const productRe = /咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|冰沙|果昔|霜淇淋|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|茶品|\btea\b/i;
-  const output = [];
-  let previousContext = '';
-  let previousEnd = null;
-  for (const match of matches) {
-    const before = original.slice(0, match.start);
-    const separators = ['，', ',', '、', '；', ';', '。'];
-    let lastSep = -1;
-    for (const sep of separators) lastSep = Math.max(lastSep, before.lastIndexOf(sep));
-    let context = before.slice(lastSep + 1).trim();
-    const between = previousEnd === null ? '' : original.slice(previousEnd, match.start);
-    if (!productRe.test(context)) {
-      if (previousContext && /^\s*、\s*$/.test(between)) context = previousContext;
-      else continue;
-    } else if (previousContext && /^\s*、\s*$/.test(between)) {
-      for (const size of ['特大杯','大杯']) {
-        if (previousContext.includes(size) && !context.includes(size)) { context = size + context; break; }
-      }
-    }
-    context = context.replace(/^(?:其中|另外|此外|活動期間|期間|推出|還有|可享|則是)+\s*/,'')
-      .replace(/(?:可享|享有|推出|優惠價為|只要|則是|等於|活動期間)$/,'').replace(/^[ ：:,，]+|[ ：:,，]+$/g,'').trim();
-    if (!productRe.test(context)) continue;
-    previousContext = context;
-    previousEnd = match.end;
-    output.push((context + ' ' + match.fragment).replace(/\s+/g,' ').trim());
-  }
-  if (hasBlacklisted) return [...new Set(output)];
-  return output.length >= 2 ? [...new Set(output)] : [original];
-}
-
-function explicitDealStore(offer) {
-  const text = String(offer || '');
-  const patterns = [
-    ['7-ELEVEN', /CITY\s*(?:CAFE|TEA|PEARL|PRIMA)|OPENPOINT|7\s*[-－]?\s*(?:ELEVEN|11)/i],
-    ['全家', /全家|Let['’]?s\s*(?:Caf[eé]|Tea)|Fami!?ce/i],
-    ['萊爾富', /萊爾富|Hi\s*[- ]?Life|Hi\s*Cafe/i],
-    ['OKmart', /OKmart|OK\s*超商|OKCAFE/i],
-    ['美廉社', /美廉社/i],
-    ['小北百貨', /小北百貨|SHOWBA/i],
-    ['星巴克', /星巴克|Starbucks/i],
-    ['路易莎', /路易莎|LOUISA/i],
-    ['85°C', /85\s*°?\s*C/i],
-    ['cama', /\bcama\b/i]
-  ];
-  const found = patterns.filter(([,re]) => re.test(text)).map(([name]) => name);
-  return [...new Set(found)].length === 1 ? found[0] : '';
-}
-
-function dealTitleStores(title) {
-  const text = String(title || '');
-  const patterns = [
-    ['7-ELEVEN', /7\s*[-－]?\s*(?:ELEVEN|11)|CITY\s*CAFE|OPENPOINT/i],
-    ['全家', /全家|Let['’]?s\s*(?:Caf[eé]|Tea)|Fami!?ce/i],
-    ['萊爾富', /萊爾富|Hi\s*[- ]?Life|Hi\s*Cafe/i],
-    ['OKmart', /OKmart|OK\s*超商|OKCAFE/i],
-    ['美廉社', /美廉社/i],
-    ['小北百貨', /小北百貨|SHOWBA/i],
-    ['星巴克', /星巴克|Starbucks/i],
-    ['路易莎', /路易莎|LOUISA/i],
-    ['85°C', /85\s*°?\s*C/i],
-    ['cama', /\bcama\b/i]
-  ];
-  return [...new Set(patterns.filter(([,re])=>re.test(text)).map(([name])=>name))];
-}
-
-function sharesSource(a,b) {
-  const ua = new Set([...(a.source_urls || []), a.article_url].filter(Boolean).map(canonicalArticleUrl));
-  const ub = new Set([...(b.source_urls || []), b.article_url].filter(Boolean).map(canonicalArticleUrl));
-  return [...ua].some(x => x && ub.has(x));
-}
-
-function dateRangesOverlap(a,b) {
-  const as=String(a.start_date||''), ae=String(a.end_date||''), bs=String(b.start_date||''), be=String(b.end_date||'');
-  return /^\d{4}-\d{2}-\d{2}$/.test(as) && /^\d{4}-\d{2}-\d{2}$/.test(ae) && /^\d{4}-\d{2}-\d{2}$/.test(bs) && /^\d{4}-\d{2}-\d{2}$/.test(be) && as <= be && bs <= ae && as <= be && bs <= ae;
-}
-
-function preferDateRecord(candidate,current) {
-  const cs=String(candidate.start_date||''), ce=String(candidate.end_date||''), os=String(current.start_date||''), oe=String(current.end_date||'');
-  const cv=/^\d{4}-\d{2}-\d{2}$/.test(cs)&&/^\d{4}-\d{2}-\d{2}$/.test(ce);
-  const ov=/^\d{4}-\d{2}-\d{2}$/.test(os)&&/^\d{4}-\d{2}-\d{2}$/.test(oe);
-  if(cv&&!ov)return true; if(ov&&!cv)return false; if(!cv||!ov)return Boolean(cs&&ce)&&!(os&&oe);
-  const ca=cs<=todayISO&&todayISO<=ce, oa=os<=todayISO&&todayISO<=oe;
-  if(ca!==oa)return ca;
-  return cs>os;
-}
-
-function promotionSignature(core) {
-  const patterns = [
-    ['buy-send', /買\s*(\d+)\s*送\s*(\d+)/g],
-    ['second-cup', /第\s*2\s*杯\s*(\d+)\s*(元|折)/g],
-    ['second-item', /第\s*2\s*件\s*(\d+)\s*折/g],
-    ['cup-price', /(\d+)\s*杯.{0,30}?([\d,]+)\s*元/g],
-    ['unit-price', /(\d+)\s*(?:支|隻)\s*([\d,]+)\s*元/g],
-    ['item-price', /(\d+)\s*件\s*([\d,]+)\s*元/g],
-    ['single-price', /單杯\s*([\d,]+)\s*元/g]
-  ];
-  const matches = [];
-  for (const [label, pattern] of patterns) {
-    for (const match of core.matchAll(pattern)) {
-      matches.push(label + ':' + match.slice(1).map(x => String(x).replace(/,/g, '')).join(':'));
-    }
-  }
-  if (matches.length) return [...new Set(matches)].sort().join(';');
-  const discounts = [...new Set([...core.matchAll(/(?<!\d)(\d+(?:\.\d+)?)\s*折/g)].map(m => m[1]))].sort();
-  if (discounts.length) return 'discount:' + discounts.join(',');
-  return 'text:' + core;
-}
-
-function validDealRecord(deal) {
-  const text = String(deal.offer || '').trim();
-  if (!text || isBlacklistedPromotion(text)) return false;
-  // 避免把新聞心得／導言當成另一筆優惠卡片。
-  if (text.length > 55 && /^(如果|不想一次|每天喝咖啡|固定喝|單看每杯價格|全家則從|萊爾富則|其中最便宜|這次另外|這波|不需要先|希望|超商咖啡寄杯買\s*30\s*送\s*30)/i.test(text)) return false;
-  // 未成功拆開的跨店新聞句不能當成單店優惠，例如同時寫全家霜淇淋與萊爾富咖啡。
-  if (dealTitleStores(text).length >= 2) return false;
-  if ((text.includes('【延伸閱讀】') || text.includes('■ 活動時間')) && (text.length > 65 || text.includes('活動時間'))) return false;
-  if (/咖啡.{0,12}買\s*30\s*送\s*30/.test(text) && !/美式|拿鐵|拿堤|特濃|濃萃|燕麥|重乳/.test(text)) return false;
-  const compact = text.replace(/\s/g, '').replace(/[（(].*[）)]/g, '');
-  if (/^\d+杯(?:組)?[\d,]+元$/.test(compact)) return false;
-  const hasProduct = /咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|冰沙|果昔|霜淇淋|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|茶品|\btea\b|咖啡品項|星巴克|starbucks|路易莎|louisa|cama|丹堤|怡客|85°c/i.test(text);
-  const hasPromotion = /買\s*[一1二2三3四五六七八九十\d]+\s*送|第\s*[二2]\s*杯|任選\s*\d+\s*杯|寄杯|折扣|打\s*\d+(?:\.\d+)?\s*折|\d+(?:\.\d+)?\s*折|優惠價|組合價|現折|折價|均一價|單杯\s*\d+\s*元|\d+\s*杯.{0,30}?[\d,]+\s*元|\d+\s*(?:支|隻)\s*[\d,]+\s*元|\d+\s*件\s*[\d,]+\s*元|咖啡.{0,30}\d+\s*元|免費|咖啡日/i.test(text);
-  if (!hasProduct || !hasPromotion) return false;
-  if (text.length > 650 && !/\d+\s*杯\s*[\d,]+\s*元|買\s*\d+\s*送\s*\d+|第\s*[二2]\s*杯/.test(text)) return false;
-  return true;
-}
-
-function datesCompatible(a, b) {
-  for (const field of ['start_date','end_date']) {
-    const x = String(a[field] || '').trim();
-    const y = String(b[field] || '').trim();
-    if (x && y && x !== y) return false;
-  }
-  return true;
-}
-
-function offerQuality(value) {
-  const text = String(value || '').trim();
-  const spec = productIdentity(text);
-  const core = normalizeDealCore(text);
-  const structured = /買\s*[一二三四五六七八九十\d]+\s*送|第\s*[二2]\s*杯|\d+\s*杯.{0,25}?[\d,]+\s*元|單杯\s*\d+\s*元/.test(core) ? 1 : 0;
-  // 分數偏好短而完整的優惠文字，不再讓長篇新聞導言勝過短標籤。
-  return structured * 100 - spec.products.size * 10 + spec.modifiers.size * 3 - Math.min(text.length, 600) / 5;
-}
-
-function calculatedStatus(deal) {
-  const start = String(deal.start_date || '');
-  const end = String(deal.end_date || '');
-  if (/^\d{4}-\d{2}-\d{2}$/.test(end) && end < todayISO) return 'expired';
-  if (/^\d{4}-\d{2}-\d{2}$/.test(start) && start > todayISO) return 'upcoming';
-  if (/^\d{4}-\d{2}-\d{2}$/.test(start) && /^\d{4}-\d{2}-\d{2}$/.test(end) && start <= todayISO && todayISO <= end) return 'active';
-  return 'verify';
-}
-
-function inferredDealStore(deal) {
-  const stored = String(deal.store || '').trim();
-  const unknown = ['', '品牌待確認', '店家待確認', '未知品牌'];
-  const t = String(deal.offer || '');
-  if (/CITY\s*(?:CAFE|TEA|PEARL|PRIMA)|OPENPOINT|7\s*[-－]?\s*(?:ELEVEN|11)/i.test(t)) return '7-ELEVEN';
-  if (/全家|Let['’]?s\s*(?:Caf[eé]|Tea)|Fami!?ce/i.test(t)) return '全家';
-  if (/萊爾富|Hi\s*[- ]?Life|Hi\s*Cafe/i.test(t)) return '萊爾富';
-  if (/OKmart|OK\s*超商|OKCAFE/i.test(t)) return 'OKmart';
-  if (/美廉社/.test(t)) return '美廉社';
-  if (/小北百貨|SHOWBA/i.test(t)) return '小北百貨';
-  if (/星巴克|Starbucks/i.test(t)) return '星巴克';
-  if (/路易莎|LOUISA/i.test(t)) return '路易莎';
-  if (/85\s*°?\s*C/i.test(t)) return '85°C';
-  if (/\bcama\b/i.test(t)) return 'cama';
-  if (!unknown.includes(stored)) return stored;
-  return stored || '品牌待確認';
-}
-
-function splitCombinedOffer(value) {
-  const text = String(value || '').trim();
-  // 先保護千分位逗號，避免「2,000 元」被錯拆成兩段。
-  const protectedText = text.replace(/(\d),(?=\d{3}(?:\D|$))/g, '$1\uE000');
-  const parts = protectedText.split(/[，,、；;。]+/).map(x => x.replace(/\uE000/g, ',').trim()).filter(Boolean);
-  const productRe = /咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|冰沙|果昔|霜淇淋|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|茶品|\btea\b|星巴克|starbucks|路易莎|louisa|cama|丹堤|怡客|85°c/i;
-  const promoRe = /買\s*[一1二2三3四五六七八九十\d]+\s*送|第\s*[二2]\s*杯|任選\s*\d+\s*杯|寄杯|折扣|打\s*\d+(?:\.\d+)?\s*折|\d+(?:\.\d+)?\s*折|優惠價|組合價|現折|折價|均一價|單杯\s*\d+\s*元|\d+\s*杯.{0,30}?[\d,]+\s*元|\d+\s*(?:支|隻)\s*[\d,]+\s*元|\d+\s*件\s*[\d,]+\s*元|咖啡.{0,30}\d+\s*元|免費|咖啡日/i;
-  const valid = parts.filter(x => x.length >= 8 && x.length <= 320 && productRe.test(x) && promoRe.test(x));
-  return valid.length >= 2 ? valid : [text];
-}
-
-function bulkRecordsCompatible(a, b) {
-  const promoA = promotionSignature(normalizeDealCore(a.offer));
-  const promoB = promotionSignature(normalizeDealCore(b.offer));
-  if (promoA !== promoB || (!datesCompatible(a, b) && !dateRangesOverlap(a, b))) return false;
-  const m = promoA.match(/^cup-price:(\d+):(\d+)$/);
-  if (!m || Number(m[1]) < 50) return false;
-  const ta = String(a.offer || ''), tb = String(b.offer || '');
-  if (!['美式','拿鐵','珍珠奶茶','珍珠撞奶'].some(term => ta.includes(term) && tb.includes(term))) return false;
-  const pa = productIdentity(ta), pb = productIdentity(tb);
-  const sizeKeys = new Set(['特大杯','大杯','中杯']);
-  const sa = [...pa.modifiers].filter(x => sizeKeys.has(x));
-  const sb = [...pb.modifiers].filter(x => sizeKeys.has(x));
-  return !(sa.length && sb.length && sa[0] !== sb[0]);
-}
-
-function dedupeDealRecords(items) {
-  const groups = [];
-  const unknown = new Set(['', '品牌待確認', '店家待確認', '未知品牌']);
-  const expanded = [];
-
-  for (const raw of items) {
-    if (!raw || typeof raw !== 'object' || !raw.offer) continue;
-    const parts = [];
-    for (const part of splitCombinedOffer(raw.offer)) parts.push(...splitMultiplePromotions(part));
-    for (const offer of [...new Set(parts)]) {
-      if (!offer || isBlacklistedPromotion(offer)) continue;
-      const item = {...raw, offer};
-      item.article_title = String(item.article_title || '')
-        .replace(/7\s*[-－]?\s*(?:11|eleven)\s*3\s*杯(?:組)?\s*77\s*元[，、,：:]?\s*/ig, '')
-        .replace(/(?:^|[^\d])3\s*杯(?:組)?\s*77\s*元[，、,：:]?\s*/ig, ' ')
-        .replace(/\s+/g, ' ').trim();
-      const explicit = explicitDealStore(offer);
-      const titleStores = dealTitleStores(item.article_title);
-      item._storeExplicit = Boolean(explicit) || titleStores.length === 1;
-      if (explicit) item.store = explicit;
-      else if (unknown.has(String(item.store || '').trim()) && titleStores.length === 1) item.store = titleStores[0];
-      item.store = String(item.store || '品牌待確認').trim();
-
-      // 修正舊版中天跨店文章的品牌殘留：下列原本就是人工保底的「品牌待確認」項目。
-      const sourceUrls = [...(item.source_urls || []), item.article_url || ''].map(canonicalArticleUrl);
-      const isCti = sourceUrls.includes(canonicalArticleUrl('https://ctinews.com/news/items/bKxrXQKYW9'));
-      if (isCti && !explicit && /(?:大杯美式\s*7\s*杯(?:組)?\s*255\s*元|大杯拿鐵\s*7\s*杯(?:組)?\s*310\s*元|珍珠奶茶\s*7\s*杯(?:組)?\s*315\s*元|CAFE\s*RESERVE)/i.test(offer)) {
-        item.store = '品牌待確認';
-        item._storeExplicit = false;
-      }
-      if (isRelatedDeal(item)) item.category = 'related';
-      expanded.push(item);
-    }
-  }
-
-  // 僅能根據另一筆優惠文字中明確寫出的品牌修正舊標籤；不可只靠新聞標題猜店家。
-  for (const item of expanded) {
-    if (explicitDealStore(item.offer)) continue;
-    const candidateStores = new Set();
-    for (const other of expanded) {
-      if (other === item) continue;
-      const brand = explicitDealStore(other.offer);
-      if (!brand) continue;
-      const sameSource = sharesSource(item, other);
-      const sameOffer = promotionSignature(normalizeDealCore(item.offer)) === promotionSignature(normalizeDealCore(other.offer));
-      if (!sameOffer || (!sameSource && !bulkRecordsCompatible(item, other))) continue;
-      if (!datesCompatible(item, other) && !dateRangesOverlap(item, other)) continue;
-      const a = String(item.offer || ''), b = String(other.offer || '');
-      if (!['美式','拿鐵','珍珠奶茶','珍珠撞奶','抹茶拿鐵','紅茶','青茶','水果茶'].some(term => a.includes(term) && b.includes(term))) continue;
-      candidateStores.add(brand);
-    }
-    if (candidateStores.size === 1) item.store = [...candidateStores][0];
-  }
-
-  for (const raw of expanded) {
-    if (!validDealRecord(raw)) continue;
-    const item = {...raw};
-    delete item._storeExplicit;
-    item.article_url = canonicalArticleUrl(item.article_url || '');
-    const urls = [...new Set([...(item.source_urls || []), item.article_url].map(canonicalArticleUrl).filter(Boolean))];
-    item.source_urls = urls;
-    const store = item.store || '品牌待確認';
-    const promo = promotionSignature(normalizeDealCore(item.offer));
-    const candidates = [];
-
-    for (const old of groups) {
-      // 不再把「品牌待確認」當成萬用品牌，避免同樣價格跨店錯誤合併。
-      if ((old.store || '品牌待確認') !== store) continue;
-      if (promotionSignature(normalizeDealCore(old.offer)) !== promo) continue;
-      if (!productsCompatible(old.offer, item.offer)) continue;
-      if (!datesCompatible(old,item) && !dateRangesOverlap(old,item)) continue;
-      candidates.push(old);
-    }
-
-    if (!candidates.length) {
-      item.status = calculatedStatus(item);
-      groups.push(item);
-      continue;
-    }
-
-    const match = candidates[0];
-    for (const duplicate of candidates.slice(1)) {
-      match.source_urls = [...new Set([...(match.source_urls||[]), ...(duplicate.source_urls||[]), match.article_url, duplicate.article_url].filter(Boolean))];
-      if (offerQuality(duplicate.offer) > offerQuality(match.offer)) match.offer = duplicate.offer;
-      if (dateRangesOverlap(match,duplicate) && preferDateRecord(duplicate,match)) {
-        for (const field of ['start_date','end_date','date_text']) match[field] = duplicate[field] || match[field] || '';
-      }
-      groups.splice(groups.indexOf(duplicate),1);
-    }
-
-    match.source_urls = [...new Set([...(match.source_urls||[]), ...(item.source_urls||[]), match.article_url, item.article_url].filter(Boolean))];
-    if (dateRangesOverlap(match,item) && preferDateRecord(item,match)) {
-      for (const field of ['start_date','end_date','date_text']) match[field] = item[field] || match[field] || '';
-    }
-    if (offerQuality(item.offer) > offerQuality(match.offer)) {
-      match.offer = item.offer;
-      for (const field of ['article_url','article_title','published']) if(item[field]) match[field]=item[field];
-    }
-    for (const field of ['article_title','published']) if(!match[field] && item[field]) match[field]=item[field];
-    if ((!match.date_text || match.date_text === '活動日期尚待確認') && item.date_text) match.date_text=item.date_text;
-    match.needs_check = Boolean(match.needs_check || item.needs_check);
-    match.status = calculatedStatus(match);
-    match.category = isRelatedDeal(match) ? 'related' : 'coffee';
-  }
-  return groups;
-}
-
+// 今日優惠採用後端已清洗的 deals.json；前端不再重複執行店家判定／優惠拆分／語意去重。
 function isRelatedDeal(deal) {
-  let text = String(deal.offer || '');
-  if (deal.category === 'related') return true;
-  // 「除了咖啡之外」是背景句，不代表此優惠本身是咖啡。
-  text = text.replace(/(?:除了)?咖啡(?:優惠)?(?:之外|以外)(?:的部分)?/g, ' ');
-  return /霜淇淋|果昔|冰沙|冰品|甜點|零食/.test(text) &&
-    !/咖啡|美式|拿鐵|奶茶|紅茶|綠茶|青茶|抹茶|可可|歐蕾|瑪奇朵|寄杯|CITY\s*CAFE|CITY\s*TEA|Let's\s*Tea/i.test(text);
+  return String((deal && deal.category) || '').toLowerCase() === 'related';
+}
+
+// 只供「最新優惠情報」RSS 文章清單去重使用，不參與 deals.json 優惠判定。
+function canonicalArticleUrl(value) {
+  try {
+    const url = new URL(String(value || ''), window.location.href);
+    if (!['https:', 'http:'].includes(url.protocol)) return '';
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^(utm_source|utm_medium|utm_campaign|utm_term|utm_content|fbclid|gclid|guccounter|guce_referrer|guce_referrer_sig)$/i.test(key)) url.searchParams.delete(key);
+    }
+    url.hash = '';
+    return url.href;
+  } catch (_) { return ''; }
+}
+
+function normalizedNewsTitle(value) {
+  return String(value || '').toLowerCase()
+    .replace(/\s+-\s+google 新聞$/i, '')
+    .replace(/[\s，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_|｜]/g, '')
+    .trim();
+}
+
+function brandAnchorId(store) {
+  const ids = {
+    '7-ELEVEN': 'brand-711', '全家': 'brand-family', '萊爾富': 'brand-hilife',
+    'OKmart': 'brand-okmart', '美廉社': 'brand-simplemart', '小北百貨': 'brand-showba',
+    '星巴克': 'brand-starbucks', '路易莎': 'brand-louisa', '85°C': 'brand-85c', 'cama': 'brand-cama', '全聯': 'brand-pxmart',
+    '品牌待確認': 'brand-unknown', '店家待確認': 'brand-unknown'
+  };
+  return ids[store] || ('brand-' + String(store || 'unknown').toLowerCase().replace(/[^a-z0-9一-龥]+/g, '-'));
+}
+
+function renderBrandQuickLinks(container, deals) {
+  const stores = [...new Set(deals.map(d => String(d.store || '品牌待確認')))];
+  if (stores.length < 2) return;
+  const storeOrder = ['7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','星巴克','路易莎','85°C','cama','全聯','品牌待確認','店家待確認'];
+  stores.sort((a,b) => {
+    const ai = storeOrder.indexOf(a), bi = storeOrder.indexOf(b);
+    return (ai < 0 ? storeOrder.length : ai) - (bi < 0 ? storeOrder.length : bi) || a.localeCompare(b, 'zh-Hant');
+  });
+  const nav = makeEl('nav', 'brand-nav');
+  nav.setAttribute('aria-label', '快速跳轉至品牌優惠');
+  stores.forEach(store => {
+    const link = makeEl('a', 'brand-chip', store);
+    link.href = '#' + brandAnchorId(store);
+    nav.appendChild(link);
+  });
+  container.appendChild(nav);
 }
 
 async function loadCoffeeDeals() {
@@ -568,8 +205,10 @@ async function loadCoffeeDeals() {
     if (!response.ok) throw new Error('deals.json 讀取失敗：HTTP ' + response.status);
 
     const data = await response.json();
-    const allRows = Array.isArray(data.deals) ? data.deals : [];
-    const deals = dedupeDealRecords(allRows);
+    // SSOT：deals.json 是後端清洗後的唯一資料來源。前端只做形狀驗證，不改品牌、不拆優惠、不去重。
+    const deals = Array.isArray(data.deals) ? data.deals.filter(d =>
+      d && typeof d === 'object' && typeof d.offer === 'string' && d.offer.trim()
+    ) : [];
     const relatedActive = deals.filter(d => d.status === 'active' && isRelatedDeal(d));
     const active = deals.filter(d => d.status === 'active' && !isRelatedDeal(d));
     const verify = deals.filter(d => d.status === 'verify');
@@ -583,7 +222,7 @@ async function loadCoffeeDeals() {
       box.appendChild(makeEl('div', 'empty', '目前沒有日期明確符合今天的優惠。這不代表完全沒有活動，請查看下方待確認項目或官方公告。'));
     }
 
-    const storeOrder = ['7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','星巴克','路易莎','85°C','cama'];
+    const storeOrder = ['7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','星巴克','路易莎','85°C','cama','全聯'];
     active.sort((a, b) => {
       const ai = storeOrder.indexOf(a.store);
       const bi = storeOrder.indexOf(b.store);
@@ -591,12 +230,16 @@ async function loadCoffeeDeals() {
         (a.start_date || '').localeCompare(b.start_date || '') || (a.offer || '').localeCompare(b.offer || '', 'zh-Hant');
     });
 
+    // 品牌錨點只負責導覽，不修改或過濾任何優惠記錄。
+    renderBrandQuickLinks(box, active);
+
     let currentStore = '';
     active.forEach(d => {
       const store = d.store || '店家待確認';
       if (store !== currentStore) {
         currentStore = store;
-        const heading = makeEl('h3', '', store);
+        const heading = makeEl('h3', 'brand-heading', store);
+        heading.id = brandAnchorId(store);
         heading.style.margin = '20px 0 9px';
         heading.style.color = 'var(--coffee)';
         heading.style.fontSize = '16px';
@@ -701,29 +344,6 @@ function classify(d) {
     convenience: conv || d.type === 'convenience',
     life: d.type === 'life' || life
   };
-}
-
-function canonicalArticleUrl(value) {
-  try {
-    const url = new URL(String(value || ''));
-    if (!['https:', 'http:'].includes(url.protocol)) return '';
-    for (const key of [...url.searchParams.keys()]) {
-      if (/^(utm_source|utm_medium|utm_campaign|utm_term|utm_content|fbclid|gclid|guccounter|guce_referrer|guce_referrer_sig)$/i.test(key)) {
-        url.searchParams.delete(key);
-      }
-    }
-    url.hash = '';
-    return url.href;
-  } catch (_) {
-    return '';
-  }
-}
-
-function normalizedNewsTitle(value) {
-  return String(value || '').toLowerCase()
-    .replace(/\s+-\s+google 新聞$/i, '')
-    .replace(/[\s，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_|｜]/g, '')
-    .trim();
 }
 
 function dedupe(items) {
