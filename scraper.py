@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.5
+"""省咖啡｜優惠雷達 v6.6
 
 目標：
 - 抓取固定指定文章 + Google News RSS 發現的近期文章。

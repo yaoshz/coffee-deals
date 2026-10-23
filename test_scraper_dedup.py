@@ -574,7 +574,7 @@ class DealDedupRegressionTests(unittest.TestCase):
                   for status in ('active', 'upcoming', 'verify', 'expired')}
         self.assertEqual(snapshot['counts'], actual)
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
-        self.assertEqual(snapshot.get('processing_version'), 'v6.5')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.6')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
@@ -715,6 +715,39 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertEqual(len(records), 1)
         self.assertIn('39 元', records[0]['offer'])
         self.assertIn('69 元', records[0]['offer'])
+
+
+    def test_frontend_supports_chinese_english_and_thai_language_switch(self):
+        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
+            page = f.read()
+        self.assertIn('<select id="language-select"', page)
+        self.assertIn('<option value="zh-Hant">中文</option>', page)
+        self.assertIn('<option value="en">English</option>', page)
+        self.assertIn('<option value="th">ไทย</option>', page)
+        self.assertIn("localStorage.getItem('coffee-deals-language')", page)
+        self.assertIn("localStorage.setItem('coffee-deals-language', currentLang)", page)
+        self.assertIn("document.documentElement.lang = htmlLangs[currentLang]", page)
+        self.assertIn('Coffee Deals Available Today', page)
+        self.assertIn('โปรกาแฟที่ใช้ได้วันนี้', page)
+
+    def test_frontend_translates_offer_presentation_and_keeps_original_outside_link(self):
+        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
+            page = f.read()
+        self.assertIn('function localizeText(value, lang = currentLang)', page)
+        self.assertIn('function formatDealDateRange(deal)', page)
+        self.assertIn("function makeOriginalText(original, type = 'offer')", page)
+        self.assertIn('entry.appendChild(card);', page)
+        self.assertIn('if (originalNode) entry.appendChild(originalNode);', page)
+        self.assertNotIn('appendOriginalText(', page)
+        self.assertIn('English/Thai offer text is a helpful translation', page)
+
+    def test_frontend_does_not_nest_original_text_details_inside_anchor(self):
+        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
+            page = f.read()
+        self.assertIn('.deal-entry>.original-copy', page)
+        self.assertNotIn("appendOriginalText(a, d.title, 'headline')", page)
+        self.assertIn('News headlines remain in the publisher’s original language', page)
+
 
 
 if __name__ == '__main__':
