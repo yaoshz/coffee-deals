@@ -8,24 +8,24 @@
 - 解析文章中的多筆優惠
 - 以段落標題及優惠文字判斷品牌
 - 將日期不完整的優惠標示為 verify
-- 以店家、優惠文字及起訖日期去重，保留不同日期的活動
+- 跨文章合併重複優惠，對衝突日期採待確認而非猜測
 - 輸出 GitHub Pages 使用的 deals.json
 
 注意：
 - 自動擷取無法保證涵蓋所有店家或所有優惠，請人工核對。
-- 本程式會將新抓到的優惠與既有 deals.json 合併，避免搜尋漏抓造成舊優惠消失。
+- 每次成功擷取後以本次結果重建資料，避免錯誤舊資料永久累積。若完全未抓到優惠則停止，不覆寫原檔。
 """
 
 import json
 import re
 import time
 import html
+import os
 from datetime import datetime, date, timezone, timedelta
 from urllib.parse import quote
 import xml.etree.ElementTree as ET
 
 import requests
-import os
 from bs4 import BeautifulSoup
 
 TZ = timezone(timedelta(hours=8))
@@ -333,6 +333,31 @@ def infer_status(start, end):
     return "verify"
 
 
+def is_caption_or_noise(line):
+    """排除圖片說明、新聞導覽與純標籤，避免當成優惠。"""
+    t = line.strip()
+    noise_patterns = [
+        r"^(?:圖|圖片|照片|翻攝|示意圖|資料照|圖／|圖/|照片／|照片/)",
+        r"(?:業者提供|資料照|示意圖|圖片來源|新聞來源|圖／記者|圖/記者)",
+        r"^(?:延伸閱讀|更多新聞|看更多|責任編輯|記者[：:])",
+    ]
+    return any(re.search(p, t, re.I) for p in noise_patterns)
+
+
+def is_standalone_date_line(line):
+    """只有幾乎純日期/活動期間的短行才可作為優惠行的日期補充。"""
+    t = line.strip()
+    if len(t) > 100 or OFFER_RE.search(t):
+        return False
+    has_date = bool(DATE_RE.search(t) or SINGLE_DATE_RE.search(t))
+    if not has_date:
+        return False
+    return bool(re.fullmatch(
+        r"[\s\d年月日號./～~至到－—–-起迄止限定即日起活動期間優惠期間：:()（）約至前後]*",
+        t
+    ))
+
+
 def extract(article, url, title, lines):
     results = []
     if not is_coffee_related(title + " " + " ".join(lines)):
@@ -342,7 +367,7 @@ def extract(article, url, title, lines):
     current_store = ""
     for idx, original_line in enumerate(lines):
         line = original_line.strip()
-        if not line:
+        if not line or is_caption_or_noise(line):
             continue
 
         heading = heading_store_for_line(line)
@@ -350,34 +375,24 @@ def extract(article, url, title, lines):
             current_store = heading
             continue
 
-        # 若本行不是優惠句，下一行若有日期有時仍屬同一優惠；
-        # 因此只在本行有促銷關鍵字時建立紀錄，並附加下一行的日期文字。
         if not OFFER_RE.search(line) or not 5 <= len(line) <= 500:
             continue
 
-        # 日期只優先採用本優惠同一行的日期。
-        # 只有相鄰行明確像「活動期間／優惠期間／即日起」且不是另一項優惠時，
-        # 才納入日期判斷，降低把其他優惠日期錯套過來的機率。
-        date_context = line
-        nearby = []
-        for j in range(max(0, idx - 1), min(len(lines), idx + 2)):
-            if j == idx:
-                continue
-            candidate = lines[j].strip()
-            if OFFER_RE.search(candidate):
-                continue
-            explicit_period = re.search(
-                r"(?:活動(?:期間|日期)|優惠期間|即日起|限定至|截止(?:日期)?|活動至)",
-                candidate
-            )
-            has_date = DATE_RE.search(candidate) or SINGLE_DATE_RE.search(candidate)
-            if explicit_period and has_date:
-                nearby.append(candidate)
-        if nearby:
-            date_context = " ".join([line] + nearby)
+        # 不再把前後兩行的任意日期拼在一起。只接受相鄰的「純日期行」，
+        # 若相鄰行本身是另一項優惠，絕不拿它的日期來判斷本項優惠。
+        date_parts = [line]
+        for j in (idx - 1, idx + 1):
+            if 0 <= j < len(lines):
+                candidate = lines[j].strip()
+                if candidate and not is_caption_or_noise(candidate) and is_standalone_date_line(candidate):
+                    date_parts.append(candidate)
+        date_context = " ".join(date_parts)
 
         candidates = split_mixed_store_line(line)
         for line_store, offer_line in candidates:
+            offer_line = offer_line.strip()
+            if not offer_line or is_caption_or_noise(offer_line):
+                continue
             store = line_store or get_store(offer_line) or current_store or get_store(title)
             if not store:
                 store = "綜合／待確認"
@@ -386,26 +401,20 @@ def extract(article, url, title, lines):
             start = parsed[0] if parsed else None
             end = parsed[1] if parsed else None
             date_text = parsed[2] if parsed else ""
-            start_iso = start.isoformat() if start else ""
-            end_iso = end.isoformat() if end else ""
-
-            # 僅截止日仍需確認；不能因為 end_date 未過期就當成 active。
-            status = infer_status(start, end)
-
             results.append({
                 "store": store,
-                "offer": offer_line.strip(),
-                "status": status,
-                "start_date": start_iso,
-                "end_date": end_iso,
+                "offer": offer_line,
+                "status": infer_status(start, end),
+                "start_date": start.isoformat() if start else "",
+                "end_date": end.isoformat() if end else "",
                 "date_text": date_text,
                 "article_title": title,
                 "article_url": url,
+                "source_urls": [url] if url else [],
                 "published": article.get("published", ""),
                 "source": "新聞文章自動擷取",
                 "needs_check": True,
             })
-
     return results
 
 
@@ -417,38 +426,58 @@ def normalize_offer(offer):
     return value
 
 
+def offer_identity(offer):
+    """優惠比對用文字：移除日期與新聞圖片註記，但保留價格、杯數、折扣。"""
+    value = str(offer or "").lower()
+    value = re.sub(r"(?:20\d{2}\s*[年/.-]\s*)?\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?", "", value)
+    value = re.sub(r"圖\s*[／/]\s*業者提供|（?圖／[^）]*）?", "", value)
+    return normalize_offer(value)
+
+
 def deduplicate_deals(deals):
-    """
-    去重鍵包含日期：
-    - 同店、同文字、同日期，即使來自不同文章也合併。
-    - 活動日期不同，一律保留。
-    - 不會用「只看店家」或「只看折扣關鍵字」的方式粗暴合併。
-    """
+    """合併同店、相同優惠文字的跨媒體重複；日期衝突時不猜，改列待確認。"""
     unique = {}
-    for deal in deals:
-        key = (
-            deal.get("store", ""),
-            normalize_offer(deal.get("offer", "")),
-            deal.get("start_date", ""),
-            deal.get("end_date", ""),
+    for raw in deals:
+        if not isinstance(raw, dict) or not raw.get("offer"):
+            continue
+        item = dict(raw)
+        store = str(item.get("store", "綜合／待確認")).strip()
+        identity = offer_identity(item.get("offer", ""))
+        # 文字過短時不做跨文章合併，避免將不同優惠誤合併。
+        key = (store, identity) if len(identity) >= 12 else (
+            store, identity, item.get("start_date", ""), item.get("end_date", ""), item.get("article_url", "")
         )
+        item_urls = item.get("source_urls") or ([item.get("article_url")] if item.get("article_url") else [])
+        item["source_urls"] = list(dict.fromkeys(u for u in item_urls if u))
         if key not in unique:
-            unique[key] = deal
+            unique[key] = item
             continue
 
         old = unique[key]
-        # 若先前版本缺資料，才由重複紀錄補上。
-        for field in ("date_text", "article_title", "article_url", "published"):
-            if not old.get(field) and deal.get(field):
-                old[field] = deal[field]
-        # 同一活動有一筆日期完整、另一筆日期不完整時，優先保留日期完整者。
-        if old.get("status") == "verify" and deal.get("status") != "verify":
-            old["status"] = deal["status"]
-            old["start_date"] = deal.get("start_date", old.get("start_date", ""))
-            old["end_date"] = deal.get("end_date", old.get("end_date", ""))
-
+        old_urls = old.get("source_urls") or ([old.get("article_url")] if old.get("article_url") else [])
+        old["source_urls"] = list(dict.fromkeys(old_urls + item["source_urls"]))
+        # 日期相同或其中一筆沒有日期時，保留較完整的日期。
+        old_range = (old.get("start_date", ""), old.get("end_date", ""))
+        new_range = (item.get("start_date", ""), item.get("end_date", ""))
+        old_complete = all(old_range)
+        new_complete = all(new_range)
+        if old_complete and new_complete and old_range != new_range:
+            # 相同優惠文字卻出現互相衝突的日期，可能是日期誤配或重複刊登。
+            # 不武斷選一個日期，將日期清空並交由前端顯示待確認。
+            old["start_date"] = ""
+            old["end_date"] = ""
+            old["date_text"] = "日期來源衝突，請查原文"
+            old["status"] = "verify"
+            old["needs_check"] = True
+        elif not old_complete and new_complete:
+            old["start_date"], old["end_date"] = new_range
+            old["date_text"] = item.get("date_text", "")
+            old["status"] = item.get("status", "verify")
+        for field in ("article_title", "article_url", "published"):
+            if not old.get(field) and item.get(field):
+                old[field] = item[field]
+        old["needs_check"] = bool(old.get("needs_check", False) or item.get("needs_check", False))
     return list(unique.values())
-
 
 
 def load_existing_deals(path="deals.json"):
@@ -556,9 +585,11 @@ def main():
         time.sleep(REQUEST_DELAY_SECONDS)
 
     fresh_deals = deduplicate_deals(deals)
-    # 合併舊資料：Google News 暫時漏抓、網站阻擋或解析失敗時，舊優惠不會整批消失。
-    existing_deals = load_existing_deals("deals.json")
-    final_deals = refresh_statuses(merge_existing_and_new(existing_deals, fresh_deals))
+    # 本次完全沒有擷取到候選資料時，停止並保留舊 JSON，避免空結果覆蓋網站。
+    if not fresh_deals:
+        raise RuntimeError("本次沒有擷取到任何優惠候選資料；為避免清空網站資料，停止更新 deals.json。")
+    # 只用本次成功擷取的資料重建，避免舊的錯誤/重複資料永久累積。
+    final_deals = refresh_statuses(fresh_deals)
 
     # 店家排序讓 JSON 與前端資料較易檢查。
     store_order = ["7-ELEVEN", "全家", "萊爾富", "OKmart", "美廉社", "星巴克",
@@ -586,7 +617,6 @@ def main():
     temp_path = "deals.json.tmp"
     with open(temp_path, "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-    # 關閉暫存檔後再替換正式檔案。
     os.replace(temp_path, "deals.json")
 
     counts = {
