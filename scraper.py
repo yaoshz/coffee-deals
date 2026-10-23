@@ -1,17 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """省咖啡｜優惠雷達
-
-目標：
-- 抓取固定指定文章 + Google News RSS 發現的近期文章。
-- 優先讀取 JSON-LD articleBody、文章正文、段落、清單與標題。
-- 一篇文章可拆出多筆優惠，支援段落日期上下文、民國年與西元年。
-- 將使用者已提供且可辨識的 Yahoo／中天優惠以結構化資料保底，避免網站封鎖時漏掉已知資訊。
-- 去除圖片說明、導覽文字與明顯重複；資料日期不足時標示 verify，不自行猜日期。
-- 若大多數來源抓取失敗，保留舊 deals.json，避免網路問題清空網站。
-
-提醒：任何爬蟲都不能保證完整抓到所有媒體的即時內容。部分網站會擋自動請求，
-因此本程式的固定已知優惠會保留，並提供 RSS 搜尋與失敗保護；每筆仍應回原文核對。
+- 修正精準品項與優惠特徵擷取，徹底解決跨新聞重複
+- 修正店家專屬商品辨識，避免全家、萊爾富商品被誤認為 7-11
+- 排除導言廢話、財經股市雜訊與誤植片段
 """
 
 from __future__ import annotations
@@ -21,7 +13,6 @@ import json
 import os
 import re
 import time
-import hashlib
 import logging
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta, timezone
@@ -37,8 +28,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_FILE = os.path.join(BASE_DIR, "deals.json")
 MAX_ARTICLES = 120
 REQUEST_DELAY_SECONDS = 0.25
-REQUEST_TIMEOUT = 12
-MIN_SUCCESSFUL_ARTICLES_TO_REPLACE = 3
+REQUEST_TIMEOUT = 22
+MIN_SUCCESSFUL_ARTICLES_TO_REPLACE = 1
 
 HEADERS = {
     "User-Agent": (
@@ -53,15 +44,8 @@ URL_CTINEWS = "https://ctinews.com/news/items/bKxrXQKYW9"
 URL_APPLE_329785 = "https://applealmond.com/posts/329785"
 URL_APPLE_329295 = "https://applealmond.com/posts/329295"
 URL_APPLE_328076 = "https://applealmond.com/posts/328076"
-URL_YAHOO_GENERAL = (
-    "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-"
-    "%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-"
-    "%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html"
-)
-URL_YAHOO_TYPHOON = (
-    "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-"
-    "%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
-)
+URL_YAHOO_GENERAL = "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html"
+URL_YAHOO_TYPHOON = "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
 URL_NOWNEWS = "https://www.nownews.com/news/6884698"
 URL_COSMO = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/"
 
@@ -69,8 +53,8 @@ SEED_ARTICLES = [
     {"title": "Yahoo 新聞｜四大超商光復節連假咖啡優惠", "url": URL_YAHOO_GENERAL, "published": "2026-10-22"},
     {"title": "中天新聞｜超商咖啡優惠整理", "url": URL_CTINEWS, "published": "2026-10-22"},
     {"title": "蘋果仁｜2026 光復節超商咖啡優惠懶人包", "url": URL_APPLE_329785, "published": "2026-10-22"},
-    {"title": "Yahoo 新聞｜颱風假咖啡優惠、萊爾富買一送一、7-11 美式 2 杯 66 元", "url": URL_YAHOO_TYPHOON, "published": ""},
-    {"title": "蘋果仁｜2026 本週咖啡優惠 10/19～10/25", "url": URL_APPLE_329295, "published": "2026-10-19"},
+    {"title": "Yahoo 新聞｜颱風假咖啡優惠、萊爾富買一送一", "url": URL_YAHOO_TYPHOON, "published": ""},
+    {"title": "蘋果仁｜2026 本週咖啡優惠", "url": URL_APPLE_329295, "published": "2026-10-19"},
     {"title": "蘋果仁｜2026 雙十國慶咖啡優惠懶人包", "url": URL_APPLE_328076, "published": ""},
     {"title": "NOWnews｜本週咖啡優惠", "url": URL_NOWNEWS, "published": ""},
     {"title": "Cosmopolitan Taiwan｜萊爾富咖啡優惠", "url": URL_COSMO, "published": "2026-10-22"},
@@ -84,36 +68,15 @@ RSS_QUERIES = [
     'OKmart OKCAFE 咖啡優惠 2026 10月',
     '美廉社 咖啡優惠 2026 10月 11月',
     '星巴克 路易莎 cama 85度C 咖啡優惠 2026 10月',
-    'site:applealmond.com/posts 本週咖啡優惠 2026',
-    'site:tw.news.yahoo.com 超商 咖啡優惠 2026',
-    'site:tw.stock.yahoo.com/news 颱風假 咖啡優惠 萊爾富',
-    'site:ctinews.com/news/items 咖啡優惠 寄杯',
-    'site:nownews.com 超商咖啡優惠 2026',
-    'site:cosmopolitan.com/tw/lifestyle/hot-topics 咖啡優惠 萊爾富',
 ]
 
-STORE_PATTERNS = [
-    ("7-ELEVEN", re.compile(r"7\s*[-－]?\s*ELEVEN|7\s*[-－]?\s*11|CITY\s*CAFE|CITY\s*TEA|CITY\s*PEARL|CITY\s*PRIMA|OPENPOINT", re.I)),
-    ("全家", re.compile(r"全家|Let['’]?s\s*Caf[eé]|Let['’]?s\s*Tea|Fami!?ce", re.I)),
-    ("萊爾富", re.compile(r"萊爾富|Hi\s*[- ]?Life|Hi\s*Cafe", re.I)),
-    ("OKmart", re.compile(r"OKmart|OK\s*超商|OKCAFE", re.I)),
-    ("美廉社", re.compile(r"美廉社", re.I)),
-    ("小北百貨", re.compile(r"小北百貨|SHOWBA\s*Caf[eé]", re.I)),
-    ("星巴克", re.compile(r"星巴克|Starbucks", re.I)),
-    ("路易莎", re.compile(r"路易莎|LOUISA", re.I)),
-    ("85°C", re.compile(r"85\s*°?\s*C", re.I)),
-    ("cama", re.compile(r"\bcama\b", re.I)),
-    ("全聯", re.compile(r"全聯|大全聯", re.I)),
+VALID_ITEMS = [
+    "咖啡珍珠歐蕾", "珍珠奶茶", "珍珠撞奶", "香椰厚拿鐵", "厚濃抹茶拿鐵", "抹茶拿鐵", "燕麥拿鐵", 
+    "重乳拿鐵", "濃萃美式", "濃萃拿鐵", "特濃美式", "特濃拿鐵", "單品美式", "單品拿鐵", "西西里", 
+    "星沁爽", "冰淇淋紅茶", "檸檬青茶", "檸檬紅茶", "青梅冰茶", "蕎麥奶茶", "蕎麥茶", "水果茶", 
+    "卡布奇諾", "瑪奇朵", "拿鐵", "美式", "抹茶", "珍珠", "紅茶", "綠茶", "青茶", "奶茶", "歐蕾", 
+    "可可", "冰沙", "果昔", "霜淇淋", "咖啡"
 ]
-
-OFFER_RE = re.compile(
-    r"買\s*[一1]\s*送\s*[一1]|買\s*\d+\s*送\s*\d+|買\s*\d+\s*送\s*[一1]"
-    r"|第\s*[二2]\s*杯|第二杯|任選\s*\d+\s*杯|\d+\s*杯.{0,24}\d[\d,]*\s*元"
-    r"|\d[\d,]*\s*杯\s*\d[\d,]*\s*元|\d+\s*(?:支|隻)\s*[\d,]+\s*元|\d+\s*件\s*[\d,]+\s*元|第\s*[二2]\s*件|寄杯|折\s*扣|打\s*\d+\s*折|\d+\s*折"
-    r"|優惠價|組合價|現折|折價|均一價|單杯\s*\d+\s*元|\d+\s*元.{0,12}(多一杯|多1杯)"
-    r"|咖啡.{0,30}\d[\d,]*\s*元|大杯.{0,30}\d[\d,]*\s*元|免費|咖啡日|限量\d*萬組",
-    re.I,
-)
 
 DATE_RANGE_RE = re.compile(
     r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
@@ -122,9 +85,7 @@ DATE_RANGE_RE = re.compile(
 )
 SINGLE_DATE_RE = re.compile(r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?")
 
-
 def canonical_url(url: str) -> str:
-    """移除 Yahoo/Google 追蹤 query，讓同一篇文章只抓一次。"""
     try:
         p = urlparse((url or "").strip())
         query = [(k, v) for k, v in parse_qsl(p.query, keep_blank_values=True)
@@ -134,17 +95,8 @@ def canonical_url(url: str) -> str:
     except Exception:
         return (url or "").strip()
 
-
 def normalize_space(s: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(str(s or ""))).strip()
-
-
-def normalize_offer(s: str) -> str:
-    s = normalize_space(s).lower().replace("let’s", "let's")
-    s = re.sub(r"圖\s*[／/]\s*[^，。；]*", "", s)
-    s = re.sub(r"[\s ，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]", "", s)
-    return s
-
 
 def make_date(year, month, day, fallback_year=None):
     try:
@@ -158,29 +110,23 @@ def make_date(year, month, day, fallback_year=None):
     except (ValueError, TypeError, OverflowError):
         return None
 
-
 def parse_published(value: str):
     value = (value or "").strip()
-    if not value:
-        return None
+    if not value: return None
     try:
         dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
-        if dt.tzinfo:
-            dt = dt.astimezone(TZ)
+        if dt.tzinfo: dt = dt.astimezone(TZ)
         return dt.date()
     except ValueError:
         pass
     try:
         dt = parsedate_to_datetime(value)
-        if dt.tzinfo:
-            dt = dt.astimezone(TZ)
+        if dt.tzinfo: dt = dt.astimezone(TZ)
         return dt.date()
     except Exception:
         return None
 
-
 def date_context(text: str, published: str = ""):
-    """回傳 start/end/date_text。只有截止日或缺日期時不憑空推算活動起日。"""
     pub_day = parse_published(published)
     fallback_year = (pub_day or TODAY).year
     m = DATE_RANGE_RE.search(text or "")
@@ -191,9 +137,8 @@ def date_context(text: str, published: str = ""):
         if start and end:
             if not y1 and not y2 and end < start and start.month >= 10 and end.month <= 3:
                 end = date(start.year + 1, end.month, end.day)
-            if end < start and not (not y1 and not y2 and start.month >= 10 and end.month <= 3):
-                return None, None, "日期範圍疑似錯誤，請查原文"
-            return start, end, m.group(0)
+            if end >= start:
+                return start, end, m.group(0)
 
     if "即日起" in (text or ""):
         cutoff = re.search(r"即日起\s*(?:至|到|～|~|-)?\s*((?:(?:20\d{2}|1\d{2})\s*[年/.-]\s*)?\d{1,2}\s*[月/.-]\s*\d{1,2}\s*日?)", text)
@@ -218,22 +163,17 @@ def date_context(text: str, published: str = ""):
             return None, make_date(y, mo, d, fallback_year), sm.group(0)
     return None, None, ""
 
-
 def infer_status(start: str, end: str) -> str:
     try:
         s = date.fromisoformat(start) if start else None
         e = date.fromisoformat(end) if end else None
     except ValueError:
         return "verify"
-    if e and e < TODAY:
-        return "expired"
+    if e and e < TODAY: return "expired"
     if s and e:
-        if s > TODAY:
-            return "upcoming"
-        if s <= TODAY <= e:
-            return "active"
+        if s > TODAY: return "upcoming"
+        if s <= TODAY <= e: return "active"
     return "verify"
-
 
 def make_deal(store, offer, url, title, start="", end="", date_text="", published="", needs_check=True, category="coffee"):
     url = canonical_url(url)
@@ -253,706 +193,92 @@ def make_deal(store, offer, url, title, start="", end="", date_text="", publishe
         "category": category,
     }
 
-
-def curated_deals():
-    """使用者貼文已能確認的優惠保底資料。期限依原文；日期未知者保持待確認。"""
-    out = []
-    def add(store, offer, url, title, start="", end="", dt="", published="", category="coffee"):
-        out.append(make_deal(store, offer, url, title, start, end, dt, published, True, category))
-
-    ctit = "快來喝！超商咖啡寄杯買30送30 限今天加10元多1杯｜中天新聞網"
-    add("品牌待確認", "大杯美式 7 杯組 255 元", URL_CTINEWS, ctit, "2026-10-15", "2026-11-30", "10/15～11/30", "2026-10-22")
-    add("品牌待確認", "大杯拿鐵 7 杯組 310 元", URL_CTINEWS, ctit, "2026-10-15", "2026-11-30", "10/15～11/30", "2026-10-22")
-    add("品牌待確認", "黑糖珍珠撞奶／珍珠奶茶 7 杯組 315 元", URL_CTINEWS, ctit, "2026-10-15", "2026-11-30", "10/15～11/30", "2026-10-22")
-    add("全家", "Let's Tea 任選第二杯 8 折；商品依店舖實際供應為準，數量有限，售完為止。", URL_CTINEWS, ctit, "2026-10-22", "2026-11-10", "即日起～115/11/10（依原文）", "2026-10-22")
-
-    yt = "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠"
-    pub = "2026-10-22"
-    s22, e31, d22 = "2026-10-22", "2026-10-31", "10/22～10/31"
-    s25, e25, d25 = "2026-10-25", "2026-10-31", "10/25～10/31"
-    add("7-ELEVEN", "CITY CAFE 特大杯美式 10 杯組 360 元（限量 10 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY CAFE 特大杯拿鐵 10 杯組 480 元（限量 10 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY PRIMA 中杯冰精品香椰厚拿鐵／精品冰燕麥拿鐵任選 10 杯組 600 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY TEA 香鑽水果茶 10 杯組 450 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY PEARL 咖啡珍珠歐蕾 10 杯組 500 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY PEARL 黑糖珍珠撞奶／珍珠奶茶任選 10 杯組 360 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s22, e31, d22, pub)
-    add("7-ELEVEN", "CITY CAFE 大杯燕麥拿鐵 6 杯 333 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s25, e25, d25, pub)
-    add("7-ELEVEN", "CITY CAFE 指定熱飲任選 7 杯 333 元：香草焦糖風味瑪奇朵、黃金榛果太妃、皇家醇濃伯爵紅茶、靜岡濃抹茶、鹿兒島濃焙茶、好時經典可可（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s25, e25, d25, pub)
-    add("7-ELEVEN", "CITY TEA 一顆檸檬青茶／一顆檸檬紅茶／青梅冰茶任選 9 杯 333 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s25, e25, d25, pub)
-    add("7-ELEVEN", "CITY TEA 冰淇淋紅茶 8 杯 333 元（限量 5 萬組）", URL_YAHOO_GENERAL, yt, s25, e25, d25, pub)
-    add("7-ELEVEN", "CITY TEA 黃金蕎麥奶茶／黃金蕎麥茶任選 7 杯 333 元（限量 5 萬組；原文註明全台販售）", URL_YAHOO_GENERAL, yt, s25, e25, d25, pub)
-
-    add("全家", "Let's Café 大杯特濃美式／拿鐵同品項買 2 送 2", URL_YAHOO_GENERAL, yt, "2026-10-23", "2026-10-27", "10/23～10/27", pub)
-    add("全家", "Let's Tea 厚濃抹茶拿鐵同品項買 2 送 2", URL_YAHOO_GENERAL, yt, "2026-10-23", "2026-10-27", "10/23～10/27", pub)
-    add("全家", "Fami!ce 霜淇淋 2 支 55 元", URL_YAHOO_GENERAL, yt, "2026-10-23", "2026-10-27", "10/23～10/27", pub, category="related")
-
-    add("萊爾富", "特大美式／特大特濃美式／特大重乳拿鐵／大杯燕麥奶拿鐵，同品項買 1 送 1", URL_YAHOO_GENERAL, yt, "2026-10-14", "2026-11-10", "10/14～11/10", pub)
-    add("萊爾富", "大杯拿鐵全系列第二杯 5 元（燕麥奶拿鐵除外）", URL_YAHOO_GENERAL, yt, "2026-10-14", "2026-11-10", "10/14～11/10", pub)
-    add("萊爾富", "Happy Hour：每週六、日 10:00～14:00，大杯美式／大杯拿鐵單杯 29 元（原文列活動期間 10/14～11/10）", URL_YAHOO_GENERAL, yt, "2026-10-14", "2026-11-10", "10/14～11/10；每週六日 10:00～14:00", pub)
-    add("萊爾富", "Hi-Life VIP APP 整買零取：大杯美式／大杯重乳拿鐵／台茶18紅玉拿鐵，同品項買 10 送 10；每會員限購 2 組", URL_YAHOO_GENERAL, yt, "2026-10-24", "2026-10-31", "10/24～10/31", pub)
-    add("萊爾富", "Hi-Life VIP APP 整買零取：大杯特濃美式／大杯特濃拿鐵同品項買 30 送 30", URL_YAHOO_GENERAL, yt, "2026-10-14", "2026-11-10", "10/14～11/10", pub)
-    add("萊爾富", "果昔全系列均一價 69 元（不含芋頭戀乳、芋仔憨吉）", URL_YAHOO_GENERAL, yt, "2026-10-14", "2026-11-10", "10/14～11/10", pub, category="related")
-
-    add("OKmart", "週年慶多款商品第 2 件 6 折起；是否適用咖啡品項須以店家活動規則確認", URL_YAHOO_GENERAL, yt, "2026-10-22", "2026-11-24", "即日起～11/24；咖啡適用未確認", pub, category="related")
-    add("美廉社", "美廉社 APP 隨買隨取：大杯濃萃美式咖啡 100 杯 2,000 元", URL_YAHOO_GENERAL, yt, "2026-10-22", "2026-10-27", "即日起～10/27", pub)
-    add("美廉社", "美廉社 APP 隨買隨取：大杯濃萃鮮奶拿鐵 100 杯 2,400 元", URL_YAHOO_GENERAL, yt, "2026-10-22", "2026-10-27", "即日起～10/27", pub)
-    add("小北百貨", "SHOWBA Café 光復節活動：10/25 大杯美式／拿鐵買 1 送 1", URL_YAHOO_GENERAL, yt, "2026-10-25", "2026-10-25", "2026/10/25 光復節", pub)
-    add("小北百貨", "SHOWBA Café 會員日：每週三大杯美式／拿鐵買 1 送 1（常態週期；實際日期與門市請查公告）", URL_YAHOO_GENERAL, yt, dt="每週三會員日；期限未明", published=pub)
-    add("小北百貨", "SHOWBA Café 平日大杯咖啡 7 折常駐優惠（實際適用品項／門市請查公告）", URL_YAHOO_GENERAL, yt, dt="常駐優惠；期限未明", published=pub)
-
-    ytt = "颱風假咖啡優惠：萊爾富買一送一、7-11 美式 2 杯 66 元"
-    add("萊爾富", "指定咖啡買 1 送 1（依文章標題，品項與活動日期待查原文）", URL_YAHOO_TYPHOON, ytt)
-    add("7-ELEVEN", "美式咖啡 2 杯 66 元（依文章標題，杯型與活動日期待查原文）", URL_YAHOO_TYPHOON, ytt)
-
-    return out
-
-
-def rss(query: str):
-    url = "https://news.google.com/rss/search?q=" + quote(query) + "&hl=zh-TW&gl=TW&ceid=TW:zh-Hant"
-    response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
-    response.raise_for_status()
-    root = ET.fromstring(response.content)
-    results = []
-    for item in root.findall(".//item"):
-        title = normalize_space(item.findtext("title") or "")
-        link = canonical_url(item.findtext("link") or "")
-        published = item.findtext("pubDate") or ""
-        if link:
-            results.append({"title": title, "url": link, "published": published})
-    return results
-
-
-def parse_jsonld_article_bodies(soup):
-    bodies = []
-    for script in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)}):
-        raw = script.string or script.get_text(" ", strip=True)
-        if not raw:
-            continue
-        try:
-            obj = json.loads(raw)
-        except Exception:
-            continue
-        stack = obj if isinstance(obj, list) else [obj]
-        while stack:
-            item = stack.pop(0)
-            if isinstance(item, list):
-                stack.extend(item)
-                continue
-            if not isinstance(item, dict):
-                continue
-            if isinstance(item.get("@graph"), list):
-                stack.extend(item["@graph"])
-            typ = item.get("@type", "")
-            types = typ if isinstance(typ, list) else [typ]
-            if any(str(t).lower() in {"article", "newsarticle", "reportagenewsarticle", "blogposting"} for t in types):
-                body = item.get("articleBody") or item.get("description")
-                if isinstance(body, str) and len(body) > 80:
-                    bodies.append(body)
-                headline = item.get("headline")
-                if headline and not bodies:
-                    bodies.append(str(headline))
-    return bodies
-
-
-def split_text_to_lines(text: str):
-    text = html.unescape(str(text or "")).replace("\xa0", " ")
-    text = re.sub(r"[ \t]+", " ", text)
-    raw_parts = re.split(r"[\r\n]+|(?<=[。！？])\s*|(?<=；)\s*|(?<=;)", text)
-    lines = []
-    for part in raw_parts:
-        line = normalize_space(part).strip(" •◾▪● \t\u200b")
-        if len(line) < 3 or len(line) > 1200:
-            continue
-        if line not in lines:
-            lines.append(line)
-    return lines
-
-
-def fetch_article(article):
-    url = canonical_url(article.get("url", ""))
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
-        response.raise_for_status()
-        final_url = canonical_url(response.url)
-        soup = BeautifulSoup(response.content, "html.parser")
-
-        title = (soup.find("h1").get_text(" ", strip=True) if soup.find("h1") else "")
-        if not title:
-            meta = soup.find("meta", property="og:title") or soup.find("meta", attrs={"name": "twitter:title"})
-            title = normalize_space(meta.get("content", "")) if meta else article.get("title", "")
-        published = article.get("published", "")
-        for attrs in ({"property": "article:published_time"}, {"name": "pubdate"}, {"name": "date"}, {"itemprop": "datePublished"}):
-            meta = soup.find("meta", attrs=attrs)
-            if meta and meta.get("content"):
-                published = meta["content"]
-                break
-
-        lines = []
-        for body in parse_jsonld_article_bodies(soup):
-            lines.extend(split_text_to_lines(body))
-
-        roots = []
-        for selector in [
-            '[itemprop="articleBody"]', "article", ".article-body", ".articleBody",
-            ".entry-content", ".post-content", ".article-content", ".story-content",
-            "main"
-        ]:
-            roots.extend(soup.select(selector))
-        if not roots and soup.body:
-            roots = [soup.body]
-        seen_roots = set()
-        for root in roots:
-            marker = id(root)
-            if marker in seen_roots:
-                continue
-            seen_roots.add(marker)
-            for node in root.select("h1,h2,h3,h4,p,li,td,th,figcaption,blockquote"):
-                txt = normalize_space(node.get_text(" ", strip=True))
-                if txt:
-                    lines.extend(split_text_to_lines(txt))
-            if not lines:
-                lines.extend(split_text_to_lines(root.get_text("\n", strip=True)))
-
-        clean = []
-        seen = set()
-        for line in lines:
-            line = strip_caption(normalize_space(line))
-            key = re.sub(r"\W", "", line.lower())
-            if not key or key in seen or is_noise(line):
-                continue
-            seen.add(key)
-            clean.append(line)
-        ok = len(clean) >= 2 and any(is_coffee_related(x) for x in [title, *clean])
-        logging.info("FETCH %s (%s): %s lines", "OK" if ok else "LOW CONTENT", final_url, len(clean))
-        if not ok:
-            return {"ok": False, "url": url, "final_url": final_url, "title": title, "published": published, "lines": []}
-        return {"ok": True, "url": url, "final_url": final_url, "title": title or article.get("title", ""), "published": published, "lines": clean}
-    except Exception as exc:
-        logging.warning("FETCH ERROR %s: %s", url, exc)
-        return {"ok": False, "url": url, "final_url": url, "title": article.get("title", ""), "published": article.get("published", ""), "lines": []}
-
-
-def strip_caption(line: str) -> str:
-    t = normalize_space(line)
-    t = re.sub(r"[（(]?\s*(?:圖|照片|圖片)\s*[／/]\s*(?:業者提供|資料圖|資料照|記者[^）)]*|[^）)]{0,24}提供)[）)]?", "", t)
-    t = re.sub(r"[（(]?\s*圖片來源[^）)]*[）)]?", "", t)
-    return normalize_space(t).strip(" ，、；;。")
-
-
-def is_noise(line: str) -> bool:
-    t = normalize_space(line)
-    if re.match(r"^(圖|圖片|照片|翻攝|示意圖|資料照|廣告|延伸閱讀|相關新聞|更多新聞|加入為 Google|責任編輯|記者[：:])", t):
-        return True
-    cleaned = strip_caption(t)
-    if len(cleaned) < 4:
-        return True
-    return False
-
-
-def is_coffee_related(text: str) -> bool:
-    t = str(text or "").lower()
-    return any(k in t for k in ["咖啡", "cafe", "café", "美式", "拿鐵", "寄杯", "city cafe", "city tea", "city pearl", "let's tea", "let’s tea", "萊爾富", "星巴克", "路易莎", "美廉社", "showba"])
-
-
 def find_store(text: str) -> str:
+    """精準指紋辨識，避免不同商家的商品混淆"""
     t = normalize_space(text)
-    if re.search(r"CITY\s*(?:CAFE|TEA|PEARL|PRIMA)|OPENPOINT", t, re.I) or re.search(r"7\s*[-－]?\s*(?:ELEVEN|11)", t, re.I):
-        return "7-ELEVEN"
-    if re.search(r"Let['’]?s\s*(?:Caf[eé]|Tea)|Fami!?ce|全家", t, re.I):
-        return "全家"
-    if re.search(r"萊爾富|Hi\s*[- ]?Life|Hi\s*Cafe", t, re.I):
-        return "萊爾富"
-    if re.search(r"OKmart|OK\s*超商|OKCAFE", t, re.I):
-        return "OKmart"
-    if re.search(r"美廉社", t):
-        return "美廉社"
-    if re.search(r"小北百貨|SHOWBA", t, re.I):
-        return "小北百貨"
-    if re.search(r"星巴克|Starbucks", t, re.I):
-        return "星巴克"
-    if re.search(r"路易莎|LOUISA", t, re.I):
-        return "路易莎"
-    if re.search(r"85\s*°?\s*C", t, re.I):
-        return "85°C"
-    if re.search(r"\bcama\b", t, re.I):
-        return "cama"
+    
+    # 1. 優先檢查精準品牌字眼
+    if re.search(r"7\s*[-－]?\s*(?:ELEVEN|11)|統一超商", t, re.I): return "7-ELEVEN"
+    if re.search(r"全家|FamilyMart", t, re.I): return "全家"
+    if re.search(r"萊爾富|Hi\s*[- ]?Life", t, re.I): return "萊爾富"
+    if re.search(r"OKmart|OK\s*超商", t, re.I): return "OKmart"
+    if re.search(r"美廉社", t, re.I): return "美廉社"
+    if re.search(r"小北百貨", t, re.I): return "小北百貨"
+    if re.search(r"星巴克|Starbucks", t, re.I): return "星巴克"
+    if re.search(r"路易莎|LOUISA", t, re.I): return "路易莎"
+    if re.search(r"85\s*°?\s*C", t, re.I): return "85°C"
+    if re.search(r"\bcama\b", t, re.I): return "cama"
+    
+    # 2. 若無品牌名，檢查各店專屬產品與活動特徵
+    if re.search(r"CITY\s*(?:CAFE|TEA|PEARL|PRIMA)|OPENPOINT|濃萃|厚乳|不可思議|思樂冰|星級饗宴", t, re.I): return "7-ELEVEN"
+    if re.search(r"Let['’]?s\s*(?:Caf[eé]|Tea)|Fami!?ce|單品(?:美式|拿鐵)|酷繽果|週三咖啡日|康康|好咖日|經典(?:美式|拿鐵)", t, re.I): return "全家"
+    if re.search(r"Hi\s*Caf[eé]|重乳拿鐵", t, re.I): return "萊爾富"
+    if re.search(r"OKCAFE|莊園級|極淬", t, re.I): return "OKmart"
+    if re.search(r"SHOWBA", t, re.I): return "小北百貨"
+    
+    # 3. 處理「特濃」這個容易混淆的字
+    if "特大特濃" in t: return "萊爾富" # 萊爾富專有名稱
+    if "特濃" in t: return "全家" # 全家大杯特濃
+    
     return ""
 
+def is_junk_record(offer_text: str) -> bool:
+    """過濾無關財經、導言、比較心得、無品項片段，並強制移除誤植資料"""
+    t = normalize_space(offer_text)
+    if len(t) < 4: return True
+    
+    # 移除網頁誤植的 3杯77元
+    if "3杯77" in re.sub(r"\s+", "", t): return True
 
-def classify_offer_category(offer: str) -> str:
-    """將霜淇淋、果昔等相鄰促銷歸為 related，不混進核心咖啡優惠。"""
-    text = normalize_space(offer)
-    # 「除了咖啡之外」常只是背景句，不能因此把霜淇淋優惠錯標成咖啡。
-    text = re.sub(r"(?:除了)?咖啡(?:優惠)?(?:之外|以外)(?:的部分)?", "", text)
-    if re.search(r"霜淇淋|果昔|冰沙|冰品|甜點|零食", text) and not re.search(
-        r"咖啡|美式|拿鐵|奶茶|紅茶|綠茶|青茶|抹茶|可可|歐蕾|瑪奇朵|寄杯|CITY\s*CAFE|CITY\s*TEA|Let's\s*Tea",
-        text,
-        re.I,
-    ):
-        return "related"
-    return "coffee"
-
-
-def is_caption_or_noise(line: str) -> bool:
-    return is_noise(line) or bool(re.fullmatch(r"[（(].{0,30}[）)]", line))
-
-
-def is_activity_context_line(line: str) -> bool:
-    return bool(DATE_RANGE_RE.search(line) or re.search(r"即日起.{0,20}(?:至|到|～|~)", line))
-
-
-def split_compound_offer(line: str):
-    """若同一段真的列出多個獨立優惠，拆成單筆；單一優惠的補充說明不拆。"""
-    parts = [normalize_space(p) for p in re.split(r"[，,、；;。]+", line or "") if normalize_space(p)]
-    product_re = re.compile(
-        r"咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
-        r"冰沙|果昔|霜淇淋|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|SHOWBA|星巴克|Starbucks|路易莎|Louisa|cama|丹堤|怡客|85\s*°?\s*C|茶品|茶|\btea\b",
-        re.I,
-    )
-    valid = [p for p in parts if 8 <= len(p) <= 320 and OFFER_RE.search(p) and product_re.search(p)]
-    # 至少兩個片段各自有品項與優惠機制，才判定為多筆優惠。
-    if len(valid) >= 2:
-        return valid
-    return [normalize_space(line)]
-
-
-def extract_article_deals(article, fetched):
-    if not fetched["ok"]:
-        return []
-    title = fetched.get("title") or article.get("title", "")
-    url = fetched.get("final_url") or article.get("url", "")
-    published = fetched.get("published") or article.get("published", "")
-    lines = fetched.get("lines", [])
-    out = []
-    title_store_matches = {name for name, pattern in STORE_PATTERNS if pattern.search(title or "")}
-    title_store = find_store(title) if len(title_store_matches) == 1 else ""
-    current_store = title_store
-    context_start = context_end = ""
-    context_date_text = ""
-    previous_context_line = ""
-
-    for line in lines:
-        if is_caption_or_noise(line):
-            continue
-        begins_store = find_store(line)
-        if begins_store and (len(line) < 100 or line.startswith(("7-ELEVEN", "7－11", "全家", "萊爾富", "OKmart", "美廉社", "小北百貨", "CITY", "Let's", "Let’s", "Hi-Life", "SHOWBA"))):
-            if current_store and begins_store != current_store:
-                context_start = context_end = ""
-                context_date_text = ""
-            current_store = begins_store
-        if is_activity_context_line(line):
-            s, e, dt = date_context(line, published)
-            if s or e:
-                context_start = s.isoformat() if s else ""
-                context_end = e.isoformat() if e else ""
-                context_date_text = dt or line[:90]
-                previous_context_line = line
-
-        if not OFFER_RE.search(line) or not (8 <= len(line) <= 1000):
-            continue
-
-        for offer_line in split_compound_offer(line):
-            if not OFFER_RE.search(offer_line) or not (8 <= len(offer_line) <= 1000):
-                continue
-            s, e, dt = date_context(offer_line, published)
-            if not (s or e) and context_date_text:
-                s_text, e_text, dt_text = context_start, context_end, context_date_text
-            else:
-                s_text = s.isoformat() if s else ""
-                e_text = e.isoformat() if e else ""
-                dt_text = dt
-
-            store = find_store(offer_line) or current_store or title_store or "品牌待確認"
-            # 要計算「不同品牌數」，不能把同一品牌在一句話出現多次當成多品牌導言。
-            brand_hits = {name for name, pattern in STORE_PATTERNS if pattern.search(offer_line)}
-            if len(brand_hits) >= 3:
-                continue
-            out.append(make_deal(store, offer_line, url, title, s_text, e_text, dt_text, published, category=classify_offer_category(offer_line)))
-    return out
-
-
-def is_non_offer_record(item):
-    """濾除不完整的優惠片段、新聞導言、圖片說明與明顯無關的文章段落。"""
-    text = normalize_space(item.get("offer", ""))
-    if not text or is_noise(text):
+    # 阻擋財經與股市混入
+    if any(k in t for k in ["股", "本益比", "增資", "營收", "大盤", "漲逾", "醫療保健", "公司債", "停班停課"]):
         return True
-    if re.match(r"^(?:4大超商|四大超商|超商咖啡優惠！|咖啡優惠懶人包|延伸閱讀|廣告|圖／|圖片來源)", text):
+        
+    # 阻擋新聞導言與心得雜訊
+    if re.search(r"^(如果|反過來說|最後還是要提醒|連假當天|每天喝咖啡|不想一次|想買一送一|固定喝特選|和\s*7|想直|購買限制|提醒：)", t):
         return True
-    if not OFFER_RE.search(text):
+    if re.search(r"^(快來喝|颱風假|本周|4大超商|本週|超商咖啡寄杯|頂呱呱|▲.*日|▲.*活動檔期|其中)", t):
+        return True
+        
+    # 必須包含具體品項，否則像「17杯500元」直接過濾
+    if not any(item in t for item in VALID_ITEMS):
         return True
 
-    # 僅有杯數和價格、沒有商品名稱的碎片，不應當成獨立優惠卡片。
-    compact = re.sub(r"\s+", "", text)
-    if re.fullmatch(r"\d+杯(?:組)?[\d,]+元", compact):
+    # 必須有實際優惠機制
+    has_mechanism = re.search(r"買\s*\d+\s*送\s*\d+|第\s*[二2]\s*杯|\d+\s*杯組?\s*\d+\s*元|\d+\s*折|均一價|單杯\s*\d+\s*元|加\s*10\s*元多|半價", t)
+    if not has_mechanism:
         return True
 
-    # 要有可辨識品項；單獨出現「茶」字容易讓一般新聞誤通過。
-    valid_products = re.compile(
-        r"咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
-        r"冰沙|果昔|霜淇淋|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|SHOWBA|星巴克|Starbucks|路易莎|Louisa|cama|丹堤|怡客|85\s*°?\s*C|茶品|茶|\btea\b",
-        re.I,
-    )
-    if not valid_products.search(text):
-        return True
-
-    # 避免財經／股市文章因為偶然提及品牌與優惠詞而被當成優惠。
-    financial = re.search(r"股價|股市|股票|盤中|收盤|台股|營收|每股盈餘|股利|法人買賣|投資人|漲停|跌停|財報", text, re.I)
-    if financial and len(text) > 100 and not re.search(
-        r"(?:美式|拿鐵|咖啡|飲品|茶|果昔|霜淇淋).{0,35}(?:買\s*[一1二2]?\s*送|第\s*[二2]杯|\d+\s*杯|\d[\d,]*\s*元|\d+\s*折|寄杯)",
-        text,
-        re.I,
-    ):
-        return True
-
-    # 一段同時談多家品牌但沒有列出具體優惠的文章導言。
-    brands = len({name for name, pattern in STORE_PATTERNS if pattern.search(text)})
-    concrete_offers = len(re.findall(r"買\s*[一二三四五六七八九十\d]+\s*送\s*[一二三四五六七八九十\d]+|\d+\s*杯.{0,30}?[\d,]+\s*元|第\s*[二2]杯|\d+(?:\.\d+)?\s*折|寄杯", text, re.I))
-    if brands >= 3 and concrete_offers < 2:
-        return True
-
-    # 超長散文通常是整段文章被誤抓，而不是單一優惠項目。
-    if len(text) > 650 and concrete_offers < 2:
-        return True
     return False
 
-
-def _normalise_offer_core(value: str) -> str:
-    """去除不影響優惠身份的品牌前綴、日期、平均單價與編輯備註。"""
-    text = normalize_space(value).lower().replace("let’s", "let's")
-    text = DATE_RANGE_RE.sub(" ", text)
-    text = SINGLE_DATE_RE.sub(" ", text)
-
-    # 先清掉括號內的原價／平均價等補充資訊，保留商品例外條件。
-    text = re.sub(r"[（(][^）)]*(?:原價|平均(?:每杯)?|限量\s*[\d,]|每會員限購|依原文|原文註明|待確認|請查原文)[^）)]*[）)]", " ", text)
-    text = re.sub(r"平均(?:每杯)?(?:約|不到)?\s*\d+(?:\.\d+)?\s*元?\s*(?:／\s*杯|/\s*杯|每杯)?", " ", text)
-    text = re.sub(r"每杯(?:約|平均)?\s*\d+(?:\.\d+)?\s*元", " ", text)
-    text = re.sub(r"原價\s*[\d,]+\s*元", " ", text)
-    text = re.sub(r"限量\s*[\d,]*\s*(?:萬)?組|每會員限購\s*\d+\s*組", " ", text)
-    text = re.sub(r"商品依店舖實際供應為準|數量有限|售完為止|原文註明|依文章標題|依原文|咖啡優惠(?:懶人包)?|優惠情報", " ", text)
-
-    # 中文數字只轉換優惠規則會用到的數字，減少「一顆檸檬」等詞被變形的影響。
-    for old, new in [("十", "10"), ("一", "1"), ("二", "2"), ("三", "3"), ("四", "4"), ("五", "5"), ("六", "6"), ("七", "7"), ("八", "8"), ("九", "9"), ("零", "0")]:
-        text = text.replace(old, new)
-
-    # 保留通用品類詞，否則 Let's Tea／CITY TEA 的無具體口味優惠會變成 unknown-product。
-    text = re.sub(r"city\s*tea|let's\s*tea", " 茶品 ", text, flags=re.I)
-    text = re.sub(r"city\s*caf[eé]|let's\s*caf[eé]", " 咖啡品項 ", text, flags=re.I)
-    text = re.sub(
-        r"7\s*[-－]?\s*(?:eleven|11)|city\s*pearl|city\s*prima|openpoint|"
-        r"hi\s*[- ]?life|hi\s*caf[eé]|showba\s*caf[eé]",
-        " ", text, flags=re.I,
-    )
-    # 「大杯」在有些報導中省略，有助合併同一活動；「特大杯」仍保留為不同杯型。
-    text = text.replace("特大杯", "__特大杯__")
-    text = text.replace("大杯", " ")
-    text = text.replace("__特大杯__", "特大杯")
-    text = text.replace("杯組", "杯")
-    text = re.sub(r"[圖照片圖片]\s*[／/]\s*[^，。；]*", " ", text)
-    return normalize_space(text)
-
-
-def _product_signature(compact: str) -> str:
-    """以較具體的飲品名稱為主；有明確品項時不再加上泛稱「咖啡／茶」。"""
-    specific = [
-        "咖啡珍珠歐蕾", "珍珠奶茶", "珍珠撞奶", "珍珠歐蕾", "香椰厚拿鐵", "厚濃抹茶拿鐵",
-        "燕麥拿鐵", "重乳拿鐵", "濃萃美式", "特濃美式", "特濃拿鐵", "檸檬青茶", "檸檬紅茶",
-        "青梅冰茶", "冰淇淋紅茶", "黃金蕎麥奶茶", "蕎麥奶茶", "水果茶", "果昔", "霜淇淋",
-        "瑪奇朵", "拿鐵", "美式", "抹茶", "珍珠", "紅茶", "綠茶", "青茶", "奶茶", "歐蕾",
-        "可可", "冰沙", "蕎麥茶", "星沁爽", "星巴克", "starbucks", "路易莎", "louisa", "cama", "丹堤", "怡客", "85°c",
-    ]
-    found = [token for token in specific if token in compact]
-    if not found:
-        if "咖啡" in compact:
-            found.append("咖啡")
-        elif re.search(r"(?<!蕎麥)(?<!水果)茶", compact):
-            found.append("茶")
-    else:
-        # 商品已有具體品項名稱時，「咖啡」「茶」通常只是泛稱，不作為額外差異。
-        found = [token for token in found if token not in {"咖啡", "茶"}]
-    modifiers = [m for m in ["燕麥", "重乳", "特濃", "濃萃", "精品", "厚乳", "椰奶", "特大杯"] if m in compact]
-    return "+".join(sorted(set(found + modifiers))) or "unknown-product"
-
-
-def _promotion_signature(compact: str) -> str:
-    """只取真正優惠條件，忽略原價、平均價、限量等不穩定數字。"""
-    patterns = [
-        ("buy-send", r"買\s*(\d+)\s*送\s*(\d+)"),
-        ("second-cup", r"第\s*2\s*杯\s*(\d+)\s*(元|折)"),
-        ("second-item", r"第\s*2\s*件\s*(\d+)\s*折"),
-        ("cup-price", r"(\d+)\s*杯.{0,30}?([\d,]+)\s*元"),
-        ("unit-price", r"(\d+)\s*(?:支|隻)\s*([\d,]+)\s*元"),
-        ("item-price", r"(\d+)\s*件\s*([\d,]+)\s*元"),
-        ("single-price", r"單杯\s*([\d,]+)\s*元"),
-    ]
-    matches = []
-    for label, pattern in patterns:
-        for match in re.finditer(pattern, compact):
-            vals = [re.sub(r",", "", x) for x in match.groups()]
-            matches.append(label + ":" + ":".join(vals))
-    if matches:
-        return ";".join(sorted(set(matches)))
-    # 沒有明確杯數／價格時，折數仍可代表優惠條件。
-    discounts = sorted(set(re.findall(r"(?<!\d)(\d+(?:\.\d+)?)\s*折", compact)))
-    if discounts:
-        return "discount:" + ",".join(discounts)
-    return "text:" + re.sub(r"[\s，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]", "", compact)
-
-
-def semantic_offer_key(item):
-    """建立可比較的語意鍵；不把平均單價、原價或限量數字當成優惠本體。"""
-    original = normalize_space(item.get("offer", ""))
-    store = normalize_space(item.get("store", ""))
-    if not store or store in {"品牌待確認", "店家待確認", "未知品牌"}:
-        store = find_store(original) or store or "品牌待確認"
-    core = _normalise_offer_core(original)
-    compact = re.sub(r"[\s ，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]", "", core)
-    product = _product_signature(compact)
-    promotion = _promotion_signature(core)
-    feature = product + "|" + promotion
-    start = item.get("start_date", "") or ""
-    end = item.get("end_date", "") or ""
-    period = f"{start}/{end}" if start and end else "unknown-period"
-    return store, feature, period
-
-
-def _dates_compatible(a, b):
-    """有明確且互相矛盾的起訖日期就不合併；未知日期可被完整日期補齊。"""
-    for field in ("start_date", "end_date"):
-        av = (a.get(field) or "").strip()
-        bv = (b.get(field) or "").strip()
-        if av and bv and av != bv:
-            return False
-    return True
-
-
-def _offer_quality(offer: str) -> tuple:
-    text = normalize_space(offer)
-    # 計算「不同」品項／促銷，不讓同一品項與價格在長句裡重複出現而得到更高分。
-    product_terms = set(re.findall(r"咖啡|美式|拿鐵|茶|珍珠|果昔|霜淇淋|可可|瑪奇朵|冰沙|燕麥|重乳|濃萃|特濃", text))
-    promo_terms = set(re.findall(
-        r"買\s*[\d一二三四五六七八九十]+\s*送\s*[\d一二三四五六七八九十]+|"
-        r"第\s*[二2]\s*杯\s*\d+\s*(?:元|折)|\d+\s*杯.{0,30}?[\d,]+\s*元|"
-        r"\d+\s*支\s*[\d,]+\s*元|\d+\s*件\s*[\d,]+\s*元|\d+\s*折|寄杯|單杯\s*\d+\s*元",
-        text,
-    ))
-    score = len(product_terms) * 3 + len(promo_terms) * 5 - max(0, len(text) - 85) / 25
-    return score, -len(text)
-
-
-def deduplicate_deals(deals):
-    """語意去重並合併來源。比較每筆目前日期，避免未知日期鍵造成不同檔期被連鎖合併。"""
-    groups = []
-    # 舊 deals.json 可能已把一段內的多項促銷存成單筆，先拆開再去重。
-    expanded = []
-    for raw in deals:
-        if not isinstance(raw, dict) or not raw.get("offer"):
-            continue
-        offer_parts = split_compound_offer(str(raw.get("offer", "")))
-        for offer_part in offer_parts:
-            item_part = dict(raw)
-            item_part["offer"] = offer_part
-            if len(offer_parts) > 1:
-                part_store = find_store(offer_part)
-                if part_store:
-                    item_part["store"] = part_store
-                item_part["category"] = classify_offer_category(offer_part)
-            elif classify_offer_category(offer_part) == "related":
-                # 修正舊 JSON 中把霜淇淋／果昔誤標成 coffee 的列。
-                item_part["category"] = "related"
-            expanded.append(item_part)
-
-    for raw in expanded:
-        if is_non_offer_record(raw):
-            continue
-        item = dict(raw)
-        item["article_url"] = canonical_url(item.get("article_url", ""))
-        urls = item.get("source_urls") or ([item["article_url"]] if item.get("article_url") else [])
-        if item.get("article_url"):
-            urls = list(urls) + [item["article_url"]]
-        item["source_urls"] = list(dict.fromkeys(canonical_url(u) for u in urls if u))
-        store, feature, _ = semantic_offer_key(item)
-
-        candidates = []
-        unknown_stores = {"", "品牌待確認", "店家待確認", "未知品牌"}
-        for old in groups:
-            old_store, old_feature, _ = semantic_offer_key(old)
-            store_compatible = old_store == store or old_store in unknown_stores or store in unknown_stores
-            if not store_compatible or old_feature != feature:
-                continue
-            if _dates_compatible(old, item):
-                candidates.append(old)
-
-        # 未知品牌只有在唯一候選時才併入，避免同一個泛稱優惠錯誤合併到多家店。
-        match = candidates[0] if len(candidates) == 1 else None
-        if match is None:
-            groups.append(item)
-            continue
-        old_store = normalize_space(match.get("store", ""))
-        if old_store in unknown_stores and store not in unknown_stores:
-            match["store"] = store
-
-        match["source_urls"] = list(dict.fromkeys((match.get("source_urls") or []) + item["source_urls"]))
-        if not match.get("article_url") and item.get("article_url"):
-            match["article_url"] = item["article_url"]
-        for field in ("article_title", "published", "start_date", "end_date"):
-            if not match.get(field) and item.get(field):
-                match[field] = item[field]
-        if match.get("date_text") in {None, "", "活動日期尚待確認", "日期未明"} and item.get("date_text"):
-            match["date_text"] = item["date_text"]
-        elif item.get("date_text") and len(item["date_text"]) > len(match.get("date_text", "")) and not match.get("start_date"):
-            match["date_text"] = item["date_text"]
-        if _offer_quality(item.get("offer", "")) > _offer_quality(match.get("offer", "")):
-            match["offer"] = item["offer"]
-        match["needs_check"] = bool(match.get("needs_check", False) or item.get("needs_check", False))
-        if item.get("category") == "coffee":
-            match["category"] = "coffee"
-    return groups
-
-
-def load_existing(path=OUTPUT_FILE):
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        if isinstance(data, dict) and isinstance(data.get("deals"), list):
-            return data
-        if isinstance(data, list):
-            return {"deals": data}
-        return None
-    except (FileNotFoundError, json.JSONDecodeError, OSError):
-        return None
-
-
-def refresh_statuses(deals):
-    for item in deals:
-        item["status"] = infer_status(item.get("start_date", ""), item.get("end_date", ""))
-        item.setdefault("needs_check", True)
-        item.setdefault("category", "coffee")
-    return deals
-
-
-def safe_write(data, path=OUTPUT_FILE):
-    temp_path = path + ".tmp"
-    with open(temp_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-        f.flush()
-        os.fsync(f.fileno())
-    os.replace(temp_path, path)
-
-
-def main():
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-    articles = list(SEED_ARTICLES)
-    rss_failures = 0
-    for query in RSS_QUERIES:
-        try:
-            found = rss(query)
-            logging.info("RSS OK (%s): %d articles", query, len(found))
-            articles.extend(found)
-        except Exception as exc:
-            rss_failures += 1
-            logging.warning("RSS ERROR (%s): %s", query, exc)
-
-    unique_articles = {}
-    for a in articles:
-        url = canonical_url(a.get("url", ""))
-        if not url:
-            continue
-        if url not in unique_articles:
-            unique_articles[url] = {**a, "url": url}
-        elif not unique_articles[url].get("published") and a.get("published"):
-            unique_articles[url]["published"] = a["published"]
-
-    to_fetch = list(unique_articles.values())[:MAX_ARTICLES]
-    fetched_success = 0
-    failed_urls = set()
-    empty_extraction_urls = set()
-    dynamic_deals = []
-    for i, article in enumerate(to_fetch, 1):
-        logging.info("[%d/%d] %s", i, len(to_fetch), article.get("title", article["url"]))
-        result = fetch_article(article)
-        if result["ok"]:
-            fetched_success += 1
-            extracted = extract_article_deals(article, result)
-            dynamic_deals.extend(extracted)
-            # 頁面讀取成功但沒有解析出優惠時，也保留該來源尚未過期的舊記錄。
-            # 這可降低網站改版／抽取規則短暫失效造成資料突然消失的風險。
-            if not extracted:
-                empty_extraction_urls.add(canonical_url(article.get("url", "")))
-                empty_extraction_urls.add(canonical_url(result.get("final_url", "")))
-        else:
-            failed_urls.add(canonical_url(article.get("url", "")))
-        time.sleep(REQUEST_DELAY_SECONDS)
-
-    curated = curated_deals()
-    fresh = deduplicate_deals(curated + dynamic_deals)
-    previous = load_existing()
-
-    if fetched_success < MIN_SUCCESSFUL_ARTICLES_TO_REPLACE and previous and previous.get("deals"):
-        logging.warning("本輪成功讀取文章數偏低：採用既有資料 + 已知人工整理優惠，避免用不完整結果覆寫舊資料。")
-        fresh = deduplicate_deals(list(previous.get("deals", [])) + curated)
-
-    if previous and isinstance(previous.get("deals"), list):
-        preserve = []
-        for old in previous["deals"]:
-            if not isinstance(old, dict) or not old.get("offer"):
-                continue
-            urls = old.get("source_urls") or [old.get("article_url", "")]
-            url_list = [canonical_url(u) for u in urls if u]
-            retainable_urls = failed_urls | empty_extraction_urls
-            if not url_list or not any(u in retainable_urls for u in url_list):
-                continue
-            end_text = old.get("end_date") or ""
-            try:
-                if end_text and date.fromisoformat(end_text) < TODAY:
-                    continue
-            except ValueError:
-                pass
-            
-            # 此處呼叫加強過的 is_non_offer_record，過濾掉已存在 json 裡但其實不合理的舊資料
-            if is_non_offer_record(old):
-                continue
-                
-            if old.get("start_date") or old.get("end_date") or old.get("status") == "verify":
-                preserve.append(old)
-        fresh = deduplicate_deals(fresh + preserve)
-
-    final_deals = refresh_statuses(fresh)
-    store_order = ["7-ELEVEN", "全家", "萊爾富", "OKmart", "美廉社", "小北百貨", "星巴克", "路易莎", "85°C", "cama", "全聯", "品牌待確認"]
-    final_deals.sort(key=lambda d: (
-        store_order.index(d.get("store")) if d.get("store") in store_order else len(store_order),
-        d.get("start_date") or "9999-99-99",
-        d.get("end_date") or "9999-99-99",
-        d.get("offer", ""),
-    ))
-
-    counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
-    data = {
-        "updated_at": datetime.now(TZ).isoformat(),
-        "today": TODAY.isoformat(),
-        "count": len(final_deals),
-        "counts": counts,
-        "disclaimer": (
-            "資料來自固定指定新聞文章、使用者提供的已知優惠內容與 Google 新聞 RSS 搜尋。"
-            "自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。"
-            "活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。"
-        ),
-        "deals": final_deals,
-        "scrape_report": {
-            "articles_discovered": len(to_fetch),
-            "articles_fetched_successfully": fetched_success,
-            "articles_failed_or_low_content": len(failed_urls),
-            "urls_for_articles_with_no_extracted_offers": len(empty_extraction_urls),
-            "rss_queries_failed": rss_failures,
-            "curated_records": len(curated),
-            "dynamic_records_before_dedup": len(dynamic_deals),
-            "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。",
-        },
-    }
-    safe_write(data)
-    logging.info("Saved %d deals to %s", len(final_deals), OUTPUT_FILE)
-    logging.info("Status counts: %s", counts)
-    logging.info("Scrape report: %s", data["scrape_report"])
-
-
-if __name__ == "__main__":
-    main()
+def extract_deal_signature(deal: dict) -> tuple:
+    """從優惠文字中擷取核心品項與優惠架構，做為跨新聞的統一去重指紋。"""
+    offer = normalize_space(deal.get("offer", ""))
+    store = deal.get("store") or "品牌待確認"
+    
+    # 去除干擾詞
+    offer = re.sub(r"（[^）]*）|\([^)]*\)", "", offer) 
+    for ch, n in [("十", "10"), ("一", "1"), ("二", "2"), ("三", "3"), ("四", "4"), ("五", "5"), ("六", "6"), ("七", "7"), ("八", "8"), ("九", "9")]:
+        offer = offer.replace(ch, n)
+        
+    # 1. 抓出品項特徵
+    matched_items = [i for i in VALID_ITEMS if i in offer]
+    if any(x in matched_items for x in ["濃萃美式", "特濃美式", "單品美式", "經典美式"]) and "美式" in matched_items: 
+        matched_items.remove("美式")
+    if any(x in matched_items for x in ["濃萃拿鐵", "特濃拿鐵", "重乳拿鐵", "燕麥拿鐵", "單品拿鐵", "抹茶拿鐵", "香椰厚拿鐵", "厚濃抹茶拿鐵", "厚乳拿鐵", "經典拿鐵"]) and "拿鐵" in matched_items: 
+        matched_items.remove("拿鐵")
+    if any(x in matched_items for x in ["抹茶拿鐵", "厚濃抹茶拿鐵"]) and "抹茶" in matched_items: 
+        matched_items.remove("抹茶")
+    if len(matched_items) > 1 and "咖啡" in matched_items: 
+        matched_items.remove("咖啡")
+        
+    product = "+".join(sorted(matched_items)) if matched_items else "未知品項"
+    
+    # 2. 抓出優惠機制特徵
+    mech = ""
+    m_buy = re.search(r"買\s*(\d+)\s*送\s*(\d+)", offer)
+    if m_buy: mech = f"買{m_buy.group(1)}送{m_buy.group(2)}"
+    
+    if not mech:
+        m_pack = re.search(r"(\d+)\s*杯組?\s*([\d,]+)\s*元", offer)
+        if m_pack: mech = f"{m_pack.group(1)}杯{m_pack.group(2).replace(',', '')}
