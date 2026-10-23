@@ -572,21 +572,76 @@ def normalize_key_text(value: str) -> str:
     return value
 
 
+def semantic_offer_key(item):
+    """以品牌、品項、優惠機制、杯數/價格及活動日期建立跨媒體去重鍵。"""
+    offer = normalize_space(item.get("offer", "")).lower().replace("let’s", "let's")
+    store = normalize_space(item.get("store", ""))
+    # 去除新聞常見補充語，不讓「依原文」「限量」等文字造成假差異。
+    offer = re.sub(r"（[^）]*(?:依原文|請查|待確認|實際|限量|每會員限購|原文註明)[^）]*）", "", offer)
+    offer = re.sub(r"\([^)]*(?:依原文|請查|待確認|實際|限量|每會員限購|原文註明)[^)]*\)", "", offer)
+    offer = DATE_RANGE_RE.sub(" ", offer)
+    offer = SINGLE_DATE_RE.sub(" ", offer)
+    # 統一中文數字與常見寫法。
+    for old, new in [("十", "10"), ("一", "1"), ("二", "2"), ("三", "3"), ("四", "4"), ("五", "5"), ("六", "6"), ("七", "7"), ("八", "8"), ("九", "9"), ("零", "0")]:
+        offer = offer.replace(old, new)
+    offer = re.sub(r"7\s*[-－]?\s*(?:eleven|11)|city\s*caf[eé]|city\s*tea|city\s*pearl|city\s*prima|openpoint|let's\s*caf[eé]|let's\s*tea|hi\s*[- ]?life|hi\s*caf[eé]", " ", offer)
+    offer = re.sub(r"(?:圖|照片|圖片)\s*[／/]\s*[^，。；]*", " ", offer)
+    offer = re.sub(r"平均(?:約|不到)?\s*\d+\s*元?\s*[／/]\s*杯", " ", offer)
+    offer = re.sub(r"限量\s*[\d,]*\s*(?:萬)?組|每會員限購\s*\d+\s*組|依原文|原文註明|實際適用[^，。；]*|商品依店舖實際供應為準|數量有限|售完為止", " ", offer)
+    compact = re.sub(r"[\s　，。、；：:！!？?（）()\[\]【】「」『』,.／/～~－—–_-]", "", offer)
+    compact = compact.replace("杯組", "杯").replace("組", "")
+
+    # 優惠機制/杯數/價格為核心；保留飲品種類，避免美式和拿鐵錯誤合併。
+    product_tokens = []
+    for token in ["美式", "拿鐵", "燕麥", "重乳", "特濃", "珍珠奶茶", "珍珠撞奶", "珍珠歐蕾", "水果茶", "檸檬青茶", "檸檬紅茶", "青梅冰茶", "冰淇淋紅茶", "蕎麥奶茶", "蕎麥茶", "抹茶", "果昔", "霜淇淋", "精品香椰厚拿鐵", "咖啡"]:
+        if token in compact:
+            product_tokens.append(token)
+    # 「買1送1」「買10送10」「第二杯5元」機制不可互相混淆。
+    mechanisms = []
+    for pat in [r"買\d+送\d+", r"第?2杯\d+元", r"第2件\d+折", r"\d+折", r"\d+杯組?\d+元", r"\d+杯\d+元", r"單杯\d+元", r"\d+杯"]:
+        mechanisms.extend(re.findall(pat, compact))
+    numbers = re.findall(r"\d+", compact)
+    # 去重鍵仍包含數字序列，避免同品項不同價格/杯數誤合併。
+    feature = "|".join([*sorted(set(product_tokens)), *sorted(set(mechanisms)), "nums:" + ",".join(numbers)])
+    start = item.get("start_date", "") or ""
+    end = item.get("end_date", "") or ""
+    # 兩筆都有完整期間但不同期間，不合併；缺日期者可與已知日期的同優惠合併，之後補上日期。
+    period = f"{start}/{end}" if start and end else "unknown-period"
+    return store, feature or compact, period
+
+
+def is_non_offer_record(item):
+    """濾除新聞導言、圖片說明、比較心得及沒有實際優惠機制的泛述。"""
+    text = normalize_space(item.get("offer", ""))
+    if not text or is_noise(text):
+        return True
+    if re.match(r"^(?:4大超商|四大超商|超商咖啡優惠！|咖啡優惠懶人包|延伸閱讀|廣告|圖／|圖片來源)", text):
+        return True
+    # 有優惠機制/數字價格/寄杯/折扣才保留；例外允許明確的買送機制。
+    if not OFFER_RE.search(text):
+        return True
+    # 明顯是導言：一次列出多家品牌、但未給出單一可識別的優惠機制。
+    brands = len(re.findall(r"7\s*[-－]?\s*(?:ELEVEN|11)|全家|萊爾富|OKmart|美廉社|小北百貨", text, re.I))
+    if brands >= 3 and len(re.findall(r"\d+\s*元|買\s*\d+\s*送\s*\d+|\d+\s*杯", text)) < 2:
+        return True
+    return False
+
+
 def deduplicate_deals(deals):
-    """只在同品牌、正規化優惠及相同日期下合併；價格/杯數/日期不同仍保留。"""
+    """語意去重：品牌＋品項＋優惠機制/杯數價格＋期間；合併來源並補齊缺失日期。"""
     groups = {}
     for raw in deals:
-        if not isinstance(raw, dict) or not raw.get("offer"):
+        if not isinstance(raw, dict) or not raw.get("offer") or is_non_offer_record(raw):
             continue
         item = dict(raw)
         item["article_url"] = canonical_url(item.get("article_url", ""))
         urls = item.get("source_urls") or ([item["article_url"]] if item.get("article_url") else [])
         item["source_urls"] = list(dict.fromkeys(canonical_url(u) for u in urls if u))
-        identity = normalize_key_text(item.get("offer", ""))
-        # 短文字不跨來源合併，避免錯誤去重。
-        key = (item.get("store", ""), identity, item.get("start_date", ""), item.get("end_date", ""))
-        if len(identity) < 8:
-            key = key + (item.get("article_url", ""),)
+        store, feature, period = semantic_offer_key(item)
+        # 如果兩筆同優惠只有一筆日期完整，仍可合併；兩筆日期皆完整則期間需一致。
+        base = (store, feature)
+        candidates = [k for k in groups if k[:2] == base and (k[2] == period or k[2] == "unknown-period" or period == "unknown-period")]
+        key = candidates[0] if candidates else (store, feature, period)
         if key not in groups:
             groups[key] = item
             continue
@@ -594,10 +649,12 @@ def deduplicate_deals(deals):
         old["source_urls"] = list(dict.fromkeys((old.get("source_urls") or []) + item["source_urls"]))
         if not old.get("article_url") and item.get("article_url"):
             old["article_url"] = item["article_url"]
-        # 若新條目提供更多日期資訊，只有在兩筆日期相容時才補入。
-        for field in ("article_title", "published", "date_text"):
+        for field in ("article_title", "published", "date_text", "start_date", "end_date"):
             if not old.get(field) and item.get(field):
                 old[field] = item[field]
+        # 讓資訊較完整的原始優惠文字勝出，避免把簡短標題覆蓋詳細條件。
+        if len(item.get("offer", "")) > len(old.get("offer", "")):
+            old["offer"] = item["offer"]
         old["needs_check"] = bool(old.get("needs_check", False) or item.get("needs_check", False))
         if item.get("category") == "coffee":
             old["category"] = "coffee"
