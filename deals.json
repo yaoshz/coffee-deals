@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-24T12:47:14.739847+08:00",
+  "updated_at": "2026-10-24T19:14:40.025405+08:00",
   "today": "2026-10-24",
   "count": 106,
   "counts": {
@@ -1874,7 +1874,7 @@
     "urls_for_articles_with_no_extracted_offers": 1,
     "rss_queries_failed": 0,
     "curated_records": 44,
-    "dynamic_records_before_dedup": 149,
+    "dynamic_records_before_dedup": 147,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
   }
 }
