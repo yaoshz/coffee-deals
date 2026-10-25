@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.6
+"""省咖啡｜優惠雷達 v6.9
 
 目標：
 - 抓取固定指定文章 + Google News RSS 發現的近期文章。
@@ -68,6 +68,7 @@ URL_YAHOO_TYPHOON = (
 )
 URL_NOWNEWS = "https://www.nownews.com/news/6884698"
 URL_COSMO = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/"
+URL_STARBUCKS_UNIOPEN = "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935"
 
 SEED_ARTICLES = [
     {"title": "Yahoo 新聞｜四大超商光復節連假咖啡優惠", "url": URL_YAHOO_GENERAL, "published": "2026-10-22"},
@@ -137,6 +138,39 @@ def canonical_url(url: str) -> str:
         return urlunparse((p.scheme or "https", p.netloc.lower(), path, "", urlencode(query), ""))
     except Exception:
         return (url or "").strip()
+
+
+def _item_source_urls(item: dict) -> list[str]:
+    """讀取主網址與來源網址；兼容舊資料把 source_urls 寫成單一字串的情形。"""
+    values = [item.get("article_url", "")]
+    extra = item.get("source_urls") or []
+    if isinstance(extra, str):
+        extra = [extra]
+    if isinstance(extra, (list, tuple, set)):
+        values.extend(extra)
+    return list(dict.fromkeys(canonical_url(str(url)) for url in values if normalize_space(url)))
+
+
+def _has_official_starbucks_source(item: dict) -> bool:
+    """官方 uniopen 白名單以 article_url 和 source_urls 的聯集判定，避免合併後主網址改變造成誤刪。"""
+    official = canonical_url(URL_STARBUCKS_UNIOPEN)
+    return official in set(_item_source_urls(item))
+
+
+def _merge_details(existing, incoming) -> str:
+    """合併重複優惠的補充說明：不讓空值覆蓋內容，重複片語不再追加。"""
+    current = normalize_space(existing)
+    new = normalize_space(incoming)
+    if not current:
+        return new
+    if not new:
+        return current
+    current_fold, new_fold = current.casefold(), new.casefold()
+    if new_fold in current_fold:
+        return current
+    if current_fold in new_fold:
+        return new
+    return f"{current}；{new}"
 
 
 def normalize_space(s: str) -> str:
@@ -255,7 +289,134 @@ def infer_status(start: str, end: str) -> str:
     return "verify"
 
 
-def make_deal(store, offer, url, title, start="", end="", date_text="", published="", needs_check=True, category="coffee"):
+STORE_ORDER = ["星巴克", "7-ELEVEN", "全家", "萊爾富", "OKmart", "美廉社", "小北百貨", "路易莎", "85°C", "cama", "全聯", "品牌待確認", "店家待確認"]
+
+_CN_NUMS = {"零": 0, "一": 1, "二": 2, "兩": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+
+
+def _count_token(value: str) -> int:
+    """把阿拉伯或常見中文數字轉成數值，供優惠排序使用。"""
+    token = normalize_space(value)
+    if token.isdigit():
+        return int(token)
+    if not token:
+        return 0
+    digits = {"零": 0, "〇": 0, "一": 1, "二": 2, "兩": 2, "三": 3, "四": 4,
+              "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+    if not any(unit in token for unit in ("十", "百", "千")):
+        return digits.get(token, 0)
+    total = 0
+    section = 0
+    number = 0
+    for char in token:
+        if char in digits:
+            number = digits[char]
+        elif char in ("十", "百", "千"):
+            unit = {"十": 10, "百": 100, "千": 1000}[char]
+            section += (number if number else 1) * unit
+            number = 0
+        else:
+            return 0
+    return total + section + number
+
+
+def offer_priority_weight(offer: str) -> tuple:
+    """依實際方案排序：單杯價、買1送1、其他雙杯、三杯以上；平均單價不視為單杯價。"""
+    text = normalize_space(offer)
+    compact = re.sub(r"\s+", "", text).lower()
+    number = r"零一二兩三四五六七八九十百千\d"
+
+    # 先辨識真正的買送方案；優先採用文字中第一個買送機制，避免附加條件干擾主優惠。
+    buy_send = re.search(rf"買\s*([{number}]+)\s*送\s*([{number}]+)", text)
+    if buy_send:
+        bought = _count_token(buy_send.group(1))
+        free = _count_token(buy_send.group(2))
+        total = bought + free
+        if total > 0:
+            return (total, 0, bought, compact)
+
+    has_average_word = bool(re.search(
+        r"平均|每杯\s*約|每杯平均|平均每杯|平均一杯|換算|折合|均攤|單杯價格|每杯約",
+        text
+    ))
+    # 平均每杯的換算數字不是促銷杯數；先移除這類片語，再辨識真正的 X 杯組。
+    quantity_text = re.sub(
+        r"(?:平均(?:每杯|一杯)?|每杯(?:平均|約|约)?|換算(?:每杯)?|折合(?:每杯)?|均攤(?:每杯)?)\s*(?:約|约)?\s*[\d,]+(?:\.\d+)?\s*元(?:\s*[/／]\s*杯)?",
+        "",
+        text,
+    )
+    count_pattern = rf"(?<![\d])([{number}]+)\s*杯(?:組)?"
+    cup_match = re.search(count_pattern, quantity_text)
+    has_multi_cup = bool(cup_match or re.search(r"第二杯|第\s*(?:二|2)\s*杯|任選\s*(?:2|二|兩)\s*杯", text))
+    has_bundle_words = bool(re.search(r"組合|套餐|搭配|\+|＋|優惠組|整買零取", text))
+
+    has_explicit_unit_price = bool(re.search(
+        r"(?:單杯(?:優惠價|特價|價)?|單一價|均一價)\s*[:：]?\s*\d[\d,]*(?:\.\d+)?\s*元",
+        text
+    ))
+    has_single_drink_price = bool(
+        re.search(r"(?:特大杯|大杯|中杯|小杯|美式|拿鐵|星沁爽|星巴克).{0,16}\d[\d,]*(?:\.\d+)?\s*元", text)
+        and not re.search(r"\d+\s*折", text)
+    )
+    if ((has_explicit_unit_price or has_single_drink_price)
+            and not has_multi_cup and not has_bundle_words and not has_average_word):
+        return (1, 0, 1, compact)
+
+    # 週二飲料＋糕點是組合方案，排在買1送1及普通雙杯優惠後。
+    if re.search(r"每週二", text) and re.search(r"糕點", text) and re.search(r"8\s*折", text):
+        return (2, 3, 2, compact)
+
+    # 第二杯折扣先於固定雙杯組合價；買1送1已在上方處理。
+    if re.search(r"第二杯|第\s*(?:二|2)\s*杯", text):
+        return (2, 1, 2, compact)
+
+    # 明確兩杯組合價（支援兩杯／二杯／2杯）。
+    if cup_match:
+        cups = _count_token(cup_match.group(1))
+        if cups == 2 and re.search(r"\d[\d,]*(?:\.\d+)?\s*元", text):
+            return (2, 2, cups, compact)
+        if cups > 0:
+            return (cups, 2, cups, compact)
+
+    # 沒有明確方案的「平均每杯 28 元」是比較描述，不要誤塞到單杯優惠區。
+    if has_average_word:
+        return (999, 9, 999, compact)
+
+    return (999, 9, 999, compact)
+
+
+def is_starbucks_monday_hero(item: dict) -> bool:
+    """每週一 uniopen 買1送1是星巴克主打，固定排在該品牌第一張。"""
+    if normalize_space(item.get("store", "")) != "星巴克":
+        return False
+    text = normalize_space(item.get("offer", ""))
+    return bool(
+        re.search(r"uniopen", text, re.I)
+        and re.search(r"每週一|星期一", text)
+        and re.search(r"買\s*[一1]\s*送\s*[一1]|買一送一", text)
+    )
+
+
+def deal_sort_key(item: dict) -> tuple:
+    """後端唯一排序：品牌順序、星巴克代表優惠置頂，再依促銷取得杯數排序。"""
+    store = normalize_space(item.get("store", "")) or "品牌待確認"
+    try:
+        store_rank = STORE_ORDER.index(store)
+    except ValueError:
+        store_rank = len(STORE_ORDER)
+    hero_rank = 0 if is_starbucks_monday_hero(item) else (1 if store == "星巴克" else 0)
+    return (
+        store_rank,
+        hero_rank,
+        offer_priority_weight(item.get("offer", "")),
+        item.get("start_date") or "9999-99-99",
+        item.get("end_date") or "9999-99-99",
+        normalize_space(item.get("offer", "")).casefold(),
+    )
+
+
+def make_deal(store, offer, url, title, start="", end="", date_text="", published="", needs_check=True, category="coffee", details=""):
+    """建立一致的優惠資料結構；details 選填，供活動限制與補充說明使用。"""
     url = canonical_url(url)
     return {
         "store": store or "品牌待確認",
@@ -271,6 +432,7 @@ def make_deal(store, offer, url, title, start="", end="", date_text="", publishe
         "source": "人工整理／新聞文章自動擷取",
         "needs_check": bool(needs_check),
         "category": category,
+        "details": normalize_space(details),
     }
 
 
@@ -288,7 +450,31 @@ def curated_deals():
     """使用者貼文已能確認的優惠保底資料。期限依原文；日期未知者保持待確認。"""
     out = []
     def add(store, offer, url, title, start="", end="", dt="", published="", category="coffee"):
-        out.append(make_deal(store, offer, url, title, start, end, dt, published, True, category))
+        item = make_deal(store, offer, url, title, start, end, dt, published, True, category)
+        out.append(item)
+        return item
+
+    # 官方常態活動採用完整活動期間，不把新聞懶人包的單週日期誤當成整體活動期限。
+    starbucks_title = "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折"
+    monday = add(
+        "星巴克",
+        "每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1",
+        URL_STARBUCKS_UNIOPEN, starbucks_title,
+        "2026-07-01", "2026-12-31", "2026/7/1–12/31；每週一 11:00–20:00", "2026-07-01"
+    )
+    monday["details"] = "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。"
+    monday["needs_check"] = False
+    monday["source"] = "星巴克官方活動"
+
+    tuesday = add(
+        "星巴克",
+        "每週二｜uniopen 聯名卡指定飲料＋糕點 8 折",
+        URL_STARBUCKS_UNIOPEN, starbucks_title,
+        "2026-07-01", "2026-12-31", "2026/7/1–12/31；每週二", "2026-07-01"
+    )
+    tuesday["details"] = "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。"
+    tuesday["needs_check"] = False
+    tuesday["source"] = "星巴克官方活動"
 
     ctit = "快來喝！超商咖啡寄杯買30送30 限今天加10元多1杯｜中天新聞網"
     # 中天原文「萊爾富」段落的明確優惠：不再標為品牌待確認。
@@ -844,6 +1030,17 @@ def extract_article_deals(article, fetched):
 def is_non_offer_record(item):
     """濾除不完整優惠、編輯導言、側欄殘句及跨品牌摘要。"""
     original_text = normalize_space(item.get("offer", ""))
+    # 官方常態卡以短標題 + details 欄位保存細節；僅限星巴克官方頁的兩種固定活動。
+    is_official_starbucks = (
+        normalize_space(item.get("store", "")) == "星巴克"
+        and _has_official_starbucks_source(item)
+        and re.search(r"uniopen", original_text, re.I)
+    )
+    if is_official_starbucks and (
+        (re.search(r"每週一|星期一", original_text) and re.search(r"買\s*[一1]\s*送\s*[一1]", original_text))
+        or (re.search(r"每週二|星期二", original_text) and re.search(r"糕點", original_text) and re.search(r"8\s*折", original_text))
+    ):
+        return False
     if has_unmatched_closing_quote(original_text):
         return True
     text = strip_sidebar_junk(original_text)
@@ -1530,6 +1727,71 @@ def _yahoo_typhoon_store_override(item, offer: str) -> str:
     return ""  # 未匹配已知指紋時，保留原判定，不做過度推斷。
 
 
+def _starbucks_legacy_weekly_kind(item: dict) -> str:
+    """辨識舊快照內屬於每週一／週二常態活動的模糊摘要，不碰星沁爽等獨立優惠。"""
+    if normalize_space(item.get("store", "")) != "星巴克":
+        return ""
+    article_url = canonical_url(item.get("article_url", ""))
+    if article_url == canonical_url(URL_STARBUCKS_UNIOPEN):
+        return ""
+    offer = normalize_space(item.get("offer", ""))
+    compact = re.sub(r"\s+", "", offer)
+    # 特定飲品（星沁爽）與其他獨立品項不屬於這兩張常態聯名卡活動卡。
+    if "星沁爽" in offer or "星冰樂" in offer:
+        return ""
+    if (
+        re.search(r"買\s*[一1]\s*送\s*[一1]一次看|買一送一一次看", offer)
+        or (re.search(r"週一|星期一|10\s*/\s*19", offer) and re.search(r"uniopen|好友分享|買\s*[一1]\s*送\s*[一1]|買一送一|免費多一杯|其中一杯由星巴克招待|買\s*2\s*送\s*2", offer, re.I))
+        or ("好友分享日" in offer and "星巴克" in offer)
+    ):
+        return "monday"
+    if (
+        (re.search(r"週二|星期二|10\s*/\s*20", offer) and re.search(r"8\s*折|飲料.*糕點|飲料\+糕點", offer))
+        or ("起司里肌可頌" in offer and re.search(r"164\s*元?", offer))
+        or ("經典起司蛋糕" in offer and re.search(r"188\s*元?", offer))
+    ):
+        return "tuesday"
+    return ""
+
+
+def _consolidate_starbucks_weekly_records(items: list[dict]) -> list[dict]:
+    """把舊新聞摘要、單週買一送一和單一組合價格併到兩張官方常態活動卡。"""
+    targets = {}
+    official_url = canonical_url(URL_STARBUCKS_UNIOPEN)
+    for item in items:
+        if normalize_space(item.get("store", "")) != "星巴克":
+            continue
+        if not _has_official_starbucks_source(item):
+            continue
+        offer = normalize_space(item.get("offer", ""))
+        if "每週一" in offer and "uniopen" in offer.lower():
+            targets["monday"] = item
+        elif "每週二" in offer and "uniopen" in offer.lower():
+            targets["tuesday"] = item
+
+    if not targets:
+        return items
+
+    kept = []
+    for item in items:
+        if item in targets.values():
+            kept.append(item)
+            continue
+        kind = _starbucks_legacy_weekly_kind(item)
+        target = targets.get(kind)
+        if target is None:
+            kept.append(item)
+            continue
+        urls = list(target.get("source_urls") or [])
+        if target.get("article_url"):
+            urls.append(target["article_url"])
+        urls.extend(item.get("source_urls") or [])
+        if item.get("article_url"):
+            urls.append(item["article_url"])
+        target["source_urls"] = list(dict.fromkeys(canonical_url(u) for u in urls if u))
+    return kept
+
+
 def deduplicate_deals(deals):
     """先拆多促銷，再依店家、商品、優惠條件與日期做去重；不再跨店合併未知品牌。"""
     groups = []
@@ -1539,7 +1801,13 @@ def deduplicate_deals(deals):
     for raw in deals:
         if not isinstance(raw, dict) or not raw.get("offer"):
             continue
-        for offer_part in _expand_offer_text(str(raw.get("offer", ""))):
+        raw_offer = str(raw.get("offer", ""))
+        is_official_starbucks_card = (
+            normalize_space(raw.get("store", "")) == "星巴克"
+            and _has_official_starbucks_source(raw)
+        )
+        offer_parts = [normalize_space(raw_offer)] if is_official_starbucks_card else _expand_offer_text(raw_offer)
+        for offer_part in offer_parts:
             if is_blacklisted_promotion(offer_part):
                 continue
             item = dict(raw)
@@ -1590,6 +1858,8 @@ def deduplicate_deals(deals):
             item["_store_explicit"] = has_store_evidence
             item["category"] = classify_offer_category(offer_part)
             expanded.append(item)
+
+    expanded = _consolidate_starbucks_weekly_records(expanded)
 
     # 店家歸屬只能用「優惠文字本身明確寫出的品牌」校正；
     # 不因相同價格、杯數或新聞標題提及某品牌，就把未知／混合文章的優惠猜成該品牌。
@@ -1665,6 +1935,7 @@ def deduplicate_deals(deals):
         match = candidates[0]
         for duplicate_group in candidates[1:]:
             match["source_urls"] = list(dict.fromkeys((match.get("source_urls") or []) + (duplicate_group.get("source_urls") or [])))
+            match["details"] = _merge_details(match.get("details", ""), duplicate_group.get("details", ""))
             current_offer = match.get("offer", "")
             other_offer = duplicate_group.get("offer", "")
             if _offer_is_component_of_combo(current_offer, other_offer):
@@ -1678,6 +1949,8 @@ def deduplicate_deals(deals):
             groups.remove(duplicate_group)
 
         match["source_urls"] = list(dict.fromkeys((match.get("source_urls") or []) + item["source_urls"]))
+        # details 必須在去重時一併保留；空白不覆蓋已有內容，不同來源的有效補充則合併。
+        match["details"] = _merge_details(match.get("details", ""), item.get("details", ""))
         if _date_records_compatible(match, item) and _date_record_is_better(item, match):
             match["start_date"] = item.get("start_date", match.get("start_date", ""))
             match["end_date"] = item.get("end_date", match.get("end_date", ""))
@@ -1813,16 +2086,11 @@ def main():
         fresh = deduplicate_deals(fresh + preserve)
 
     final_deals = refresh_statuses(fresh)
-    store_order = ["7-ELEVEN", "全家", "萊爾富", "OKmart", "美廉社", "小北百貨", "星巴克", "路易莎", "85°C", "cama", "全聯", "品牌待確認"]
-    final_deals.sort(key=lambda d: (
-        store_order.index(d.get("store")) if d.get("store") in store_order else len(store_order),
-        d.get("start_date") or "9999-99-99",
-        d.get("end_date") or "9999-99-99",
-        d.get("offer", ""),
-    ))
+    final_deals.sort(key=deal_sort_key)
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
+        "processing_version": "v6.9",
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
         "count": len(final_deals),

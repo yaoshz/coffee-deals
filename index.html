@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#5b3a2a">
+<meta name="coffee-deals-version" content="v6.9">
 <title>省咖啡｜優惠雷達</title>
 <style>
 :root{--coffee:#5b3a2a;--coffee2:#7a5138;--cream:#f7f0e9;--paper:#fffdfb;--ink:#30241f;--muted:#81756f;--coral:#d96f56;--green:#2d7547;--line:#eaded4;--gold:#f2d9a6}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;padding-bottom:34px}
 button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}
 .hero{background:linear-gradient(140deg,#754c35,#42291f);color:#fff;padding:22px 17px 20px;position:sticky;top:0;z-index:20;box-shadow:0 5px 18px #38231825}
-.hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.hero-actions{display:flex;align-items:center;gap:7px;flex:0 0 auto}.language-switch{display:flex;align-items:center}.language-switch select{max-width:112px;border:1px solid #ffffff55;border-radius:9px;background:#fff;color:var(--coffee);padding:7px 8px;font-size:12px;font-weight:750}.original-copy{margin-top:9px;font-size:11px;color:var(--muted);line-height:1.65}.original-copy summary{cursor:pointer;font-weight:750}.original-copy div{margin-top:5px;white-space:normal;overflow-wrap:anywhere}.deal-entry{margin:0 0 10px}.deal-entry>.news-card{margin-bottom:0}.deal-entry>.original-copy{margin:0 0 10px;padding:8px 13px;border:1px solid var(--line);border-top:0;border-radius:0 0 13px 13px;background:var(--paper)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.brand{font-size:21px;font-weight:850;letter-spacing:.2px}.brand small{display:block;font-size:12px;font-weight:500;opacity:.8;margin-top:4px;letter-spacing:0}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.hero-actions{display:flex;align-items:center;gap:7px;flex:0 0 auto}.language-switch{display:flex;align-items:center}.language-switch select{max-width:112px;border:1px solid #ffffff55;border-radius:9px;background:#fff;color:var(--coffee);padding:7px 8px;font-size:12px;font-weight:750}.original-copy{margin-top:9px;font-size:11px;color:var(--muted);line-height:1.65}.original-copy summary{cursor:pointer;font-weight:750}.original-copy div{margin-top:5px;white-space:normal;overflow-wrap:anywhere}.deal-entry{margin:0 0 10px}.deal-details{font-size:13px;line-height:1.55;margin-top:6px;color:var(--ink);white-space:normal}.deal-entry>.news-card{margin-bottom:0}.deal-entry>.original-copy{margin:0 0 10px;padding:8px 13px;border:1px solid var(--line);border-top:0;border-radius:0 0 13px 13px;background:var(--paper)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.brand{font-size:21px;font-weight:850;letter-spacing:.2px}.brand small{display:block;font-size:12px;font-weight:500;opacity:.8;margin-top:4px;letter-spacing:0}
 .date-pill{font-size:11px;border:1px solid #ffffff45;background:#ffffff12;border-radius:99px;padding:7px 9px;white-space:nowrap}
 .search-wrap{display:flex;gap:8px;margin-top:17px}.search-wrap input{width:100%;min-width:0;border:0;border-radius:12px;background:#fff;color:var(--ink);padding:12px 13px;outline:none}.search-wrap button{border:0;border-radius:12px;padding:0 14px;background:#e5b98d;color:#38251c;font-weight:800}
 .status-line{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px;font-size:11px;color:#f4e6dc}.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8fe0a5;margin-right:6px}.status-right{opacity:.78;text-align:right}
@@ -416,6 +417,8 @@ function normalizedNewsTitle(value) {
     .trim();
 }
 
+const STORE_DISPLAY_ORDER = ['星巴克','7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','路易莎','85°C','cama','全聯','品牌待確認','店家待確認'];
+
 function brandAnchorId(store) {
   const ids = {
     '7-ELEVEN': 'brand-711', '全家': 'brand-family', '萊爾富': 'brand-hilife',
@@ -429,7 +432,7 @@ function brandAnchorId(store) {
 function renderBrandQuickLinks(container, deals) {
   const stores = [...new Set(deals.map(d => String(d.store || '品牌待確認')))];
   if (stores.length < 2) return;
-  const storeOrder = ['7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','星巴克','路易莎','85°C','cama','全聯','品牌待確認','店家待確認'];
+  const storeOrder = STORE_DISPLAY_ORDER;
   stores.sort((a,b) => {
     const ai = storeOrder.indexOf(a), bi = storeOrder.indexOf(b);
     return (ai < 0 ? storeOrder.length : ai) - (bi < 0 ? storeOrder.length : bi) || a.localeCompare(b, 'zh-Hant');
@@ -471,13 +474,7 @@ async function loadCoffeeDeals() {
       box.appendChild(makeEl('div', 'empty', t('no-active')));
     }
 
-    const storeOrder = ['7-ELEVEN','全家','萊爾富','OKmart','美廉社','小北百貨','星巴克','路易莎','85°C','cama','全聯'];
-    active.sort((a, b) => {
-      const ai = storeOrder.indexOf(a.store);
-      const bi = storeOrder.indexOf(b.store);
-      return (ai < 0 ? storeOrder.length : ai) - (bi < 0 ? storeOrder.length : bi) ||
-        (a.start_date || '').localeCompare(b.start_date || '') || (a.offer || '').localeCompare(b.offer || '', 'zh-Hant');
-    });
+    // SSOT：所有優惠排序由 scraper.py 寫入 deals.json；前端只過濾狀態並保留原始陣列順序。
 
     // 品牌錨點只負責導覽，不修改或過濾任何優惠記錄。
     renderBrandQuickLinks(box, active);
@@ -495,14 +492,16 @@ async function loadCoffeeDeals() {
         box.appendChild(heading);
       }
       const originalOffer = d.offer || d.article_title || '優惠詳情';
+      const originalText = [originalOffer, d.details].filter(Boolean).join('；');
       const entry = makeEl('div', 'deal-entry');
       const card = makeLink(d.article_url || (d.source_urls || [])[0], localizeText(originalOffer));
       card.classList.add('life');
+      if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)));
       const dateLabel = formatDealDateRange(d);
       card.appendChild(makeEl('div', 'card-bottom', t('active-label') + dateLabel));
       if (d.needs_check) card.appendChild(makeEl('div', 'notice', t('need-check')));
       entry.appendChild(card);
-      const originalNode = makeOriginalText(originalOffer, 'offer');
+      const originalNode = makeOriginalText(originalText, 'offer');
       if (originalNode) entry.appendChild(originalNode);
       box.appendChild(entry);
     });
@@ -525,12 +524,14 @@ async function loadCoffeeDeals() {
       }
       items.forEach(d => {
         const originalOffer = d.offer || d.article_title || '優惠詳情';
+        const originalText = [originalOffer, d.details].filter(Boolean).join('；');
         const entry = makeEl('div', 'deal-entry');
         const card = makeLink(d.article_url || (d.source_urls || [])[0], `${localizeBrand(d.store)}｜${localizeText(originalOffer)}`);
+        if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)));
         const dates = formatDealDateRange(d);
         card.appendChild(makeEl('div', 'card-bottom', dates));
         entry.appendChild(card);
-        const originalNode = makeOriginalText(originalOffer, 'offer');
+        const originalNode = makeOriginalText(originalText, 'offer');
         if (originalNode) entry.appendChild(originalNode);
         details.appendChild(entry);
       });

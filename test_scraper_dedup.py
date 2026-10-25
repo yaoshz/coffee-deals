@@ -574,7 +574,7 @@ class DealDedupRegressionTests(unittest.TestCase):
                   for status in ('active', 'upcoming', 'verify', 'expired')}
         self.assertEqual(snapshot['counts'], actual)
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
-        self.assertEqual(snapshot.get('processing_version'), 'v6.6')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.9')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
@@ -748,6 +748,177 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertNotIn("appendOriginalText(a, d.title, 'headline')", page)
         self.assertIn('News headlines remain in the publisher’s original language', page)
 
+
+
+    def test_starbucks_weekly_offers_are_curated_from_official_source(self):
+        deals = scraper.curated_deals()
+        starbucks = [d for d in deals if d.get('store') == '星巴克' and d.get('article_url') == scraper.URL_STARBUCKS_UNIOPEN]
+        self.assertEqual(len(starbucks), 2)
+        monday = next(d for d in starbucks if '每週一' in d['offer'])
+        tuesday = next(d for d in starbucks if '每週二' in d['offer'])
+        self.assertEqual((monday['start_date'], monday['end_date']), ('2026-07-01', '2026-12-31'))
+        self.assertIn('買 1 送 1', monday['offer'])
+        self.assertIn('uniopen', monday['offer'].lower())
+        self.assertLessEqual(len(monday['offer']), 45)
+        self.assertIn('第二杯由星巴克招待', monday['details'])
+        self.assertIn('買二送二', monday['details'])
+        self.assertIn('限當場領取', monday['details'])
+        self.assertLessEqual(len(tuesday['offer']), 45)
+        self.assertIn('164 元', tuesday['details'])
+        self.assertIn('188 元', tuesday['details'])
+        self.assertFalse(monday['needs_check'])
+        self.assertFalse(tuesday['needs_check'])
+
+    def test_starbucks_legacy_weekly_summaries_consolidate_to_two_official_cards(self):
+        old = [
+            row('星巴克', '星巴克買1送1一次看', '2026-10-19', '2026-10-25', 'https://applealmond.com/posts/329295'),
+            row('星巴克', '活動期間至 2026 年 12 月 31 日，每週一使用中國信託 uniopen 聯名卡，於星巴克實體門市購買 2 杯大杯（含）以上、容量、冰熱與口味皆相同的指定飲料，其中一杯由星巴克招待，每人每次最多可享買 2 送 2', '', '2026-12-31', 'https://applealmond.com/posts/329295'),
+            row('星巴克', '星巴克咖啡優惠：10/19 週一買一送一', '', '', 'https://applealmond.com/posts/329295'),
+            row('星巴克', '週一好友分享日星巴克大杯飲料免費多一杯', '', '', 'https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022'),
+            row('星巴克', '10/20 星巴克週二飲料＋糕點 8 折', '', '', 'https://applealmond.com/posts/329295'),
+            row('星巴克', '大杯美式咖啡＋起司里肌可頌：164 元', '', '', 'https://applealmond.com/posts/329295'),
+            row('星巴克', '大杯美式咖啡＋經典起司蛋糕：188 元', '', '', 'https://applealmond.com/posts/329295'),
+        ]
+        out = scraper.deduplicate_deals(old + scraper.curated_deals())
+        weekly = [d for d in out if d.get('store') == '星巴克' and d.get('article_url') == scraper.URL_STARBUCKS_UNIOPEN]
+        self.assertEqual(len(weekly), 2)
+        monday = next(d for d in weekly if '每週一' in d['offer'])
+        tuesday = next(d for d in weekly if '每週二' in d['offer'])
+        self.assertIn('買 1 送 1', monday['offer'])
+        self.assertIn('188 元', tuesday.get('details', ''))
+        self.assertIn('https://applealmond.com/posts/329295', monday['source_urls'])
+        self.assertIn('https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022', monday['source_urls'])
+        self.assertFalse(any(d.get('offer') == '星巴克買1送1一次看' for d in out))
+        self.assertFalse(any('起司里肌可頌：164 元' == d.get('offer') for d in out))
+
+    def test_offer_priority_orders_single_one_plus_one_then_two_plus_two_and_bigger_bundles(self):
+        offers = [
+            '大杯美式 17 杯組 500 元',
+            '大杯美式買2送2',
+            '大杯美式單杯 39 元',
+            '大杯美式買1送1',
+            '大杯美式 2 杯 69 元',
+            '大杯美式買5送5',
+            '大杯美式買2送1',
+            '大杯美式 兩杯 69 元',
+            '大杯美式平均一杯約 28 元',
+            '大杯美式 100 杯組 2,800 元',
+        ]
+        actual = sorted(offers, key=scraper.offer_priority_weight)
+        self.assertEqual(actual[:7], [
+            '大杯美式單杯 39 元',
+            '大杯美式買1送1',
+            '大杯美式 2 杯 69 元',
+            '大杯美式 兩杯 69 元',
+            '大杯美式買2送1',
+            '大杯美式買2送2',
+            '大杯美式買5送5',
+        ])
+        self.assertGreater(scraper.offer_priority_weight('大杯美式平均一杯約 28 元')[0], 10)
+        self.assertEqual(scraper._count_token('三十'), 30)
+        self.assertEqual(scraper._count_token('一百'), 100)
+
+    def test_starbucks_monday_bogo_is_hero_before_starquench_and_tuesday_combo(self):
+        rows = [
+            row('7-ELEVEN', '大杯美式買1送1', '2026-10-20', '2026-10-31', 'https://news.example/711'),
+            row('星巴克', '星巴克買2送2', '2026-10-20', '2026-12-31', 'https://news.example/star-2'),
+            row('星巴克', '星沁爽特大杯單一價99元', '2026-09-09', '2026-11-03', 'https://news.example/star-1'),
+            row('星巴克', '每週二｜uniopen 聯名卡指定飲料＋糕點 8 折', '2026-07-01', '2026-12-31', 'https://news.example/star-tue'),
+            row('星巴克', '每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1', '2026-07-01', '2026-12-31', 'https://news.example/star-mon'),
+        ]
+        actual = sorted(rows, key=scraper.deal_sort_key)
+        self.assertEqual(actual[0]['offer'], '每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1')
+        self.assertIn('星沁爽', actual[1]['offer'])
+        self.assertIn('每週二', actual[2]['offer'])
+        self.assertIn('買2送2', actual[3]['offer'])
+        self.assertEqual(actual[4]['store'], '7-ELEVEN')
+
+    def test_average_unit_price_never_counts_as_single_cup_price(self):
+        for offer in [
+            '大杯美式平均一杯 22.5 元',
+            '單杯平均 35 元，換算後約 5 折',
+            '大杯特濃美式每杯約 28 元，長期寄杯更划算',
+        ]:
+            with self.subTest(offer=offer):
+                self.assertGreater(scraper.offer_priority_weight(offer)[0], 10)
+
+    def test_frontend_deal_rendering_uses_backend_order_without_duplicate_offer_sorter(self):
+        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
+            page = f.read()
+        self.assertIn("const STORE_DISPLAY_ORDER = ['星巴克','7-ELEVEN'", page)
+        self.assertNotIn('function offerPriorityKey(value)', page)
+        self.assertNotIn('function compareDealsByStoreAndOffer(a, b)', page)
+        self.assertNotIn('active.sort(compareDealsByStoreAndOffer)', page)
+        self.assertIn('SSOT：所有優惠排序由 scraper.py 寫入 deals.json', page)
+        self.assertIn("if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)))", page)
+
+    def test_v69_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
+        import json
+        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+            snapshot = json.load(f)
+        self.assertEqual(snapshot['count'], len(snapshot['deals']))
+        self.assertEqual(snapshot['deals'][0]['store'], '星巴克')
+        self.assertIn('每週一', snapshot['deals'][0]['offer'])
+        self.assertIn('uniopen', snapshot['deals'][0]['offer'].lower())
+        self.assertIn('買 1 送 1', snapshot['deals'][0]['offer'])
+        starbucks = [d for d in snapshot['deals'] if d.get('store') == '星巴克' and d.get('status') == 'active']
+        self.assertTrue(scraper.is_starbucks_monday_hero(starbucks[0]))
+        monday = starbucks[0]
+        self.assertLessEqual(len(monday['offer']), 45)
+        self.assertIn('uniopen', monday['offer'].lower())
+        self.assertIn('第二杯由星巴克招待', monday.get('details', ''))
+        self.assertEqual(snapshot.get('processing_version'), 'v6.9')
+        self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
+
+
+    def test_official_starbucks_allowlist_checks_source_urls_when_article_url_changes(self):
+        item = row(
+            '星巴克',
+            '每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1',
+            '2026-07-01', '2026-12-31',
+            'https://applealmond.com/posts/329295',
+        )
+        item['source_urls'] = [
+            item['article_url'],
+            scraper.URL_STARBUCKS_UNIOPEN + '&utm_source=test',
+        ]
+        item['details'] = '官方說明：第二杯由星巴克招待。'
+        self.assertFalse(scraper.is_non_offer_record(item))
+        cleaned = scraper.deduplicate_deals([item])
+        self.assertEqual(len(cleaned), 1)
+        self.assertIn('買 1 送 1', cleaned[0]['offer'])
+        self.assertIn(scraper.canonical_url(scraper.URL_STARBUCKS_UNIOPEN), cleaned[0]['source_urls'])
+        self.assertIn('第二杯由星巴克招待', cleaned[0]['details'])
+
+    def test_details_are_present_by_default_and_preserved_while_deduplicating(self):
+        base = scraper.make_deal(
+            '7-ELEVEN', '大杯美式 2 杯 66 元', 'https://news.example/details-a',
+            '優惠 A', '2026-10-20', '2026-10-31', '', '2026-10-20',
+        )
+        self.assertEqual(base.get('details'), '')
+        a = row('7-ELEVEN', '大杯美式 2 杯 66 元', '2026-10-20', '2026-10-31', 'https://news.example/details-a')
+        b = row('7-ELEVEN', '大杯美式 2 杯 66 元', '2026-10-20', '2026-10-31', 'https://news.example/details-b')
+        a['details'] = '官方活動說明：限指定門市。'
+        b['details'] = '補充說明：每人每次限購一組。'
+        out = scraper.deduplicate_deals([a, b])
+        self.assertEqual(len(out), 1)
+        self.assertIn('官方活動說明：限指定門市。', out[0]['details'])
+        self.assertIn('補充說明：每人每次限購一組。', out[0]['details'])
+
+    def test_average_price_sentence_with_real_six_cup_offer_sorts_as_six_cups(self):
+        editorial = '特濃美式平均一杯約 28 元，單杯價格接近大量寄杯，但一次買 6 杯 230 元'
+        actual_offer = '特濃美式 6 杯 230 元'
+        self.assertEqual(scraper.offer_priority_weight(editorial)[0], 6)
+        self.assertNotEqual(scraper.offer_priority_weight(editorial)[0], 1)
+        ordered = sorted([editorial, actual_offer], key=scraper.offer_priority_weight)
+        self.assertEqual(ordered[0], actual_offer)
+        self.assertEqual(scraper.offer_priority_weight(actual_offer)[0], 6)
+
+    def test_chinese_two_cup_bundle_precedes_buy_two_send_two_four_cups(self):
+        offers = ['大杯美式買 2 送 2（共 4 杯）', '大杯美式兩杯 66 元']
+        ordered = sorted(offers, key=scraper.offer_priority_weight)
+        self.assertEqual(ordered[0], '大杯美式兩杯 66 元')
+        self.assertEqual(ordered[1], '大杯美式買 2 送 2（共 4 杯）')
 
 
 if __name__ == '__main__':
