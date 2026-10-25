@@ -1,10 +1,10 @@
 {
-  "processing_version": "v6.10",
-  "updated_at": "2026-10-25T20:55:55.290614+08:00",
+  "processing_version": "v6.11",
+  "updated_at": "2026-10-25T19:53:24.756732+08:00",
   "today": "2026-10-25",
-  "count": 93,
+  "count": 92,
   "counts": {
-    "active": 73,
+    "active": 72,
     "upcoming": 0,
     "verify": 17,
     "expired": 3
@@ -13,11 +13,11 @@
   "deals": [
     {
       "store": "星巴克",
-      "offer": "每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1",
+      "offer": "uniopen 聯名卡買 1 送 1",
       "status": "active",
       "start_date": "2026-07-01",
       "end_date": "2026-12-31",
-      "date_text": "2026/7/1–12/31；每週一 11:00–20:00",
+      "date_text": "2026/7/1–12/31",
       "article_title": "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折",
       "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
       "source_urls": [
@@ -29,7 +29,8 @@
       "source": "星巴克官方活動",
       "needs_check": false,
       "category": "coffee",
-      "details": "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。"
+      "details": "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。",
+      "schedule_note": "每週一 11:00–20:00"
     },
     {
       "store": "星巴克",
@@ -48,15 +49,16 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "星巴克",
-      "offer": "每週二｜uniopen 聯名卡指定飲料＋糕點 8 折",
+      "offer": "uniopen 聯名卡指定飲料＋糕點 8 折",
       "status": "active",
       "start_date": "2026-07-01",
       "end_date": "2026-12-31",
-      "date_text": "2026/7/1–12/31；每週二",
+      "date_text": "2026/7/1–12/31",
       "article_title": "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折",
       "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
       "source_urls": [
@@ -67,7 +69,8 @@
       "source": "星巴克官方活動",
       "needs_check": false,
       "category": "coffee",
-      "details": "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。"
+      "details": "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。",
+      "schedule_note": "每週二"
     },
     {
       "store": "7-ELEVEN",
@@ -86,7 +89,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -104,7 +108,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "related",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -122,7 +127,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -140,7 +146,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -159,7 +166,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -177,7 +185,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -195,7 +204,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -215,7 +225,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -233,7 +244,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -252,7 +264,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -271,7 +284,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -290,7 +304,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -310,7 +325,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -330,7 +346,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -350,7 +367,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -370,7 +388,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -389,7 +408,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -408,7 +428,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -428,7 +449,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -449,7 +471,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -469,7 +492,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -488,7 +512,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -507,7 +532,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -526,7 +552,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "7-ELEVEN",
@@ -544,11 +571,12 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
-      "offer": "週三咖啡日，大單品、大特濃咖啡同品項+10元多1杯",
+      "offer": "大單品、大特濃咖啡同品項+10元多1杯",
       "status": "verify",
       "start_date": "",
       "end_date": "",
@@ -562,7 +590,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": "每週三｜咖啡日"
     },
     {
       "store": "全家",
@@ -580,7 +609,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -598,7 +628,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -616,7 +647,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -634,7 +666,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -652,7 +685,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -670,7 +704,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -688,7 +723,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -706,7 +742,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -724,7 +761,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -742,7 +780,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -760,7 +799,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -778,7 +818,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -798,7 +839,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -816,7 +858,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -834,7 +877,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -852,7 +896,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -870,7 +915,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -888,7 +934,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -906,7 +953,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -924,7 +972,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -942,7 +991,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -960,7 +1010,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -978,7 +1029,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "全家",
@@ -999,7 +1051,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "related",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1007,7 +1060,7 @@
       "status": "active",
       "start_date": "2026-10-14",
       "end_date": "2026-11-10",
-      "date_text": "10/14～11/10；每週六日 10:00～14:00",
+      "date_text": "10/14～11/10",
       "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
       "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
       "source_urls": [
@@ -1018,7 +1071,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": "Happy Hour｜每週六、日 10:00–14:00"
     },
     {
       "store": "萊爾富",
@@ -1036,7 +1090,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "related",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1055,25 +1110,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "萊爾富",
-      "offer": "燕麥拿鐵買1送1，5折（原價75元、特價38元）",
-      "status": "active",
-      "start_date": "2026-10-14",
-      "end_date": "2026-11-10",
-      "date_text": "10月14日至11月10日",
-      "article_title": "颱風假咖啡優惠！萊爾富「買一送一」 7-11美式2杯66元",
-      "article_url": "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
-      "source_urls": [
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
-      ],
-      "published": "",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1085,8 +1123,8 @@
       "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
       "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
       "source_urls": [
-        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
         "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
+        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
         "https://applealmond.com/posts/328076",
         "https://applealmond.com/posts/329785"
@@ -1095,7 +1133,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1113,7 +1152,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1131,7 +1171,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1149,7 +1190,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1167,7 +1209,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1185,7 +1228,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1203,7 +1247,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1221,7 +1266,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1239,7 +1285,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1259,7 +1306,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1277,7 +1325,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1295,7 +1344,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1313,7 +1363,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1331,7 +1382,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1349,7 +1401,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1370,7 +1423,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1388,7 +1442,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1406,7 +1461,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1424,7 +1480,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "萊爾富",
@@ -1442,7 +1499,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "OKmart",
@@ -1460,7 +1518,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "OKmart",
@@ -1478,7 +1537,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1496,7 +1556,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1514,7 +1575,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1532,7 +1594,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1551,7 +1614,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1569,7 +1633,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1587,7 +1652,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1606,7 +1672,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1624,7 +1691,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1644,7 +1712,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1664,7 +1733,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1682,7 +1752,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "美廉社",
@@ -1700,11 +1771,12 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     },
     {
       "store": "小北百貨",
-      "offer": "SHOWBA Café 會員日：每週三大杯美式／拿鐵買 1 送 1（常態週期；實際日期與門市請查公告）",
+      "offer": "SHOWBA Café 會員日：大杯美式／拿鐵買 1 送 1（常態週期；實際日期與門市請查公告）",
       "status": "active",
       "start_date": "2026-10-25",
       "end_date": "2026-10-25",
@@ -1719,7 +1791,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": "每週三｜會員日"
     },
     {
       "store": "小北百貨",
@@ -1737,7 +1810,8 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "schedule_note": ""
     }
   ],
   "scrape_report": {
@@ -1749,5 +1823,7 @@
     "curated_records": 46,
     "dynamic_records_before_dedup": 145,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
-  }
+  },
+  "corrected_at": "2026-10-25T22:01:28.108782+08:00",
+  "correction_note": "v6.11 離線修正：將活動日曆區間與週期／限定時段拆分為 date_text 與 schedule_note；加入舊快照回退、同店一次性時段上下文及跨店／跨通路重置；修正 safe_write 重複寫入 JSON 的問題。updated_at 保留原始抓取時間。"
 }
