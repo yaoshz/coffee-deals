@@ -1,35 +1,16 @@
 {
-  "processing_version": "v6.9",
+  "processing_version": "v6.10",
   "updated_at": "2026-10-25T19:53:24.756732+08:00",
   "today": "2026-10-25",
-  "count": 103,
+  "count": 92,
   "counts": {
-    "active": 78,
+    "active": 72,
     "upcoming": 0,
-    "verify": 22,
+    "verify": 17,
     "expired": 3
   },
   "disclaimer": "資料來自固定指定新聞文章、使用者提供的已知優惠內容與 Google 新聞 RSS 搜尋。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
   "deals": [
-    {
-      "store": "星巴克",
-      "offer": "每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1",
-      "status": "active",
-      "start_date": "2026-07-01",
-      "end_date": "2026-12-31",
-      "date_text": "2026/7/1–12/31；每週一 11:00–20:00",
-      "article_title": "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折",
-      "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
-      "source_urls": [
-        "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
-      ],
-      "published": "2026-07-01",
-      "source": "星巴克官方活動",
-      "needs_check": false,
-      "category": "coffee",
-      "details": "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。"
-    },
     {
       "store": "星巴克",
       "offer": "每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1",
@@ -71,42 +52,6 @@
     },
     {
       "store": "星巴克",
-      "offer": "「星巴克買1送1」10/26快閃1天",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "article_title": "萊爾富咖啡買1送1、買30送30即日起開賣！特大美式、重乳拿鐵與燕麥奶拿鐵喝起來！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
-      ],
-      "published": "2026-10-22T04:08:04Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "星巴克",
-      "offer": "每週二｜uniopen 聯名卡指定飲料＋糕點 8 折",
-      "status": "active",
-      "start_date": "2026-07-01",
-      "end_date": "2026-12-31",
-      "date_text": "2026/7/1–12/31；每週二",
-      "article_title": "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折",
-      "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
-      "source_urls": [
-        "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935"
-      ],
-      "published": "2026-07-01",
-      "source": "星巴克官方活動",
-      "needs_check": false,
-      "category": "coffee",
-      "details": "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。"
-    },
-    {
-      "store": "星巴克",
       "offer": "每週二｜uniopen 聯名卡指定飲料＋糕點 8 折",
       "status": "active",
       "start_date": "2026-07-01",
@@ -126,7 +71,7 @@
     },
     {
       "store": "7-ELEVEN",
-      "offer": "7-ELEVEN LINE 禮物指定咖啡買一送一",
+      "offer": "7-ELEVEN LINE 禮物：指定特選美式、拿鐵電子票券買一送一",
       "status": "active",
       "start_date": "2026-10-14",
       "end_date": "2026-10-27",
@@ -135,24 +80,6 @@
       "article_url": "https://applealmond.com/posts/329295",
       "source_urls": [
         "https://www.nownews.com/news/6884698",
-        "https://applealmond.com/posts/329295"
-      ],
-      "published": "2026-10-19T01:22:05+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "7-ELEVEN",
-      "offer": "7-ELEVEN LINE 禮物：指定特選美式、拿鐵電子票券買一送一",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "article_title": "2026 本週咖啡優惠 10/19～10/25：星巴克買一送一、7-11、全家、萊爾富優惠一次看",
-      "article_url": "https://applealmond.com/posts/329295",
-      "source_urls": [
         "https://applealmond.com/posts/329295"
       ],
       "published": "2026-10-19T01:22:05+00:00",
@@ -620,24 +547,6 @@
       "details": ""
     },
     {
-      "store": "7-ELEVEN",
-      "offer": "7-11本週咖啡優惠「11款咖啡、茶飲優惠組合」10/22快閃10天，最高現省500元！",
-      "status": "active",
-      "start_date": "2026-10-19",
-      "end_date": "2026-10-25",
-      "date_text": "10/19-10/25",
-      "article_title": "萊爾富咖啡買1送1、買30送30即日起開賣！特大美式、重乳拿鐵與燕麥奶拿鐵喝起來！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
-      ],
-      "published": "2026-10-22T04:08:04Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
       "store": "全家",
       "offer": "週三咖啡日，大單品、大特濃咖啡同品項+10元多1杯",
       "status": "verify",
@@ -886,24 +795,6 @@
         "https://applealmond.com/posts/329785"
       ],
       "published": "2026-10-22",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "全家",
-      "offer": "全家特濃咖啡買 2 送 2",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "article_title": "2026 光復節超商咖啡優惠懶人包！全家買 2 送 2、萊爾富買 10 送 10",
-      "article_url": "https://applealmond.com/posts/329785",
-      "source_urls": [
-        "https://applealmond.com/posts/329785"
-      ],
-      "published": "2026-10-23T00:00:34+00:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1168,57 +1059,19 @@
     },
     {
       "store": "萊爾富",
-      "offer": "燕麥拿鐵買1送1，5折（原價75元、特價38元）",
-      "status": "active",
-      "start_date": "2026-10-14",
-      "end_date": "2026-11-10",
-      "date_text": "10月14日至11月10日",
-      "article_title": "颱風假咖啡優惠！萊爾富「買一送一」 7-11美式2杯66元",
-      "article_url": "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
-      "source_urls": [
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
-      ],
-      "published": "",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "萊爾富",
-      "offer": "至 10/13 萊爾富：指定大杯、特大杯咖啡買 1 送 1，最低平均約 28 元／杯",
+      "offer": "萊爾富10月14日至11月10日特大美式/特大特濃美式/特大重乳拿鐵/大杯燕麥奶拿鐵同品項買1送1",
       "status": "active",
       "start_date": "2026-10-19",
       "end_date": "2026-10-25",
       "date_text": "10/19-10/25",
-      "article_title": "2026 雙十國慶咖啡優惠懶人包：7-11 買 10 送 10、全家第 2 杯 10 元、萊爾富買 1 送 1",
-      "article_url": "https://applealmond.com/posts/328076",
+      "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
+      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
       "source_urls": [
         "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
         "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
         "https://applealmond.com/posts/328076",
         "https://applealmond.com/posts/329785"
-      ],
-      "published": "2026-10-08T23:00:59+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "萊爾富",
-      "offer": "萊爾富10月14日至11月10日特大美式/特大特濃美式/特大重乳拿鐵/大杯燕麥奶拿鐵同品項買1送1",
-      "status": "active",
-      "start_date": "2026-10-14",
-      "end_date": "2026-11-10",
-      "date_text": "10/14～11/10",
-      "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
-      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-      "source_urls": [
-        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
       ],
       "published": "2026-10-22",
       "source": "人工整理／新聞文章自動擷取",
@@ -1381,7 +1234,8 @@
       "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
       "source_urls": [
         "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-        "https://applealmond.com/posts/329785"
+        "https://applealmond.com/posts/329785",
+        "https://applealmond.com/posts/329295"
       ],
       "published": "2026-10-22",
       "source": "人工整理／新聞文章自動擷取",
@@ -1402,25 +1256,6 @@
         "https://applealmond.com/posts/329295"
       ],
       "published": "2026-10-19T01:22:05+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "萊爾富",
-      "offer": "萊爾富指定咖啡買 10 送 10",
-      "status": "active",
-      "start_date": "2026-10-24",
-      "end_date": "2026-10-31",
-      "date_text": "10 月 24 日至 10 月 31 日",
-      "article_title": "2026 光復節超商咖啡優惠懶人包！全家買 2 送 2、萊爾富買 10 送 10",
-      "article_url": "https://applealmond.com/posts/329785",
-      "source_urls": [
-        "https://applealmond.com/posts/329785",
-        "https://applealmond.com/posts/329295"
-      ],
-      "published": "2026-10-23T00:00:34+00:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1775,24 +1610,6 @@
     },
     {
       "store": "美廉社",
-      "offer": "至 10/27 美廉社：APP 指定咖啡買 5 送 5",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "2026-10-27",
-      "date_text": "10 月 27 日",
-      "article_title": "2026 本週咖啡優惠 10/19～10/25：星巴克買一送一、7-11、全家、萊爾富優惠一次看",
-      "article_url": "https://applealmond.com/posts/329295",
-      "source_urls": [
-        "https://applealmond.com/posts/329295"
-      ],
-      "published": "2026-10-19T01:22:05+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "美廉社",
       "offer": "大杯濃萃美式咖啡100杯只要2,000元",
       "status": "active",
       "start_date": "2026-10-22",
@@ -1888,24 +1705,6 @@
     },
     {
       "store": "小北百貨",
-      "offer": "小北百貨光復節咖啡買1送1",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
-      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-      "source_urls": [
-        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html"
-      ],
-      "published": "2026-10-22",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "小北百貨",
       "offer": "平日還有大杯咖啡7折常駐優惠",
       "status": "verify",
       "start_date": "",
@@ -1932,5 +1731,7 @@
     "curated_records": 46,
     "dynamic_records_before_dedup": 145,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
-  }
+  },
+  "corrected_at": "2026-10-25T20:15:04.906637+08:00",
+  "correction_note": "v6.10 離線清理：整合重複星巴克 uniopen 週一／週二活動、合併同來源 7-ELEVEN LINE 禮物泛稱與具體品項、排除媒體優惠總覽標題；updated_at 保留原始抓取時間。"
 }

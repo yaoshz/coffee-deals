@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.9
+"""省咖啡｜優惠雷達 v6.10
 
 目標：
 - 抓取固定指定文章 + Google News RSS 發現的近期文章。
@@ -1046,6 +1046,22 @@ def is_non_offer_record(item):
     text = strip_sidebar_junk(original_text)
     if not text or is_noise(text):
         return True
+    # 媒體整篇文章的宣傳型總覽標題不是單筆優惠，即使含「快閃10天」或「最高現省」也不能當成卡片。
+    # 如果文字本身另外包含具體可執行的促銷機制，則由後續品項拆分／辨識邏輯處理。
+    is_multi_offer_headline = bool(re.search(
+        r"\d+\s*款.{0,30}(?:咖啡|茶飲|飲品).{0,30}優惠組合", text, re.I
+    ))
+    is_savings_headline = bool(re.search(r"最高現省\s*[\d,]+\s*元", text, re.I))
+    has_specific_mechanism = bool(re.search(
+        r"買\s*[一二三四五六七八九十\d]+\s*送\s*[一二三四五六七八九十\d]+|"
+        r"第\s*[二2]\s*杯|(?<!\d)[一二兩三四五六七八九十\d]+\s*杯(?:組)?[^，,、；;。\n]{0,25}?[\d,]+\s*元|"
+        r"單杯(?:優惠價|特價|價)?\s*[\d,]+\s*元|單一價\s*[\d,]+\s*元|均一價\s*[\d,]+\s*元",
+        text, re.I
+    ))
+    if is_multi_offer_headline:
+        return True
+    if is_savings_headline and not has_specific_mechanism:
+        return True
     if GLOBAL_SUMMARY_BLOCK_RE.search(text) and not find_explicit_store(text):
         # 「四大超商優惠再加碼」「好康一次看」是全域導言，不是一家店的單筆優惠。
         # 單純「另外還有」只重置上下文，不單憑這幾字就刪除可能有效的單筆優惠。
@@ -1377,9 +1393,44 @@ def _offer_is_component_of_combo(specific_offer: str, combo_offer: str) -> bool:
     return False
 
 
-def _products_compatible(a: str, b: str) -> bool:
+def _products_compatible(a: str, b: str, allow_generic: bool = False) -> bool:
+    """判斷品項相容。
+
+    - 正規化後優惠文字相同時，不因缺少具體商品關鍵字而拒絕去重。
+    - 「指定咖啡」等泛稱可向下相容到具體美式／拿鐵，但呼叫端必須確認同來源，
+      且外層仍要求促銷簽章、店家與日期相容，避免把不同活動誤併。
+    - 特殊品項、明確杯型及非咖啡關聯品類仍須遵守原有保護條件。
+    """
+    core_a = _normalise_offer_core(a)
+    core_b = _normalise_offer_core(b)
+    if core_a and core_b and core_a == core_b:
+        return True
+
     pa, ma = _product_identity(a)
     pb, mb = _product_identity(b)
+
+    if allow_generic:
+        generic_map = {
+            "咖啡": {"美式", "拿鐵", "特濃美式", "濃萃美式", "特濃拿鐵", "重乳拿鐵", "燕麥拿鐵", "香椰厚拿鐵"},
+            "茶": {"紅茶", "綠茶", "青茶", "奶茶", "水果茶", "蕎麥茶", "蕎麥奶茶", "檸檬青茶", "檸檬紅茶", "黃金蕎麥奶茶"},
+            "茶品": {"紅茶", "綠茶", "青茶", "奶茶", "水果茶", "蕎麥茶", "蕎麥奶茶", "檸檬青茶", "檸檬紅茶", "黃金蕎麥奶茶"},
+        }
+        for generic, specific_set in generic_map.items():
+            if pa == frozenset({generic}) and pb and pb.issubset(specific_set):
+                generic_mods, specific_mods = set(ma), set(mb)
+            elif pb == frozenset({generic}) and pa and pa.issubset(specific_set):
+                generic_mods, specific_mods = set(mb), set(ma)
+            else:
+                continue
+            size_keys = {"size:特大杯", "size:大杯", "size:中杯"}
+            gs, ss = generic_mods & size_keys, specific_mods & size_keys
+            if gs and ss and gs != ss:
+                return False
+            # 泛稱可以缺少「特選」等限定詞，但不能與具體品項明確衝突。
+            if (generic_mods - size_keys) - (specific_mods - size_keys):
+                return False
+            return True
+
     if not (pa and pb and pa.intersection(pb)):
         return False
     # 混合咖啡＋霜淇淋／酷繽果等跨品類句，不能只因共享「美式」或「拿鐵」就吞併進單品優惠。
@@ -1728,67 +1779,137 @@ def _yahoo_typhoon_store_override(item, offer: str) -> str:
 
 
 def _starbucks_legacy_weekly_kind(item: dict) -> str:
-    """辨識舊快照內屬於每週一／週二常態活動的模糊摘要，不碰星沁爽等獨立優惠。"""
+    """辨識星巴克每週一／週二常態活動及可併入常態卡的舊新聞摘要。"""
     if normalize_space(item.get("store", "")) != "星巴克":
         return ""
-    article_url = canonical_url(item.get("article_url", ""))
-    if article_url == canonical_url(URL_STARBUCKS_UNIOPEN):
-        return ""
     offer = normalize_space(item.get("offer", ""))
-    compact = re.sub(r"\s+", "", offer)
-    # 特定飲品（星沁爽）與其他獨立品項不屬於這兩張常態聯名卡活動卡。
+    compact = re.sub(r"\s+", "", offer).lower()
+    # 星沁爽等獨立商品不應被合併到常態聯名卡。
     if "星沁爽" in offer or "星冰樂" in offer:
         return ""
-    if (
-        re.search(r"買\s*[一1]\s*送\s*[一1]一次看|買一送一一次看", offer)
-        or (re.search(r"週一|星期一|10\s*/\s*19", offer) and re.search(r"uniopen|好友分享|買\s*[一1]\s*送\s*[一1]|買一送一|免費多一杯|其中一杯由星巴克招待|買\s*2\s*送\s*2", offer, re.I))
-        or ("好友分享日" in offer and "星巴克" in offer)
-    ):
+
+    monday_mechanism = bool(re.search(r"買\s*[一1]\s*送\s*[一1]|買一送一", offer))
+    tuesday_mechanism = bool(re.search(r"8\s*折", offer) and re.search(r"糕點|可頌|起司蛋糕", offer))
+
+    # 官方短標題也要參與分組；不能因 article_url 已是官方網址就直接跳過。
+    if re.search(r"每週一|每周一|星期一", offer) and re.search(r"uniopen", offer, re.I) and monday_mechanism:
+        return "monday"
+    if re.search(r"每週二|每周二|星期二", offer) and re.search(r"uniopen", offer, re.I) and tuesday_mechanism:
+        return "tuesday"
+
+    # 舊資料中的新聞總覽、單週標題和「10/26 快閃一天」摘要都收斂到每週一官方卡。
+    monday_context = bool(re.search(r"每週一|每周一|週一|星期一|10\s*/\s*(?:19|26)|10月(?:19|26)日", offer))
+    monday_evidence = bool(
+        re.search(r"uniopen|好友分享|免費多一杯|其中一杯由星巴克招待", offer, re.I)
+        or monday_mechanism
+        or re.search(r"買\s*[二2]\s*送\s*[二2]", offer)
+        or re.search(r"快閃\s*1\s*天|買一送一一次看", offer)
+    )
+    if (monday_mechanism and (
+            re.search(r"買\s*[一1]\s*送\s*[一1]一次看|買一送一一次看", offer)
+            or re.search(r"10\s*/\s*(?:19|26)|10月(?:19|26)日|快閃\s*1\s*天", offer)
+            or ("uniopen" in compact or "好友分享" in offer or "其中一杯由星巴克招待" in offer)
+        )) or (monday_context and monday_evidence):
         return "monday"
     if (
-        (re.search(r"週二|星期二|10\s*/\s*20", offer) and re.search(r"8\s*折|飲料.*糕點|飲料\+糕點", offer))
-        or ("起司里肌可頌" in offer and re.search(r"164\s*元?", offer))
-        or ("經典起司蛋糕" in offer and re.search(r"188\s*元?", offer))
-    ):
+        re.search(r"週二|每週二|每周二|星期二|10\s*/\s*20|10月20日", offer)
+        and (tuesday_mechanism or re.search(r"飲料.*糕點|飲料[＋+]糕點|指定飲料.*8\s*折", offer))
+    ) or ("起司里肌可頌" in offer and re.search(r"164\s*元?", offer)) or ("經典起司蛋糕" in offer and re.search(r"188\s*元?", offer)):
         return "tuesday"
     return ""
 
 
 def _consolidate_starbucks_weekly_records(items: list[dict]) -> list[dict]:
-    """把舊新聞摘要、單週買一送一和單一組合價格併到兩張官方常態活動卡。"""
-    targets = {}
-    official_url = canonical_url(URL_STARBUCKS_UNIOPEN)
-    for item in items:
-        if normalize_space(item.get("store", "")) != "星巴克":
-            continue
-        if not _has_official_starbucks_source(item):
-            continue
-        offer = normalize_space(item.get("offer", ""))
-        if "每週一" in offer and "uniopen" in offer.lower():
-            targets["monday"] = item
-        elif "每週二" in offer and "uniopen" in offer.lower():
-            targets["tuesday"] = item
-
-    if not targets:
-        return items
-
+    """以 monday/tuesday 分組融合，確保每種星巴克官方常態活動最多只留一張卡。"""
+    grouped = {"monday": [], "tuesday": []}
     kept = []
     for item in items:
-        if item in targets.values():
-            kept.append(item)
-            continue
         kind = _starbucks_legacy_weekly_kind(item)
-        target = targets.get(kind)
-        if target is None:
+        if kind:
+            grouped[kind].append(item)
+        else:
             kept.append(item)
+
+    official_url = canonical_url(URL_STARBUCKS_UNIOPEN)
+    official_title = "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折"
+    canonical_offers = {
+        "monday": "每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1",
+        "tuesday": "每週二｜uniopen 聯名卡指定飲料＋糕點 8 折",
+    }
+    default_details = {
+        "monday": "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。",
+        "tuesday": "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。",
+    }
+
+    for kind in ("monday", "tuesday"):
+        records = grouped[kind]
+        if not records:
             continue
-        urls = list(target.get("source_urls") or [])
-        if target.get("article_url"):
-            urls.append(target["article_url"])
-        urls.extend(item.get("source_urls") or [])
-        if item.get("article_url"):
-            urls.append(item["article_url"])
-        target["source_urls"] = list(dict.fromkeys(canonical_url(u) for u in urls if u))
+
+        official_records = [r for r in records if _has_official_starbucks_source(r)]
+        if official_records:
+            # 穩定選擇已含官方來源、完整日期及詳細說明的官方卡；相同分數保留先出現者（通常是 curated）。
+            base_source = max(
+                enumerate(official_records),
+                key=lambda pair: (
+                    bool(pair[1].get("start_date") and pair[1].get("end_date")),
+                    bool(pair[1].get("details")),
+                    len(normalize_space(pair[1].get("details", ""))),
+                    -pair[0],
+                ),
+            )[1]
+            base = dict(base_source)
+        else:
+            base_source = max(
+                enumerate(records),
+                key=lambda pair: (
+                    bool(pair[1].get("start_date") and pair[1].get("end_date")),
+                    _offer_quality(pair[1].get("offer", "")),
+                    -pair[0],
+                ),
+            )[1]
+            base = dict(base_source)
+
+        all_urls = []
+        merged_details = normalize_space(base.get("details", ""))
+        for record in records:
+            all_urls.extend(_item_source_urls(record))
+            # 保留補充資訊，但不讓舊新聞文字覆蓋官方主標、活動期或官方詳細條件。
+            incoming_details = normalize_space(record.get("details", ""))
+            if incoming_details and incoming_details != merged_details:
+                merged_details = _merge_details(merged_details, incoming_details)
+
+        if official_records:
+            base["store"] = "星巴克"
+            base["offer"] = canonical_offers[kind]
+            base["article_url"] = official_url
+            base["article_title"] = official_title
+            base["source"] = "星巴克官方活動"
+            base["needs_check"] = False
+            # 官方週期資料才是期限依據，不可被舊的「10/19／10/26 快閃一天」覆寫。
+            base["start_date"] = base_source.get("start_date") or "2026-07-01"
+            base["end_date"] = base_source.get("end_date") or "2026-12-31"
+            base["date_text"] = base_source.get("date_text") or (
+                "2026/7/1–12/31；每週一 11:00–20:00" if kind == "monday" else "2026/7/1–12/31；每週二"
+            )
+            merged_details = merged_details or default_details[kind]
+        else:
+            # 若輸入只有舊快照沒有官方卡，保留現有內容與可用日期，但仍聚合成唯一紀錄。
+            for record in records:
+                if record is base_source:
+                    continue
+                if _date_record_is_better(record, base):
+                    for field in ("start_date", "end_date", "date_text"):
+                        if record.get(field):
+                            base[field] = record[field]
+            base["needs_check"] = bool(base.get("needs_check", True))
+
+        base["details"] = merged_details
+        base["source_urls"] = list(dict.fromkeys(url for url in all_urls if url))
+        if base.get("article_url"):
+            base["source_urls"] = list(dict.fromkeys(base["source_urls"] + [canonical_url(base["article_url"])]))
+        kept.append(base)
+
     return kept
 
 
@@ -1909,6 +2030,7 @@ def deduplicate_deals(deals):
         promo = _promotion_signature(core)
 
         candidates = []
+        generic_candidates = []
         for old in groups:
             if normalize_space(old.get("store", "")) != store:
                 continue
@@ -1916,16 +2038,34 @@ def deduplicate_deals(deals):
                 continue
             old_offer = old.get("offer", "")
             new_offer = item.get("offer", "")
-            if not (
+            if not _date_records_compatible(old, item):
+                continue
+
+            # 一般相容、寄杯相容或明確斜線組合包含單品，屬於強匹配。
+            if (
                 _products_compatible(old_offer, new_offer)
                 or _bulk_records_compatible(old, item)
                 or _offer_is_component_of_combo(old_offer, new_offer)
                 or _offer_is_component_of_combo(new_offer, old_offer)
             ):
+                candidates.append(old)
                 continue
-            if not _date_records_compatible(old, item):
-                continue
-            candidates.append(old)
+
+            # 泛稱「指定咖啡」只能在與具體品項共用來源時向下相容。
+            # 若同一泛稱同時對應多張具體卡，不把具體卡彼此合併；只把概括來源附加到各卡，
+            # 避免一筆總覽把美式、拿鐵等不同品項錯合成同一張優惠。
+            if _products_compatible(old_offer, new_offer, allow_generic=_share_source(old, item)):
+                generic_candidates.append(old)
+
+        if not candidates and len(generic_candidates) > 1:
+            for matched in generic_candidates:
+                matched["source_urls"] = list(dict.fromkeys(
+                    (matched.get("source_urls") or []) + item["source_urls"]
+                ))
+                matched["details"] = _merge_details(matched.get("details", ""), item.get("details", ""))
+            continue
+        if not candidates and len(generic_candidates) == 1:
+            candidates = generic_candidates
 
         if not candidates:
             groups.append(item)
@@ -2090,7 +2230,7 @@ def main():
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
-        "processing_version": "v6.9",
+        "processing_version": "v6.10",
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
         "count": len(final_deals),

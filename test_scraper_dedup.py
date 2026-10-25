@@ -322,12 +322,11 @@ class DealDedupRegressionTests(unittest.TestCase):
         import json
         with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
-        combo = [x for x in snapshot['deals'] if '特大美式／特大特濃美式' in x.get('offer', '')]
+        combo = [x for x in snapshot['deals'] if all(term in x.get('offer', '') for term in ('特大美式', '特大特濃美式', '特大重乳拿鐵', '大杯燕麥奶拿鐵')) and re.search(r'買\s*[一1]\s*送\s*[一1]', x.get('offer', ''))]
         self.assertEqual(len(combo), 1)
         self.assertEqual(combo[0]['store'], '萊爾富')
-        self.assertIn('特大重乳拿鐵', combo[0]['offer'])
         self.assertTrue(any('tw.stock.yahoo.com/news/' in u for u in combo[0].get('source_urls', [])))
-        self.assertFalse(any(x.get('store') == '小北百貨' and '特大美式／特大特濃美式' in x.get('offer', '') for x in snapshot['deals']))
+        self.assertFalse(any(x.get('store') == '小北百貨' and '特大美式' in x.get('offer', '') and '特大重乳拿鐵' in x.get('offer', '') for x in snapshot['deals']))
         self.assertFalse(any(x.get('store') == '萊爾富' and x.get('offer', '').startswith('特大杯重乳拿鐵買1送1') for x in snapshot['deals']))
         self.assertFalse(any(x.get('store') == '萊爾富' and '重乳拿鐵與燕麥奶拿鐵等熱門飲品' in x.get('offer', '') for x in snapshot['deals']))
 
@@ -574,7 +573,7 @@ class DealDedupRegressionTests(unittest.TestCase):
                   for status in ('active', 'upcoming', 'verify', 'expired')}
         self.assertEqual(snapshot['counts'], actual)
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
-        self.assertEqual(snapshot.get('processing_version'), 'v6.9')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.10')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
@@ -692,10 +691,10 @@ class DealDedupRegressionTests(unittest.TestCase):
             self.assertTrue(any(d.get('store') == '美廉社' and expected in d.get('offer', '') and
                                 typhoon in {scraper.canonical_url(u) for u in [d.get('article_url', ''), *(d.get('source_urls') or [])] if u}
                                 for d in snapshot['deals']), expected)
-        self.assertTrue(any(d.get('store') == '萊爾富' and '燕麥拿鐵買1送1' in d.get('offer', '')
+        self.assertTrue(any(d.get('store') == '萊爾富' and '大杯燕麥奶拿鐵' in d.get('offer', '') and re.search(r'買\s*[一1]\s*送\s*[一1]', d.get('offer', ''))
                             and typhoon in {scraper.canonical_url(u) for u in [d.get('article_url', ''), *(d.get('source_urls') or [])] if u}
                             for d in snapshot['deals']))
-        self.assertTrue(any(d.get('store') == '萊爾富' and '特大特濃美式' in d.get('offer', '') and '買 1 送 1' in d.get('offer', '')
+        self.assertTrue(any(d.get('store') == '萊爾富' and all(term in d.get('offer', '') for term in ('特大特濃美式', '特大重乳拿鐵', '大杯燕麥奶拿鐵')) and re.search(r'買\s*[一1]\s*送\s*[一1]', d.get('offer', ''))
                             and typhoon in {scraper.canonical_url(u) for u in [d.get('article_url', ''), *(d.get('source_urls') or [])] if u}
                             for d in snapshot['deals']))
         self.assertTrue(any(d.get('store') == '萊爾富' and '同品項買30送30' in d.get('offer', '')
@@ -707,11 +706,15 @@ class DealDedupRegressionTests(unittest.TestCase):
                          and typhoon in {scraper.canonical_url(u) for u in [d.get('article_url', ''), *(d.get('source_urls') or [])] if u}]
         self.assertEqual(len(hilife_thirty), 1, [d.get('offer') for d in hilife_thirty])
 
-    def test_snapshot_has_single_okmart_sicilian_39_69_promo(self):
-        import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
-            snapshot = json.load(f)
-        records = [d for d in snapshot['deals'] if d.get('store') == 'OKmart' and '大杯西西里咖啡' in d.get('offer', '')]
+    def test_okmart_sicilian_duplicate_variants_merge_even_when_one_date_is_missing(self):
+        url = 'https://news.example/okmart-sicilian'
+        data = [
+            row('OKmart', '大杯西西里咖啡，單杯優惠價 39 元，一次買兩杯則是 69 元，平均一杯約 35 元',
+                '', '2026-10-14', url, '2026 雙十國慶咖啡優惠懶人包'),
+            row('OKmart', '咖啡品項可以看大杯西西里咖啡，單杯優惠價 39 元，一次買兩杯則是 69 元，平均一杯約 35 元',
+                '', '', url, '2026 雙十國慶咖啡優惠懶人包'),
+        ]
+        records = [d for d in scraper.deduplicate_deals(data) if d.get('store') == 'OKmart' and '大杯西西里咖啡' in d.get('offer', '')]
         self.assertEqual(len(records), 1)
         self.assertIn('39 元', records[0]['offer'])
         self.assertIn('69 元', records[0]['offer'])
@@ -852,7 +855,7 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertIn('SSOT：所有優惠排序由 scraper.py 寫入 deals.json', page)
         self.assertIn("if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)))", page)
 
-    def test_v69_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
+    def test_v610_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
         import json
         with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
@@ -867,7 +870,7 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertLessEqual(len(monday['offer']), 45)
         self.assertIn('uniopen', monday['offer'].lower())
         self.assertIn('第二杯由星巴克招待', monday.get('details', ''))
-        self.assertEqual(snapshot.get('processing_version'), 'v6.9')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.10')
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
 
 
@@ -919,6 +922,89 @@ class DealDedupRegressionTests(unittest.TestCase):
         ordered = sorted(offers, key=scraper.offer_priority_weight)
         self.assertEqual(ordered[0], '大杯美式兩杯 66 元')
         self.assertEqual(ordered[1], '大杯美式買 2 送 2（共 4 杯）')
+
+
+    def test_exact_normalized_offer_text_is_compatible_even_without_product_tokens(self):
+        offer = '每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1'
+        self.assertTrue(scraper._products_compatible(offer, offer))
+        products, _ = scraper._product_identity(offer)
+        self.assertFalse(products)
+
+    def test_starbucks_official_weekly_cards_consolidate_all_duplicates_and_legacy_rows(self):
+        official = scraper.URL_STARBUCKS_UNIOPEN
+        monday_offer = '每週一 11:00–20:00｜uniopen 聯名卡買 1 送 1'
+        tuesday_offer = '每週二｜uniopen 聯名卡指定飲料＋糕點 8 折'
+        monday_a = row('星巴克', monday_offer, '2026-07-01', '2026-12-31', official)
+        monday_a['source_urls'] = [official, 'https://news.example/monday-a']
+        monday_a['details'] = '大杯以上相同飲料，第二杯由星巴克招待。'
+        monday_b = row('星巴克', monday_offer, '2026-07-01', '2026-12-31', official)
+        monday_b['source_urls'] = [official, 'https://news.example/monday-b']
+        monday_b['details'] = '每次最多買二送二，限當場領取。'
+        tuesday_a = row('星巴克', tuesday_offer, '2026-07-01', '2026-12-31', official)
+        tuesday_a['source_urls'] = [official, 'https://news.example/tuesday-a']
+        tuesday_b = row('星巴克', tuesday_offer, '2026-07-01', '2026-12-31', official)
+        tuesday_b['source_urls'] = [official, 'https://news.example/tuesday-b']
+        legacy_monday = row('星巴克', '「星巴克買1送1」10/26快閃1天', '2026-10-26', '2026-10-26', 'https://news.example/monday-legacy')
+        legacy_tuesday = row('星巴克', '大杯美式咖啡＋起司里肌可頌：164 元', '', '', 'https://news.example/tuesday-legacy')
+
+        out = scraper.deduplicate_deals([monday_a, monday_b, tuesday_a, tuesday_b, legacy_monday, legacy_tuesday])
+        weekly = [d for d in out if d.get('store') == '星巴克' and scraper._has_official_starbucks_source(d)]
+        self.assertEqual(len(weekly), 2)
+        monday = next(d for d in weekly if '每週一' in d['offer'])
+        tuesday = next(d for d in weekly if '每週二' in d['offer'])
+        self.assertEqual(monday['article_url'], scraper.canonical_url(official))
+        self.assertEqual((monday['start_date'], monday['end_date']), ('2026-07-01', '2026-12-31'))
+        self.assertIn('https://news.example/monday-a', monday['source_urls'])
+        self.assertIn('https://news.example/monday-b', monday['source_urls'])
+        self.assertIn('https://news.example/monday-legacy', monday['source_urls'])
+        self.assertIn('大杯以上相同飲料', monday['details'])
+        self.assertIn('每次最多買二送二', monday['details'])
+        self.assertIn('https://news.example/tuesday-a', tuesday['source_urls'])
+        self.assertIn('https://news.example/tuesday-b', tuesday['source_urls'])
+        self.assertIn('https://news.example/tuesday-legacy', tuesday['source_urls'])
+
+    def test_generic_and_specific_711_line_gift_bogo_merge_only_when_source_is_shared(self):
+        source = 'https://applealmond.com/posts/329295'
+        generic = row('7-ELEVEN', '7-ELEVEN LINE 禮物指定咖啡買一送一', '2026-10-14', '2026-10-27', source)
+        generic['source_urls'] = [source, 'https://www.nownews.com/news/6884698']
+        specific = row('7-ELEVEN', '7-ELEVEN LINE 禮物：指定特選美式、拿鐵電子票券買一送一', '', '', source)
+        out = scraper.deduplicate_deals([generic, specific])
+        matches = [d for d in out if 'LINE 禮物' in d.get('offer', '')]
+        self.assertEqual(len(matches), 1)
+        self.assertIn('特選美式', matches[0]['offer'])
+        self.assertEqual((matches[0]['start_date'], matches[0]['end_date']), ('2026-10-14', '2026-10-27'))
+        self.assertIn('https://www.nownews.com/news/6884698', matches[0]['source_urls'])
+
+    def test_generic_family_cafe_bogo_can_merge_to_specific_same_source_combo(self):
+        source = 'https://news.example/family-campaign'
+        generic = row('全家', '全家特濃咖啡買 2 送 2', '2026-10-23', '2026-10-27', source)
+        specific = row('全家', "Let's Cafe 大杯特濃美式／拿鐵同品項買 2 送 2", '2026-10-23', '2026-10-27', source)
+        out = scraper.deduplicate_deals([generic, specific])
+        matches = [d for d in out if '買 2 送 2' in d.get('offer', '') or '買2送2' in d.get('offer', '')]
+        self.assertEqual(len(matches), 1)
+        self.assertIn('美式', matches[0]['offer'])
+        self.assertIn('拿鐵', matches[0]['offer'])
+
+    def test_multi_offer_news_summary_headline_is_filtered(self):
+        headline = '7-11本週咖啡優惠「11款咖啡、茶飲優惠組合」10/22快閃10天，最高現省500元！'
+        self.assertTrue(scraper.is_non_offer_record({'store': '7-ELEVEN', 'offer': headline}))
+        self.assertEqual(scraper.deduplicate_deals([
+            row('7-ELEVEN', headline, '', '', 'https://news.example/summary')
+        ]), [])
+
+    def test_v610_snapshot_has_one_starbucks_weekly_card_each_and_no_summary_headline(self):
+        import json
+        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+            snapshot = json.load(f)
+        deals = snapshot['deals']
+        monday = [d for d in deals if d.get('store') == '星巴克' and '每週一' in d.get('offer', '') and 'uniopen' in d.get('offer', '').lower()]
+        tuesday = [d for d in deals if d.get('store') == '星巴克' and '每週二' in d.get('offer', '') and 'uniopen' in d.get('offer', '').lower()]
+        line_gift = [d for d in deals if d.get('store') == '7-ELEVEN' and 'LINE 禮物' in d.get('offer', '') and ('買一送一' in d.get('offer', '') or '買 1 送 1' in d.get('offer', ''))]
+        self.assertEqual(len(monday), 1)
+        self.assertEqual(len(tuesday), 1)
+        self.assertEqual(len(line_gift), 1)
+        self.assertFalse(any('11款咖啡' in d.get('offer', '') for d in deals))
+        self.assertEqual(len(scraper.deduplicate_deals(deals)), len(deals))
 
 
 if __name__ == '__main__':
