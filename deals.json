@@ -1,12 +1,12 @@
 {
   "processing_version": "v6.11",
-  "updated_at": "2026-10-26T04:58:11.394306+08:00",
+  "updated_at": "2026-10-26T12:58:18.795377+08:00",
   "today": "2026-10-26",
-  "count": 89,
+  "count": 90,
   "counts": {
     "active": 66,
     "upcoming": 0,
-    "verify": 17,
+    "verify": 18,
     "expired": 6
   },
   "disclaimer": "資料來自固定指定新聞文章、使用者提供的已知優惠內容與 Google 新聞 RSS 搜尋。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
@@ -23,6 +23,7 @@
       "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
       "source_urls": [
         "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
+        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
         "https://applealmond.com/posts/329295"
       ],
@@ -47,6 +48,25 @@
         "https://applealmond.com/posts/329295"
       ],
       "published": "2026-10-19T01:22:05+00:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "星巴克",
+      "offer": "星巴克買1送1 超商任選7杯「特價333元」",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
+      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
+      "source_urls": [
+        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html"
+      ],
+      "published": "2026-10-22",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1760,7 +1780,7 @@
     "urls_for_articles_with_no_extracted_offers": 1,
     "rss_queries_failed": 0,
     "curated_records": 46,
-    "dynamic_records_before_dedup": 145,
+    "dynamic_records_before_dedup": 148,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
   }
 }
