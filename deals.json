@@ -1,6 +1,6 @@
 {
   "processing_version": "v6.11",
-  "updated_at": "2026-10-28T13:54:30.126686+08:00",
+  "updated_at": "2026-10-28T21:10:35.746263+08:00",
   "today": "2026-10-28",
   "count": 93,
   "counts": {
@@ -1825,7 +1825,7 @@
     "urls_for_articles_with_no_extracted_offers": 1,
     "rss_queries_failed": 0,
     "curated_records": 46,
-    "dynamic_records_before_dedup": 156,
+    "dynamic_records_before_dedup": 147,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
   }
 }
