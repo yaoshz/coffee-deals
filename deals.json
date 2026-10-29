@@ -1,7 +1,7 @@
 {
   "processing_version": "v6.11",
-  "updated_at": "2026-10-29T21:16:54.744704+08:00",
-  "today": "2026-10-29",
+  "updated_at": "2026-10-30T06:51:54.755757+08:00",
+  "today": "2026-10-30",
   "count": 90,
   "counts": {
     "active": 41,
@@ -126,6 +126,25 @@
         "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
       ],
       "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "7-ELEVEN",
+      "offer": "7-ELEVEN「咖啡買2送2」6款咖啡優惠10/28起快閃4天！",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "article_title": "萊爾富咖啡買1送1、買30送30即日起開賣！特大美式、重乳拿鐵與燕麥奶拿鐵喝起來！",
+      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
+      "source_urls": [
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
+      ],
+      "published": "2026-10-22T04:08:04Z",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -551,7 +570,7 @@
     },
     {
       "store": "全家",
-      "offer": "全家「咖啡買1送1優惠」10/31限時2天，2款經典美式、單品美式、金桔揪喝檸，全都半價開喝！",
+      "offer": "全家「單品美式咖啡買1送1」10/27開賣",
       "status": "verify",
       "start_date": "",
       "end_date": "",
@@ -665,25 +684,6 @@
     },
     {
       "store": "全家",
-      "offer": "全家會員咖啡 2 杯 89 元至 10/29",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "2026-10-29",
-      "date_text": "10/29",
-      "article_title": "2026 本週咖啡優惠 10/19～10/25：星巴克買一送一、7-11、全家、萊爾富優惠一次看",
-      "article_url": "https://applealmond.com/posts/329295",
-      "source_urls": [
-        "https://applealmond.com/posts/329295"
-      ],
-      "published": "2026-10-19T01:22:05+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "schedule_note": ""
-    },
-    {
-      "store": "全家",
       "offer": "大杯單品拿鐵：2 杯 120 元，平均 60 元／杯",
       "status": "verify",
       "start_date": "",
@@ -752,25 +752,6 @@
         "https://applealmond.com/posts/328076"
       ],
       "published": "2026-10-08T23:00:59+00:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "schedule_note": ""
-    },
-    {
-      "store": "全家",
-      "offer": "至 10/29 全家：指定特濃咖啡系列、大杯熱卡布奇諾，會員享 2 杯 89 元",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "2026-10-29",
-      "date_text": "10/29 ",
-      "article_title": "2026 本週咖啡優惠 10/19～10/25：星巴克買一送一、7-11、全家、萊爾富優惠一次看",
-      "article_url": "https://applealmond.com/posts/329295",
-      "source_urls": [
-        "https://applealmond.com/posts/329295"
-      ],
-      "published": "2026-10-19T01:22:05+00:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -887,6 +868,25 @@
         "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
       ],
       "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "全家",
+      "offer": "貝納頌咖啡買3送3同步開賣！",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "article_title": "萊爾富咖啡買1送1、買30送30即日起開賣！特大美式、重乳拿鐵與燕麥奶拿鐵喝起來！",
+      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022",
+      "source_urls": [
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022"
+      ],
+      "published": "2026-10-22T04:08:04Z",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1767,7 +1767,7 @@
     "urls_for_articles_with_no_extracted_offers": 1,
     "rss_queries_failed": 0,
     "curated_records": 46,
-    "dynamic_records_before_dedup": 140,
+    "dynamic_records_before_dedup": 142,
     "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。"
   }
 }
