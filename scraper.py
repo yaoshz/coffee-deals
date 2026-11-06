@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.11
+"""省咖啡｜優惠雷達 v6.13
 
 目標：
-- 抓取固定指定文章 + Google News RSS 發現的近期文章。
+- 抓取固定指定文章 + 動態分類／官方消息列表 + Google News RSS 發現的近期文章。
 - 優先讀取 JSON-LD articleBody、文章正文、段落、清單與標題。
 - 一篇文章可拆出多筆優惠，支援段落日期上下文、民國年與西元年。
 - 將使用者已提供且可辨識的 Yahoo／中天優惠以結構化資料保底，避免網站封鎖時漏掉已知資訊。
@@ -30,7 +30,7 @@ import logging
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
-from urllib.parse import quote, urlparse, urlunparse, parse_qsl, urlencode
+from urllib.parse import quote, urlparse, urlunparse, parse_qsl, urlencode, urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -67,6 +67,12 @@ URL_YAHOO_TYPHOON = (
     "%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
 )
 URL_NOWNEWS = "https://www.nownews.com/news/6884698"
+URL_NOWNEWS_CURRENT = "https://www.nownews.com/news/6886549"
+URL_NOWNEWS_WEEKLY = "https://www.nownews.com/news/6886284"
+URL_NOWNEWS_LOUISA = "https://www.nownews.com/news/6884695"
+URL_NOWNEWS_LISTING = "https://www.nownews.com/cat/lifestyle/"
+URL_85C_NEWS_LISTING = "https://www.85cafe.com/News.php"
+URL_LOUISA_NEWS_LISTING = "https://www.louisacoffee.co/news"
 URL_COSMO = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/"
 URL_STARBUCKS_UNIOPEN = "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935"
 
@@ -78,6 +84,9 @@ SEED_ARTICLES = [
     {"title": "蘋果仁｜2026 本週咖啡優惠 10/19～10/25", "url": URL_APPLE_329295, "published": "2026-10-19"},
     {"title": "蘋果仁｜2026 雙十國慶咖啡優惠懶人包", "url": URL_APPLE_328076, "published": ""},
     {"title": "NOWnews｜本週咖啡優惠", "url": URL_NOWNEWS, "published": ""},
+    {"title": "NOWnews｜本週咖啡優惠 10/25～10/31", "url": URL_NOWNEWS_WEEKLY, "published": "2026-10-25"},
+    {"title": "NOWnews｜星巴克買一送一、85度C萬聖節第二杯4折", "url": URL_NOWNEWS_CURRENT, "published": "2026-10-26"},
+    {"title": "NOWnews｜路易莎買一送一、Uber Eats與門市優惠", "url": URL_NOWNEWS_LOUISA, "published": "2026-10-19"},
     {"title": "Cosmopolitan Taiwan｜萊爾富咖啡優惠", "url": URL_COSMO, "published": "2026-10-22"},
 ]
 
@@ -94,8 +103,57 @@ RSS_QUERIES = [
     'site:tw.stock.yahoo.com/news 颱風假 咖啡優惠 萊爾富',
     'site:ctinews.com/news/items 咖啡優惠 寄杯',
     'site:nownews.com 超商咖啡優惠 2026',
+    'site:nownews.com 咖啡優惠 生活消費 2026',
+    'site:nownews.com 星巴克 uniopen 買一送一 2026',
+    'site:nownews.com 85度C 第二杯 4 折 2026',
+    'site:nownews.com 路易莎 Uber Eats 買一送一 10月31日',
     'site:cosmopolitan.com/tw/lifestyle/hot-topics 咖啡優惠 萊爾富',
 ]
+
+
+# v6.13：逐來源動態發現。Google News RSS 是「發現新文章」的補充入口，
+# 不取代各站原文；site 限定可降低跨站雜訊。各查詢獨立記錄成功／失敗。
+SOURCE_DISCOVERY_QUERIES = {
+    "NOWnews": [
+        "site:nownews.com/news 咖啡優惠 OR 超商優惠 OR 買一送一",
+        "site:nownews.com/news 85度C OR 路易莎 OR 星巴克 優惠",
+    ],
+    "Yahoo新聞": [
+        "site:tw.news.yahoo.com 咖啡優惠 OR 超商優惠 OR 買一送一",
+        "site:tw.stock.yahoo.com/news 咖啡優惠 OR 超商優惠",
+    ],
+    "蘋果仁": [
+        "site:applealmond.com/posts 咖啡優惠 OR 超商優惠 OR 寄杯",
+    ],
+    "中天新聞": [
+        "site:ctinews.com/news/items 咖啡優惠 OR 超商優惠 OR 買一送一",
+    ],
+    "Cosmopolitan": [
+        "site:cosmopolitan.com/tw/lifestyle 咖啡優惠 OR 超商優惠 OR 飲料優惠",
+    ],
+    "85°C": [
+        "85度C 官方 優惠 第二杯 咖啡 site:85cafe.com OR site:facebook.com/85cafe",
+    ],
+    "路易莎": [
+        "路易莎 官方 優惠 買一送一 Uber Eats site:louisacoffee.co OR site:facebook.com/louisacoffeeofficial",
+    ],
+    "星巴克": [
+        "星巴克 官方 活動 咖啡優惠 site:starbucks.com.tw",
+    ],
+    "7-ELEVEN": [
+        "7-ELEVEN CITY CAFE 官方 咖啡優惠 site:7-11.com.tw",
+    ],
+    "全家": [
+        "全家 Let’s Cafe 官方 咖啡優惠 site:family.com.tw",
+    ],
+    "萊爾富": [
+        "萊爾富 Hi Café 官方 咖啡優惠 site hilife.com.tw",
+    ],
+    "全聯": [
+        "全聯 OFF COFFEE 咖啡優惠 OR 分批取 site:pxmart.com.tw OR site:pxbox.pxmart.com.tw",
+    ],
+}
+
 
 STORE_PATTERNS = [
     ("7-ELEVEN", re.compile(r"7\s*[-－]?\s*ELEVEN|7\s*[-－]?\s*11|CITY\s*CAFE|CITY\s*TEA|CITY\s*PEARL|CITY\s*PRIMA|OPENPOINT|(?:[!+?！＋？]\s*)?CAFE\s*RESERVE|不可思議咖啡", re.I)),
@@ -188,7 +246,7 @@ SCHEDULE_WEEKDAY_RE = re.compile(
     re.I,
 )
 SCHEDULE_CHANNEL_SWITCH_RE = re.compile(
-    r"(?:(?<![A-Za-z])APP(?![A-Za-z])|隨買跨店取|整買零取|線上(?:購買|下單|通路)?|LINE\s*禮物|電子票券)", re.I
+    r"(?:(?<![A-Za-z])APP(?![A-Za-z])|隨買跨店取|整買零取|分批取|線上(?:購買|下單|通路)?|LINE\s*禮物|電子票券)", re.I
 )
 SCHEDULE_CONTEXT_RESET_RE = re.compile(
     r"四大超商|4大超商|超商優惠|超商咖啡|好康一次看|跨店(?:比較|優惠|取)|另外(?:還有|也有|則)?", re.I
@@ -620,6 +678,37 @@ def curated_deals():
         out.append(item)
         return item
 
+    # 全聯 OFF COFFEE 自帶杯優惠：目前官方品牌頁列示折 5 元；過往 8 元為歷史檔期，不能沿用。
+    # 官方頁未標示截止日期，因此保留為「日期待確認」而非虛構年度有效期限。
+    px_eco = add(
+        "全聯", "OFF COFFEE 自備環保杯現折 5 元", "https://www.pxmart.com.tw/exclusive/OFF%20COFFEE",
+        "全聯 OFF COFFEE 官方品牌頁｜自備環保杯優惠", "", "", "常態優惠（官方頁未標示截止日）", "",
+        schedule_note="實體門市｜自備環保杯"
+    )
+    px_eco["details"] = "全聯 OFF COFFEE 官方品牌頁目前列示：自備環保杯購買咖啡享 5 元優惠。官方頁未標示活動截止日，使用前請以門市及官方頁面為準。"
+    px_eco["source"] = "全聯 OFF COFFEE 官方品牌頁"
+    px_eco["needs_check"] = False
+
+    # 2026/10/24–10/26 連假分批取檔期，作為歷史優惠記錄；今天已過期，不得顯示為有效。
+    px_title = "本周咖啡優惠！7-11、全家買2送2 萊爾富拿鐵半價、全聯寄杯22元"
+    px_americano = add(
+        "全聯", "PXGo 分批取｜OFF COFFEE 精品美式 9 杯 199 元", URL_NOWNEWS_WEEKLY,
+        px_title, "2026-10-24", "2026-10-26", "10/24～10/26", "2026-10-25",
+        schedule_note="線上限定｜PXGo 分批取"
+    )
+    px_americano["details"] = "連假三天限定。精品美式 9 杯 199 元，平均每杯約 22 元（原價每杯 45 元）。活動期間為 2026/10/24～10/26，現已截止。"
+    px_americano["source"] = "NOWnews 報導／全聯活動資訊"
+    px_americano["needs_check"] = False
+
+    px_latte = add(
+        "全聯", "PXGo 分批取｜OFF COFFEE 小農拿鐵 6 杯 199 元", URL_NOWNEWS_WEEKLY,
+        px_title, "2026-10-24", "2026-10-26", "10/24～10/26", "2026-10-25",
+        schedule_note="線上限定｜PXGo 分批取"
+    )
+    px_latte["details"] = "連假三天限定。小農拿鐵 6 杯 199 元，平均每杯約 33 元（原價每杯 55 元）。活動期間為 2026/10/24～10/26，現已截止。"
+    px_latte["source"] = "NOWnews 報導／全聯活動資訊"
+    px_latte["needs_check"] = False
+
     # 官方常態活動採用完整活動期間，不把新聞懶人包的單週日期誤當成整體活動期限。
     starbucks_title = "星巴克官方｜uniopen 聯名卡每週一好友分享／每週二指定飲料糕點 8 折"
     monday = add(
@@ -704,6 +793,44 @@ def curated_deals():
     add("萊爾富", "指定咖啡買 1 送 1（依文章標題，品項與活動日期待查原文）", URL_YAHOO_TYPHOON, ytt)
     add("7-ELEVEN", "美式咖啡 2 杯 66 元（依文章標題，杯型與活動日期待查原文）", URL_YAHOO_TYPHOON, ytt)
 
+    # 近期已由 NOWnews 報導的檔期優惠。日期依文章明示內容，不從「即日起」猜測早於報導的起始日。
+    current_nownews_title = "星巴克買一送一咖啡優惠大杯55元起！萬聖節躲貓貓藍莓星冰樂開喝"
+    halloween_85 = add(
+        "85°C", "萬聖節限定｜大杯咖啡系列第二杯 4 折", URL_NOWNEWS_CURRENT,
+        current_nownews_title, "2026-10-31", "2026-10-31", "10/31 一日限定", "2026-10-26"
+    )
+    halloween_85["details"] = "限大杯咖啡系列，限同品項、不限冰熱；現購現取，每人限購 3 組。鉑金獎豆品項可依規定加價升級；不適用外送及電話訂購。實際品項與寄杯辦法請以門市公告為準。"
+    halloween_85["source"] = "NOWnews 報導／品牌活動資訊"
+    halloween_85["needs_check"] = True
+
+    louisa_title = "連假咖啡優惠！路易莎買一送一　CAMA CAFE週年慶：厚蜜地瓜新品"
+    louisa_uber = add(
+        "路易莎", "路易莎咖啡 Uber Eats 外送｜莊園美式／黑糖雪點奶茶／煙燻柚香燒肉磚壓套餐同品項買 1 送 1", URL_NOWNEWS_LOUISA,
+        louisa_title, "2026-10-19", "2026-10-31", "10/19～10/31", "2026-10-19",
+        schedule_note="外送限定｜Uber Eats"
+    )
+    louisa_uber["details"] = "莊園美式、黑糖雪點奶茶、煙燻柚香燒肉磚壓套餐享同品項買一送一；指定熱門磚壓套餐另有 6 折，下單加碼送 Uber 乘車金。數量有限，實際可用品項與規則以 Uber Eats App 結帳頁為準。"
+    louisa_uber["source"] = "NOWnews 報導／品牌活動資訊"
+    louisa_uber["needs_check"] = True
+
+    louisa_discount = add(
+        "路易莎", "路易莎咖啡 Uber Eats 外送｜指定熱門磚壓套餐限時 6 折", URL_NOWNEWS_LOUISA,
+        louisa_title, "2026-10-19", "2026-10-31", "10/19～10/31", "2026-10-19",
+        schedule_note="外送限定｜Uber Eats"
+    )
+    louisa_discount["details"] = "限 Uber Eats 平台列出的指定熱門磚壓套餐；下單另有 Uber 乘車金活動。適用品項、數量及領取方式依 Uber Eats App 結帳頁為準。"
+    louisa_discount["source"] = "NOWnews 報導／品牌活動資訊"
+    louisa_discount["needs_check"] = True
+
+    louisa_store = add(
+        "路易莎", "門市限定｜加入 Uber 官方 LINE，芒果綠茶買 1 送 1", URL_NOWNEWS_LOUISA,
+        louisa_title, "2026-10-19", "2026-10-31", "10/19～10/31", "2026-10-19",
+        schedule_note="門市限定｜需加入 Uber 官方 LINE"
+    )
+    louisa_store["details"] = "於路易莎實體門市依活動流程加入 Uber 官方 LINE，即可享芒果綠茶買一送一；兌換條件及門市適用範圍依現場公告為準。"
+    louisa_store["source"] = "NOWnews 報導／品牌活動資訊"
+    louisa_store["needs_check"] = True
+
     return out
 
 
@@ -720,6 +847,114 @@ def rss(query: str):
         if link:
             results.append({"title": title, "url": link, "published": published})
     return results
+
+
+LISTING_OFFER_HINT_RE = re.compile(
+    r"咖啡|超商|飲品|買\s*[一1二2三3四4五5六6七7八8九9十\d]+\s*送|第二杯|第2杯|折扣|優惠|促銷|特價|寄杯|星巴克|路易莎|85度C|85°C|cama|全家|萊爾富|7\s*[-－]?\s*11",
+    re.I,
+)
+
+
+def extract_listing_candidates(page_html: str, listing_url: str, source_key: str, limit: int = 15):
+    """由分類／官方消息列表頁發現文章連結；失敗或結構變動只影響此入口。"""
+    soup = BeautifulSoup(page_html or "", "html.parser")
+    found = {}
+    for anchor in soup.select("a[href]"):
+        href = urljoin(listing_url, anchor.get("href", ""))
+        parsed = urlparse(href)
+        if parsed.scheme not in {"http", "https"}:
+            continue
+        host = parsed.netloc.lower().removeprefix("www.")
+        label = normalize_space(
+            anchor.get("title") or anchor.get("aria-label") or anchor.get_text(" ", strip=True)
+        )
+        if len(label) < 5:
+            parent = anchor.find_parent(["article", "li", "h2", "h3", "h4", "div"])
+            if parent:
+                label = normalize_space(parent.get_text(" ", strip=True))[:240]
+        if not label or not LISTING_OFFER_HINT_RE.search(label):
+            continue
+
+        if source_key == "nownews":
+            if host != "nownews.com" or not re.match(r"^/(?:amp/)?news/\d+/?$", parsed.path):
+                continue
+        elif source_key == "85c":
+            if host != "85cafe.com" or not re.search(r"/News_content\.php$", parsed.path, re.I):
+                continue
+        elif source_key == "louisa":
+            if host != "louisacoffee.co" or parsed.path.rstrip("/").lower() in {"/news", ""}:
+                continue
+            # 路易莎官網不同時期使用不同文章路徑，接受同網域內非列表頁的消息連結。
+        else:
+            continue
+
+        clean_url = canonical_url(href)
+        if clean_url == canonical_url(listing_url):
+            continue
+        prefix = {"nownews": "NOWnews", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
+        found.setdefault(clean_url, {"title": f"{prefix}｜{label[:180]}", "url": clean_url, "published": ""})
+        if len(found) >= limit:
+            break
+    return list(found.values())
+
+
+def discover_listing_articles():
+    """動態發現 NOWnews 與品牌消息連結；各列表各自失敗，不阻斷 RSS／固定種子。"""
+    listings = [
+        ("nownews", URL_NOWNEWS_LISTING, 15),
+        ("85c", URL_85C_NEWS_LISTING, 10),
+        ("louisa", URL_LOUISA_NEWS_LISTING, 10),
+    ]
+    output = []
+    stats = {}
+    for source_key, listing_url, limit in listings:
+        try:
+            response = requests.get(listing_url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+            response.raise_for_status()
+            items = extract_listing_candidates(response.text, response.url, source_key, limit)
+            output.extend(items)
+            stats[source_key] = {"ok": True, "discovered": len(items), "url": listing_url}
+            logging.info("Listing discovery OK (%s): %d articles", source_key, len(items))
+        except Exception as exc:
+            stats[source_key] = {"ok": False, "discovered": 0, "url": listing_url, "error": str(exc)[:200]}
+            logging.warning("Listing discovery ERROR (%s): %s", source_key, exc)
+    return output, stats
+
+
+
+def discover_source_rss_articles():
+    """v6.13：各媒體／品牌獨立查詢新文章；單一查詢失敗不影響其他來源。"""
+    articles = []
+    stats = {}
+    for source_name, queries in SOURCE_DISCOVERY_QUERIES.items():
+        source_found = {}
+        query_stats = []
+        for query in queries:
+            try:
+                found = rss(query)
+                added = 0
+                for item in found:
+                    url = canonical_url(item.get("url", ""))
+                    if not url:
+                        continue
+                    # RSS 結果可能是 Google News 跳轉網址；保留原始跳轉 URL，
+                    # fetch_article 會跟隨 redirect，並以 final_url 記錄文章來源。
+                    if url not in source_found:
+                        source_found[url] = dict(item, url=url)
+                        added += 1
+                query_stats.append({"ok": True, "found": len(found), "unique_added": added})
+                logging.info("Source RSS OK (%s): %d results, %d new", source_name, len(found), added)
+            except Exception as exc:
+                query_stats.append({"ok": False, "found": 0, "error": str(exc)[:180]})
+                logging.warning("Source RSS ERROR (%s): %s", source_name, exc)
+        articles.extend(source_found.values())
+        stats[source_name] = {
+            "ok": any(q.get("ok") for q in query_stats),
+            "queries": len(queries),
+            "discovered": len(source_found),
+            "query_results": query_stats,
+        }
+    return articles, stats
 
 
 def parse_jsonld_article_bodies(soup):
@@ -1082,7 +1317,7 @@ def split_compound_offer(line: str):
     """若同一段真的列出多個獨立優惠，拆成單筆；單一優惠的補充說明不拆。"""
     parts = [normalize_space(p) for p in re.split(r"(?:[，、；;。]+|(?<!\d),(?!\d))", line or "") if normalize_space(p)]
     product_re = re.compile(
-        r"咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
+        r"咖啡|\bcoffee\b|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
         r"冰沙|果昔|霜淇淋|酷繽果|酷繽沙|Fami!?ce|不可思議咖啡|思樂冰|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|SHOWBA|星巴克|Starbucks|路易莎|Louisa|cama|丹堤|怡客|85\s*°?\s*C|茶品|茶|\btea\b",
         re.I,
     )
@@ -1341,7 +1576,7 @@ def is_non_offer_record(item):
 
     # 要有可辨識品項；單獨出現「茶」字容易讓一般新聞誤通過。
     valid_products = re.compile(
-        r"咖啡|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
+        r"咖啡|\bcoffee\b|美式|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
         r"冰沙|果昔|霜淇淋|酷繽果|酷繽沙|Fami!?ce|不可思議咖啡|思樂冰|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|SHOWBA|星巴克|Starbucks|路易莎|Louisa|cama|丹堤|怡客|85\s*°?\s*C|茶品|茶|\btea\b",
         re.I,
     )
@@ -2137,6 +2372,20 @@ def _consolidate_starbucks_weekly_records(items: list[dict]) -> list[dict]:
     return kept
 
 
+def _deal_channel_scope(item: dict) -> str:
+    """把外送／門市作為優惠身份的一部分，避免同源同品牌不同通路被錯誤合併。"""
+    text = normalize_space(" ".join([
+        str(item.get("offer", "")),
+        str(item.get("schedule_note", "")),
+        str(item.get("details", "")),
+    ]))
+    if re.search(r"Uber\s*Eats|外送限定|外送優惠", text, re.I):
+        return "delivery"
+    if re.search(r"門市限定|實體門市|門市現場|加入.{0,12}LINE", text, re.I):
+        return "in_store"
+    return ""
+
+
 def deduplicate_deals(deals):
     """先拆多促銷，再依店家、商品、優惠條件與日期做去重；不再跨店合併未知品牌。"""
     groups = []
@@ -2270,6 +2519,11 @@ def deduplicate_deals(deals):
             new_offer = item.get("offer", "")
             if not _date_records_compatible(old, item):
                 continue
+            old_scope = _deal_channel_scope(old)
+            new_scope = _deal_channel_scope(item)
+            if old_scope and new_scope and old_scope != new_scope:
+                # 同一篇文章可同時列外送與門市活動；通路不同就不是重複優惠。
+                continue
 
             # 一般相容、寄杯相容或明確斜線組合包含單品，屬於強匹配。
             if (
@@ -2386,6 +2640,10 @@ def safe_write(data, path=OUTPUT_FILE):
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     articles = list(SEED_ARTICLES)
+    listing_articles, listing_stats = discover_listing_articles()
+    articles.extend(listing_articles)
+    source_rss_articles, source_rss_stats = discover_source_rss_articles()
+    articles.extend(source_rss_articles)
     rss_failures = 0
     for query in RSS_QUERIES:
         try:
@@ -2465,26 +2723,30 @@ def main():
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
-        "processing_version": "v6.11",
+        "processing_version": "v6.15",
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
         "count": len(final_deals),
         "counts": counts,
         "disclaimer": (
-            "資料來自固定指定新聞文章、使用者提供的已知優惠內容與 Google 新聞 RSS 搜尋。"
+            "資料來自固定保底文章、動態新聞／官方消息列表、逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。"
             "自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。"
             "活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。"
         ),
         "deals": final_deals,
         "scrape_report": {
             "articles_discovered": len(to_fetch),
+            "listing_discovery": listing_stats,
+            "listing_articles_added_before_dedup": len(listing_articles),
+            "source_rss_articles_added_before_dedup": len(source_rss_articles),
+            "source_rss_discovery": source_rss_stats,
             "articles_fetched_successfully": fetched_success,
             "articles_failed_or_low_content": len(failed_urls),
             "urls_for_articles_with_no_extracted_offers": len(empty_extraction_urls),
             "rss_queries_failed": rss_failures,
             "curated_records": len(curated),
             "dynamic_records_before_dedup": len(dynamic_deals),
-            "note": "若文章抓取成功數偏低，請在 GitHub Actions 日誌查看 FETCH ERROR；部分媒體可能封鎖自動存取。",
+            "note": "v6.13 使用各媒體／品牌獨立的 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。",
         },
     }
     safe_write(data)

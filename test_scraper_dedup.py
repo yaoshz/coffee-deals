@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """離線回歸測試：不需要連線抓取新聞。"""
 import os
+import json
 import sys
 import unittest
 import re
@@ -19,6 +20,7 @@ def row(store, offer, start, end, url, title='測試優惠'):
         'start_date': start,
         'end_date': end,
         'date_text': f'{start}～{end}' if start and end else '活動日期尚待確認',
+        'schedule_note': '',
         'article_title': title,
         'article_url': url,
         'source_urls': [url],
@@ -29,6 +31,15 @@ def row(store, offer, start, end, url, title='測試優惠'):
 
 
 class DealDedupRegressionTests(unittest.TestCase):
+    # 舊版快照與回歸案例以 2026-10-23 為測試基準；固定日期避免測試隨日曆推移失效。
+    def setUp(self):
+        self._old_today = scraper.TODAY
+        from datetime import date
+        scraper.TODAY = date(2026, 10, 23)
+
+    def tearDown(self):
+        scraper.TODAY = self._old_today
+
     def test_combo_and_specific_711_americano_merge_to_specific_label(self):
         data = [
             row('7-ELEVEN', '大杯美式／拿鐵：2 杯 66 元', '2026-10-21', '2026-10-25', 'https://news.example/a'),
@@ -211,7 +222,7 @@ class DealDedupRegressionTests(unittest.TestCase):
             ],
         }
         out = scraper.extract_article_deals(article, fetched)
-        weekly = [x for x in out if '週三咖啡日' in x['offer']]
+        weekly = [x for x in out if '週三咖啡日' in x.get('schedule_note', '') or '週三咖啡日' in x.get('offer', '')]
         hilife = [x for x in out if '萊爾富特大杯特濃美式' in x['offer']]
         self.assertEqual(len(weekly), 1)
         self.assertEqual(weekly[0]['store'], '全家')
@@ -236,9 +247,10 @@ class DealDedupRegressionTests(unittest.TestCase):
             row('全家', '全家推出「週三咖啡日」，購買大單品或大特濃咖啡，享同品項加10元多1杯優惠', '', '', url),
         ]
         out = scraper.deduplicate_deals(data)
-        weekly = [x for x in out if '週三咖啡日' in x.get('offer', '')]
+        weekly = [x for x in out if x.get('store') == '全家' and '咖啡日' in x.get('schedule_note', '')]
         self.assertEqual(len(weekly), 1)
         self.assertEqual(weekly[0]['store'], '全家')
+        self.assertEqual(weekly[0]['schedule_note'], '每週三｜咖啡日')
         self.assertEqual(len(weekly[0]['source_urls']), 1)
 
     def test_identical_offer_in_separate_nonoverlapping_periods_is_preserved(self):
@@ -573,7 +585,7 @@ class DealDedupRegressionTests(unittest.TestCase):
                   for status in ('active', 'upcoming', 'verify', 'expired')}
         self.assertEqual(snapshot['counts'], actual)
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
-        self.assertEqual(snapshot.get('processing_version'), 'v6.10')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.15')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
@@ -757,8 +769,8 @@ class DealDedupRegressionTests(unittest.TestCase):
         deals = scraper.curated_deals()
         starbucks = [d for d in deals if d.get('store') == '星巴克' and d.get('article_url') == scraper.URL_STARBUCKS_UNIOPEN]
         self.assertEqual(len(starbucks), 2)
-        monday = next(d for d in starbucks if '每週一' in d['offer'])
-        tuesday = next(d for d in starbucks if '每週二' in d['offer'])
+        monday = next(d for d in starbucks if '每週一' in d.get('schedule_note', ''))
+        tuesday = next(d for d in starbucks if '每週二' in d.get('schedule_note', ''))
         self.assertEqual((monday['start_date'], monday['end_date']), ('2026-07-01', '2026-12-31'))
         self.assertIn('買 1 送 1', monday['offer'])
         self.assertIn('uniopen', monday['offer'].lower())
@@ -785,8 +797,8 @@ class DealDedupRegressionTests(unittest.TestCase):
         out = scraper.deduplicate_deals(old + scraper.curated_deals())
         weekly = [d for d in out if d.get('store') == '星巴克' and d.get('article_url') == scraper.URL_STARBUCKS_UNIOPEN]
         self.assertEqual(len(weekly), 2)
-        monday = next(d for d in weekly if '每週一' in d['offer'])
-        tuesday = next(d for d in weekly if '每週二' in d['offer'])
+        monday = next(d for d in weekly if '每週一' in d.get('schedule_note', '') or '每週一' in d.get('offer', ''))
+        tuesday = next(d for d in weekly if '每週二' in d.get('schedule_note', '') or '每週二' in d.get('offer', ''))
         self.assertIn('買 1 送 1', monday['offer'])
         self.assertIn('188 元', tuesday.get('details', ''))
         self.assertIn('https://applealmond.com/posts/329295', monday['source_urls'])
@@ -855,13 +867,13 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertIn('SSOT：所有優惠排序由 scraper.py 寫入 deals.json', page)
         self.assertIn("if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)))", page)
 
-    def test_v610_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
+    def test_v611_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
         import json
         with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         self.assertEqual(snapshot['count'], len(snapshot['deals']))
         self.assertEqual(snapshot['deals'][0]['store'], '星巴克')
-        self.assertIn('每週一', snapshot['deals'][0]['offer'])
+        self.assertIn('每週一', snapshot['deals'][0].get('schedule_note', '') + snapshot['deals'][0].get('offer', ''))
         self.assertIn('uniopen', snapshot['deals'][0]['offer'].lower())
         self.assertIn('買 1 送 1', snapshot['deals'][0]['offer'])
         starbucks = [d for d in snapshot['deals'] if d.get('store') == '星巴克' and d.get('status') == 'active']
@@ -870,7 +882,7 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertLessEqual(len(monday['offer']), 45)
         self.assertIn('uniopen', monday['offer'].lower())
         self.assertIn('第二杯由星巴克招待', monday.get('details', ''))
-        self.assertEqual(snapshot.get('processing_version'), 'v6.10')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.15')
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
 
 
@@ -950,8 +962,8 @@ class DealDedupRegressionTests(unittest.TestCase):
         out = scraper.deduplicate_deals([monday_a, monday_b, tuesday_a, tuesday_b, legacy_monday, legacy_tuesday])
         weekly = [d for d in out if d.get('store') == '星巴克' and scraper._has_official_starbucks_source(d)]
         self.assertEqual(len(weekly), 2)
-        monday = next(d for d in weekly if '每週一' in d['offer'])
-        tuesday = next(d for d in weekly if '每週二' in d['offer'])
+        monday = next(d for d in weekly if '每週一' in d.get('schedule_note', '') or '每週一' in d.get('offer', ''))
+        tuesday = next(d for d in weekly if '每週二' in d.get('schedule_note', '') or '每週二' in d.get('offer', ''))
         self.assertEqual(monday['article_url'], scraper.canonical_url(official))
         self.assertEqual((monday['start_date'], monday['end_date']), ('2026-07-01', '2026-12-31'))
         self.assertIn('https://news.example/monday-a', monday['source_urls'])
@@ -992,13 +1004,13 @@ class DealDedupRegressionTests(unittest.TestCase):
             row('7-ELEVEN', headline, '', '', 'https://news.example/summary')
         ]), [])
 
-    def test_v610_snapshot_has_one_starbucks_weekly_card_each_and_no_summary_headline(self):
+    def test_v611_snapshot_has_one_starbucks_weekly_card_each_and_no_summary_headline(self):
         import json
         with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         deals = snapshot['deals']
-        monday = [d for d in deals if d.get('store') == '星巴克' and '每週一' in d.get('offer', '') and 'uniopen' in d.get('offer', '').lower()]
-        tuesday = [d for d in deals if d.get('store') == '星巴克' and '每週二' in d.get('offer', '') and 'uniopen' in d.get('offer', '').lower()]
+        monday = [d for d in deals if d.get('store') == '星巴克' and ('每週一' in d.get('schedule_note', '') or '每週一' in d.get('offer', '')) and 'uniopen' in d.get('offer', '').lower()]
+        tuesday = [d for d in deals if d.get('store') == '星巴克' and ('每週二' in d.get('schedule_note', '') or '每週二' in d.get('offer', '')) and 'uniopen' in d.get('offer', '').lower()]
         line_gift = [d for d in deals if d.get('store') == '7-ELEVEN' and 'LINE 禮物' in d.get('offer', '') and ('買一送一' in d.get('offer', '') or '買 1 送 1' in d.get('offer', ''))]
         self.assertEqual(len(monday), 1)
         self.assertEqual(len(tuesday), 1)
@@ -1007,5 +1019,260 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertEqual(len(scraper.deduplicate_deals(deals)), len(deals))
 
 
+    def test_v611_hilife_happy_hour_is_separated_from_calendar_range(self):
+        source = 'https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86.html'
+        raw = row('萊爾富', '大杯美式/大杯拿鐵單杯29元', '2026-10-14', '2026-11-10', source)
+        raw['date_text'] = '10/14～11/10；每週六日 10:00～14:00'
+        out = scraper.deduplicate_deals([raw])
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]['date_text'], '10/14～11/10')
+        self.assertIn('每週六', out[0]['schedule_note'])
+        self.assertIn('10:00', out[0]['schedule_note'])
+        self.assertIn('Happy Hour', out[0]['schedule_note'])
+
+    def test_v611_schedule_context_is_attached_to_only_the_next_offer(self):
+        lines = [
+            '萊爾富 Happy Hour！10月14日至11月10日每週六日10:00至14:00',
+            '大杯美式/大杯拿鐵單杯29元',
+            'Hi-Life VIP APP 整買零取買10送10',
+        ]
+        fetched = {'ok': True, 'title': '萊爾富咖啡優惠', 'final_url': 'https://news.example/hilife',
+                   'published': '2026-10-22', 'lines': lines}
+        deals = scraper.extract_article_deals({'title': fetched['title'], 'url': fetched['final_url']}, fetched)
+        target = next((d for d in deals if '29元' in d['offer']), None)
+        bulk = next((d for d in deals if '買10送10' in d['offer'] or '買 10 送 10' in d['offer']), None)
+        self.assertIsNotNone(target)
+        self.assertIsNotNone(bulk)
+        self.assertIn('每週六', target.get('schedule_note', ''))
+        self.assertEqual(bulk.get('schedule_note', ''), '')
+
+    def test_v611_schedule_context_resets_on_store_change_and_global_summary(self):
+        lines = [
+            '萊爾富 Happy Hour 每週六日10:00至14:00',
+            '大杯美式單杯29元',
+            '四大超商優惠一次看',
+            '全家大單品咖啡同品項加10元多1杯',
+        ]
+        fetched = {'ok': True, 'title': '咖啡優惠', 'final_url': 'https://news.example/multi',
+                   'published': '2026-10-22', 'lines': lines}
+        deals = scraper.extract_article_deals({'title': fetched['title'], 'url': fetched['final_url']}, fetched)
+        family = next((d for d in deals if d.get('store') == '全家'), None)
+        self.assertIsNotNone(family)
+        self.assertEqual(family.get('schedule_note', ''), '')
+
+    def test_v611_schedule_context_resets_on_additional_transition(self):
+        lines = [
+            '萊爾富 Happy Hour 每週六日10:00至14:00',
+            '大杯美式單杯29元',
+            '另外還有萊爾富 APP 整買零取買10送10',
+        ]
+        fetched = {'ok': True, 'title': '萊爾富咖啡優惠', 'final_url': 'https://news.example/transition',
+                   'published': '2026-10-22', 'lines': lines}
+        deals = scraper.extract_article_deals({'title': fetched['title'], 'url': fetched['final_url']}, fetched)
+        target = next((d for d in deals if '29元' in d['offer']), None)
+        bulk = next((d for d in deals if '買10送10' in d['offer'] or '買 10 送 10' in d['offer']), None)
+        self.assertIsNotNone(target)
+        self.assertIsNotNone(bulk)
+        self.assertTrue(target.get('schedule_note'))
+        self.assertEqual(bulk.get('schedule_note', ''), '')
+
+    def test_v611_make_deal_has_schedule_note_and_weekly_curated_notes(self):
+        curated = scraper.curated_deals()
+        monday = next(d for d in curated if d.get('store') == '星巴克' and '買 1 送 1' in d.get('offer', ''))
+        tuesday = next(d for d in curated if d.get('store') == '星巴克' and '8 折' in d.get('offer', ''))
+        showba = next(d for d in curated if d.get('store') == '小北百貨' and '買 1 送 1' in d.get('offer', '') and '會員日' in d.get('schedule_note', ''))
+        self.assertEqual(monday.get('schedule_note'), '每週一 11:00–20:00')
+        self.assertEqual(tuesday.get('schedule_note'), '每週二')
+        self.assertEqual(showba.get('schedule_note'), '每週三｜會員日')
+        self.assertIn('schedule_note', scraper.make_deal('萊爾富', '單杯29元', 'https://news.example', 'test'))
+
+    def test_v611_old_snapshot_fallback_can_extract_schedule_from_date_text(self):
+        old = row('萊爾富', '大杯美式／大杯拿鐵單杯29元', '2026-10-14', '2026-11-10', 'https://news.example/old')
+        old.pop('schedule_note', None)
+        old['date_text'] = '10/14～11/10；每週六日 10:00～14:00'
+        normalized = scraper._normalize_schedule_fields(old)
+        self.assertEqual(normalized['date_text'], '10/14～11/10')
+        self.assertTrue(normalized['schedule_note'])
+
+    def test_v611_safe_write_outputs_single_valid_json_document(self):
+        import tempfile
+        path = os.path.join(tempfile.mkdtemp(), 'deals.json')
+        payload = {'processing_version': 'v6.11', 'count': 1, 'deals': [{'offer': '單杯29元'}]}
+        scraper.safe_write(payload, path)
+        with open(path, encoding='utf-8') as f:
+            loaded = json.load(f)
+        self.assertEqual(loaded, payload)
+
+
+
+
+class ListingDiscoveryRegressionTests(unittest.TestCase):
+    def test_nownews_listing_discovers_new_article_ids_by_offer_title(self):
+        html = """
+        <html><body>
+          <article><h2><a href="/news/6886549">星巴克買一送一咖啡優惠、85度C第二杯4折</a></h2></article>
+          <article><h2><a href="/news/6880001">政治人物談話與國際新聞</a></h2></article>
+        </body></html>
+        """
+        found = scraper.extract_listing_candidates(
+            html, 'https://www.nownews.com/cat/lifestyle/', 'nownews', limit=10
+        )
+        self.assertEqual(len(found), 1)
+        self.assertTrue(found[0]['url'].endswith('/news/6886549'))
+        self.assertIn('85度C', found[0]['title'])
+
+    def test_85c_official_news_listing_discovers_promotion_article(self):
+        html = """
+        <html><body>
+          <a href="/News_content.php?data=9989">85度C 萬聖節咖啡優惠 第二杯4折</a>
+          <a href="/News_content.php?data=9990">企業介紹與品牌故事</a>
+        </body></html>
+        """
+        found = scraper.extract_listing_candidates(
+            html, 'https://www.85cafe.com/News.php', '85c', limit=10
+        )
+        self.assertEqual(len(found), 1)
+        self.assertIn('data=9989', found[0]['url'])
+
+    def test_curated_current_offers_have_separate_channel_labels_and_end_dates(self):
+        items = scraper.curated_deals()
+        selected = [x for x in items if x.get('article_url', '').endswith('/news/6884695')]
+        offers = [x['offer'] for x in selected]
+        self.assertTrue(any('Uber Eats' in offer and '買 1 送 1' in offer for offer in offers))
+        self.assertTrue(any('磚壓套餐限時 6 折' in offer for offer in offers))
+        self.assertTrue(any('門市限定' in offer and '芒果綠茶' in offer for offer in offers))
+        self.assertTrue(all(x['end_date'] == '2026-10-31' for x in selected))
+        deduped = scraper.deduplicate_deals(selected)
+        self.assertEqual(len(deduped), 3)
+        scopes = {scraper._deal_channel_scope(x) for x in deduped}
+        self.assertEqual(scopes, {'delivery', 'in_store'})
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
+class DynamicDiscoveryV613Tests(unittest.TestCase):
+    def test_source_discovery_runs_each_publisher_query_and_isolates_failure(self):
+        original = scraper.rss
+        calls = []
+        def fake_rss(query):
+            calls.append(query)
+            if "applealmond" in query:
+                raise RuntimeError("simulated source outage")
+            return [{
+                "title": "新咖啡優惠文章",
+                "url": "https://news.google.com/rss/articles/ARTICLE-" + str(len(calls)),
+                "published": "Fri, 06 Nov 2026 08:00:00 GMT",
+            }]
+        scraper.rss = fake_rss
+        try:
+            articles, stats = scraper.discover_source_rss_articles()
+        finally:
+            scraper.rss = original
+        self.assertEqual(len(calls), sum(len(v) for v in scraper.SOURCE_DISCOVERY_QUERIES.values()))
+        self.assertEqual(len(stats), len(scraper.SOURCE_DISCOVERY_QUERIES))
+        self.assertFalse(stats["蘋果仁"]["ok"])
+        self.assertTrue(stats["NOWnews"]["ok"])
+        self.assertGreater(len(articles), 0)
+
+    def test_source_discovery_deduplicates_same_article_within_source(self):
+        original = scraper.rss
+        queries = scraper.SOURCE_DISCOVERY_QUERIES
+        scraper.SOURCE_DISCOVERY_QUERIES = {"測試來源": ["q1", "q2"]}
+        def fake_rss(query):
+            return [{"title": "同一篇文章", "url": "https://news.google.com/rss/articles/SAME", "published": ""}]
+        scraper.rss = fake_rss
+        try:
+            articles, stats = scraper.discover_source_rss_articles()
+        finally:
+            scraper.rss = original
+            scraper.SOURCE_DISCOVERY_QUERIES = queries
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(stats["測試來源"]["discovered"], 1)
+
+    def test_dynamic_listing_candidate_filtering_keeps_only_valid_nownews_article_paths(self):
+        html = """
+        <article><h2><a href="/news/6999999">最新咖啡優惠 買一送一</a></h2></article>
+        <a href="/news/6999998">一般政治新聞</a>
+        <a href="https://example.com/news/123">咖啡優惠</a>
+        """
+        found = scraper.extract_listing_candidates(html, "https://www.nownews.com/cat/lifestyle/", "nownews")
+        self.assertEqual(len(found), 1)
+        self.assertIn("/news/6999999", found[0]["url"])
+
+    def test_expired_october_deals_are_not_active_on_november_six(self):
+        expired = {"start_date": "2026-10-19", "end_date": "2026-10-31"}
+        old_today = scraper.TODAY
+        try:
+            scraper.TODAY = __import__("datetime").date(2026, 11, 6)
+            self.assertEqual(scraper.infer_status(expired["start_date"], expired["end_date"]), "expired")
+        finally:
+            scraper.TODAY = old_today
+
+
+class PXMartV614Tests(unittest.TestCase):
+    def test_pxmart_source_discovery_query_is_registered(self):
+        self.assertIn("全聯", scraper.SOURCE_DISCOVERY_QUERIES)
+        self.assertTrue(any("pxmart.com.tw" in q and "pxbox.pxmart.com.tw" in q for q in scraper.SOURCE_DISCOVERY_QUERIES["全聯"]))
+
+    def test_batch_pickup_is_detected_as_online_channel(self):
+        self.assertIsNotNone(scraper.SCHEDULE_CHANNEL_SWITCH_RE.search("PXGo 分批取"))
+
+    def test_curated_pxmart_eco_cup_is_five_dollars_not_historical_eight(self):
+        px = [d for d in scraper.curated_deals() if d.get("store") == "全聯"]
+        eco = next(d for d in px if "自備環保杯" in d.get("offer", ""))
+        self.assertIn("現折 5 元", eco["offer"])
+        self.assertEqual(eco["status"], "verify")  # 官方頁未提供截止日，不偽造有效期限
+        self.assertFalse(eco["needs_check"])
+
+    def test_pxmart_eco_cup_record_passes_non_offer_filter(self):
+        eco = next(
+            d for d in scraper.curated_deals()
+            if d.get("store") == "全聯" and "自備環保杯" in d.get("offer", "")
+        )
+        self.assertFalse(scraper.is_non_offer_record(eco))
+
+    def test_pxmart_eco_cup_survives_full_deduplication_pipeline(self):
+        curated = scraper.curated_deals()
+        out = scraper.deduplicate_deals(curated)
+        eco = [
+            d for d in out
+            if d.get("store") == "全聯" and "自備環保杯" in d.get("offer", "")
+        ]
+        self.assertEqual(len(eco), 1)
+        self.assertEqual(eco[0]["status"], "verify")
+        self.assertIn("現折 5 元", eco[0]["offer"])
+
+    def test_v615_snapshot_contains_pxmart_eco_cup_verify_card_and_consistent_counts(self):
+        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
+            snapshot = json.load(f)
+        self.assertEqual(snapshot.get("processing_version"), "v6.15")
+        cards = [
+            d for d in snapshot.get("deals", [])
+            if d.get("store") == "全聯" and "自備環保杯" in d.get("offer", "")
+        ]
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]["status"], "verify")
+        self.assertEqual(cards[0]["start_date"], "")
+        self.assertEqual(cards[0]["end_date"], "")
+        self.assertEqual(snapshot["count"], len(snapshot["deals"]))
+        counts = {key: sum(1 for d in snapshot["deals"] if d.get("status") == key)
+                  for key in ("active", "upcoming", "verify", "expired")}
+        self.assertEqual(snapshot["counts"], counts)
+
+    def test_pxmart_october_batch_pickup_offers_are_expired(self):
+        px = [d for d in scraper.curated_deals() if d.get("store") == "全聯"]
+        batch = [d for d in px if "分批取" in d.get("offer", "")]
+        self.assertEqual(len(batch), 2)
+        self.assertTrue(all(d["status"] == "expired" for d in batch))
+        self.assertTrue(any("9 杯 199 元" in d["offer"] for d in batch))
+        self.assertTrue(any("6 杯 199 元" in d["offer"] for d in batch))
+
+    def test_frontend_has_pxmart_portal_and_v614_version(self):
+        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
+            html = f.read()
+        self.assertIn('content="v6.15"', html)
+        self.assertIn('href="https://pxbox.pxmart.com.tw/"', html)
+        self.assertIn("'portal-12':'全聯福利中心|PX Pay 分批取'", html)
+        self.assertIn("'portal-12':'PX Mart|PX Pay Bundles'", html)
+        self.assertIn("'portal-12':'PX Mart|แพ็กแก้ว PX Pay'", html)
