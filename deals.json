@@ -1,12 +1,12 @@
 {
   "processing_version": "v6.15",
-  "updated_at": "2026-11-07T21:16:12.762408+08:00",
-  "today": "2026-11-07",
-  "count": 139,
+  "updated_at": "2026-11-08T05:59:27.452538+08:00",
+  "today": "2026-11-08",
+  "count": 137,
   "counts": {
     "active": 27,
     "upcoming": 0,
-    "verify": 48,
+    "verify": 46,
     "expired": 64
   },
   "disclaimer": "資料來自固定保底文章、動態新聞／官方消息列表、逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
@@ -108,44 +108,6 @@
       "needs_check": false,
       "category": "coffee",
       "details": "指定組合：大杯美式咖啡＋起司里肌可頌 164 元；大杯美式咖啡＋經典起司蛋糕 188 元。付款方式及適用限制依官方活動辦法。"
-    },
-    {
-      "store": "星巴克",
-      "offer": "美國免費補滿 台灣星巴克正式回應了",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "schedule_note": "",
-      "article_title": "颱風假咖啡優惠！萊爾富「買一送一」 7-11美式2杯66元",
-      "article_url": "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
-      "source_urls": [
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html"
-      ],
-      "published": "",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "store": "星巴克",
-      "offer": "美國總公司稱「去冰免費補足容量」網炸鍋 台灣星巴克說話了",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "schedule_note": "",
-      "article_title": "4大超商光復節連假「咖啡買1送1、珍奶10杯360元」霜淇淋、果昔加入優惠",
-      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-      "source_urls": [
-        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html"
-      ],
-      "published": "2026-10-22",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     },
     {
       "store": "7-ELEVEN",
@@ -2697,12 +2659,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 949,
+    "source_rss_articles_added_before_dedup": 930,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 186,
+        "discovered": 184,
         "query_results": [
           {
             "ok": true,
@@ -2712,7 +2674,7 @@
           {
             "ok": true,
             "found": 100,
-            "unique_added": 86
+            "unique_added": 84
           }
         ]
       },
@@ -2748,60 +2710,60 @@
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 95,
+        "discovered": 88,
         "query_results": [
           {
             "ok": true,
-            "found": 95,
-            "unique_added": 95
+            "found": 88,
+            "unique_added": 88
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 85,
+        "discovered": 81,
         "query_results": [
           {
             "ok": true,
-            "found": 85,
-            "unique_added": 85
+            "found": 81,
+            "unique_added": 81
           }
         ]
       },
       "85°C": {
         "ok": true,
         "queries": 1,
-        "discovered": 66,
+        "discovered": 61,
         "query_results": [
           {
             "ok": true,
-            "found": 66,
-            "unique_added": 66
+            "found": 61,
+            "unique_added": 61
           }
         ]
       },
       "路易莎": {
         "ok": true,
         "queries": 1,
-        "discovered": 29,
+        "discovered": 28,
         "query_results": [
           {
             "ok": true,
-            "found": 29,
-            "unique_added": 29
+            "found": 28,
+            "unique_added": 28
           }
         ]
       },
       "星巴克": {
         "ok": true,
         "queries": 1,
-        "discovered": 69,
+        "discovered": 70,
         "query_results": [
           {
             "ok": true,
-            "found": 69,
-            "unique_added": 69
+            "found": 70,
+            "unique_added": 70
           }
         ]
       },
@@ -2844,12 +2806,12 @@
       "全聯": {
         "ok": true,
         "queries": 1,
-        "discovered": 62,
+        "discovered": 61,
         "query_results": [
           {
             "ok": true,
-            "found": 62,
-            "unique_added": 62
+            "found": 61,
+            "unique_added": 61
           }
         ]
       }
@@ -2859,7 +2821,7 @@
     "urls_for_articles_with_no_extracted_offers": 11,
     "rss_queries_failed": 0,
     "curated_records": 53,
-    "dynamic_records_before_dedup": 232,
+    "dynamic_records_before_dedup": 230,
     "note": "v6.13 使用各媒體／品牌獨立的 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。"
   }
 }
