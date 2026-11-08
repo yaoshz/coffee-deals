@@ -585,7 +585,7 @@ class DealDedupRegressionTests(unittest.TestCase):
                   for status in ('active', 'upcoming', 'verify', 'expired')}
         self.assertEqual(snapshot['counts'], actual)
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
-        self.assertEqual(snapshot.get('processing_version'), 'v6.15')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.17')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
@@ -882,7 +882,7 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertLessEqual(len(monday['offer']), 45)
         self.assertIn('uniopen', monday['offer'].lower())
         self.assertIn('第二杯由星巴克招待', monday.get('details', ''))
-        self.assertEqual(snapshot.get('processing_version'), 'v6.15')
+        self.assertEqual(snapshot.get('processing_version'), 'v6.17')
         self.assertEqual(len(scraper.deduplicate_deals(snapshot['deals'])), snapshot['count'])
 
 
@@ -1145,7 +1145,7 @@ class ListingDiscoveryRegressionTests(unittest.TestCase):
         deduped = scraper.deduplicate_deals(selected)
         self.assertEqual(len(deduped), 3)
         scopes = {scraper._deal_channel_scope(x) for x in deduped}
-        self.assertEqual(scopes, {'delivery', 'in_store'})
+        self.assertEqual(scopes, {'delivery', 'store'})
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
@@ -1246,7 +1246,7 @@ class PXMartV614Tests(unittest.TestCase):
     def test_v615_snapshot_contains_pxmart_eco_cup_verify_card_and_consistent_counts(self):
         with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
             snapshot = json.load(f)
-        self.assertEqual(snapshot.get("processing_version"), "v6.15")
+        self.assertEqual(snapshot.get("processing_version"), "v6.17")
         cards = [
             d for d in snapshot.get("deals", [])
             if d.get("store") == "全聯" and "自備環保杯" in d.get("offer", "")
@@ -1271,8 +1271,318 @@ class PXMartV614Tests(unittest.TestCase):
     def test_frontend_has_pxmart_portal_and_v614_version(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
             html = f.read()
-        self.assertIn('content="v6.15"', html)
+        self.assertIn('content="v6.17"', html)
         self.assertIn('href="https://pxbox.pxmart.com.tw/"', html)
         self.assertIn("'portal-12':'全聯福利中心|PX Pay 分批取'", html)
         self.assertIn("'portal-12':'PX Mart|PX Pay Bundles'", html)
         self.assertIn("'portal-12':'PX Mart|แพ็กแก้ว PX Pay'", html)
+
+
+class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
+    """回歸測試：使用者提供的 3 篇 NOWnews + 1 篇 Yahoo 雙11文章。"""
+
+    def setUp(self):
+        self._old_today = scraper.TODAY
+        from datetime import date
+        scraper.TODAY = date(2026, 11, 6)
+
+    def tearDown(self):
+        scraper.TODAY = self._old_today
+
+    def _extract(self, title, url, published, lines):
+        article = {"title": title, "url": url, "published": published}
+        fetched = {
+            "ok": True,
+            "title": title,
+            "final_url": url,
+            "published": published,
+            "lines": lines,
+        }
+        return scraper.deduplicate_deals(scraper.extract_article_deals(article, fetched))
+
+    def test_all_four_user_supplied_articles_are_seeded(self):
+        urls = {x["url"] for x in scraper.SEED_ARTICLES}
+        self.assertTrue({
+            "https://www.nownews.com/news/6889517",
+            "https://www.nownews.com/news/6889553",
+            "https://www.nownews.com/news/6888826",
+            scraper.URL_YAHOO_DOUBLE11,
+        }.issubset(urls))
+
+    def test_rss_queries_are_not_tied_to_a_stale_month(self):
+        combined = " ".join(scraper.RSS_QUERIES + [q for qs in scraper.SOURCE_DISCOVERY_QUERIES.values() for q in qs])
+        self.assertNotIn("2026 10月 11月", combined)
+        self.assertIn("OKmart", scraper.SOURCE_DISCOVERY_QUERIES)
+        self.assertIn("7-ELEVEN", scraper.SOURCE_DISCOVERY_QUERIES)
+        self.assertIn("全家", scraper.SOURCE_DISCOVERY_QUERIES)
+
+    def test_recent_articles_are_prioritized_before_fetch_limit(self):
+        articles = [
+            {"url": "https://example.com/old", "published": "2026-10-01"},
+            {"url": "https://example.com/new", "published": "2026-11-05T19:15:00+08:00"},
+            {"url": "https://example.com/mid", "published": "2026-11-03"},
+        ]
+        out = scraper.prioritize_articles(articles, limit=2)
+        self.assertEqual([x["url"] for x in out], ["https://example.com/new", "https://example.com/mid"])
+
+    def test_immediate_start_to_cutoff_date_is_parsed(self):
+        start, end, label = scraper.date_context("📍APP｜即起至11月12日", "2026-11-05T09:29:13+08:00")
+        self.assertEqual((start.isoformat(), end.isoformat()), ("2026-11-05", "2026-11-12"))
+        self.assertIn("即起", label)
+
+    def test_double_eleven_day_is_parsed_as_november_11(self):
+        start, end, label = scraper.date_context("雙11當天", "2026-11-05")
+        self.assertEqual((start.isoformat(), end.isoformat()), ("2026-11-11", "2026-11-11"))
+        self.assertEqual(label, "雙11當天")
+
+    def test_nownews_6889553_keeps_store_and_app_periods_separate(self):
+        url = "https://www.nownews.com/news/6889553"
+        out = self._extract(
+            "7-11咖啡買2送2！美式、拿鐵寄杯買11送11 全家單品拿鐵2杯95元",
+            url,
+            "2026-11-05T09:29:13+08:00",
+            [
+                "本週四咖啡優惠來了！7-11門市即起有濃萃美式買2送2、精品馥芮白買2送2。",
+                "7-ELEVEN", "門市｜11月4日起至11月9日",
+                "濃萃美式買2送2", "濃萃拿鐵買2送1", "厚乳拿鐵買2送1",
+                "精品美式買2送2", "精品馥芮白買2送2", "黑糖珍珠撞奶買2送2",
+                "📍APP｜即起至11月12日", "特大杯美式買11送11", "厚乳拿鐵買11送11",
+                "全家", "門市｜11月6日至11月10日",
+                "特大經典美式任2杯95元", "特大經典拿鐵任2杯95元",
+                "中杯單品美式任2杯95元", "中杯單品拿鐵任2杯95元",
+            ],
+        )
+        app = [x for x in out if "買11送11" in x["offer"]]
+        stores = [x for x in out if x["store"] == "7-ELEVEN" and "買2送" in x["offer"]]
+        family = [x for x in out if x["store"] == "全家"]
+        self.assertEqual(len(app), 2)
+        self.assertTrue(all((x["start_date"], x["end_date"]) == ("2026-11-05", "2026-11-12") for x in app))
+        self.assertGreaterEqual(len(stores), 4)
+        self.assertEqual(len(family), 4)
+        self.assertTrue(all((x["start_date"], x["end_date"]) == ("2026-11-06", "2026-11-10") for x in family))
+        self.assertFalse(any("本週四咖啡優惠來了" in x["offer"] for x in out))
+
+    def test_yahoo_double11_article_separates_four_store_promotions(self):
+        out = self._extract(
+            "4大超商雙11「咖啡買11送11、珍奶買2送2」！再抽10萬元金豆",
+            scraper.URL_YAHOO_DOUBLE11,
+            "2026-11-05T19:15:00+08:00",
+            [
+                "4大超商雙11優惠一次看！7-ELEVEN特大美式買11送11，珍珠撞奶買2送2；全家特大杯美式/拿鐵任選2杯95元。",
+                "7-ELEVEN",
+                "OPENPOINT行動隨時取活動11月3日至11月12日歡慶雙十一",
+                "CITY CAFE特大美式買11送11",
+                "CITY CAFE特大厚乳拿鐵買11送11",
+                "7-ELEVEN門市現茶飲優惠",
+                "11月4日至11月9日黑糖珍珠撞奶買2送2",
+                "全家", "11月6日至11月10日",
+                "特大杯美式任選2杯95元", "特大杯拿鐵任選2杯95元",
+                "萊爾富", "11月11日至12月8日",
+                "Hi café大杯美式38杯搭配茶葉蛋38顆特價1,111元",
+                "OKmart", "雙11當天", "大杯極淬莊園美式、拿鐵買2送2",
+            ],
+        )
+        self.assertFalse(any("4大超商雙11優惠一次看" in x["offer"] for x in out))
+        self.assertTrue(any(x["store"] == "7-ELEVEN" and "買11送11" in x["offer"] and x["start_date"] == "2026-11-03" for x in out))
+        self.assertTrue(any(x["store"] == "全家" and "美式" in x["offer"] and x["start_date"] == "2026-11-06" for x in out))
+        self.assertTrue(any(x["store"] == "萊爾富" and "38杯" in x["offer"] and x["start_date"] == "2026-11-11" for x in out))
+        self.assertTrue(any(x["store"] == "OKmart" and x["start_date"] == "2026-11-11" and x["end_date"] == "2026-11-11" for x in out))
+        stores = {x["store"] for x in out}
+        self.assertTrue({"7-ELEVEN", "全家", "萊爾富", "OKmart"}.issubset(stores))
+
+    def test_nownews_6889517_family_canned_coffee_is_not_misattributed(self):
+        out = self._extract(
+            "限5天！7-11雙11「超級多買1送1」全家咖啡15元",
+            "https://www.nownews.com/news/6889517",
+            "2026-11-05T00:07:00+08:00",
+            [
+                "7-ELEVEN",
+                "11月4日至11月9日限時促銷",
+                "門市現煮咖啡也有買2送2，大杯濃萃美式平均25元、大杯精品美式平均50元",
+                "全家便利商店",
+                "全家連續5天5好康，最新一檔是11月6日至11月10日",
+                "喬亞無糖黑咖啡15元",
+            ],
+        )
+        family = [x for x in out if "喬亞無糖黑咖啡" in x["offer"]]
+        self.assertEqual(len(family), 1)
+        self.assertEqual(family[0]["store"], "全家")
+        self.assertEqual((family[0]["start_date"], family[0]["end_date"]), ("2026-11-06", "2026-11-10"))
+
+    def test_furui_bai_is_recognized_as_a_distinct_7eleven_coffee_product(self):
+        data = [
+            row('7-ELEVEN', '精品美式買2送2', '2026-11-04', '2026-11-09', 'https://news.example/french-white'),
+            row('7-ELEVEN', '精品馥芮白買2送2', '2026-11-04', '2026-11-09', 'https://news.example/french-white'),
+        ]
+        out = scraper.deduplicate_deals(data)
+        self.assertEqual(len(out), 2)
+        self.assertTrue(any('馥芮白' in x['offer'] for x in out))
+        self.assertEqual(scraper._product_identity('精品馥芮白買2送2')[0], frozenset({'馥芮白'}))
+
+    def test_v616_artifact_versions_are_consistent(self):
+        with open(os.path.join(HERE, "index.html"), encoding="utf-8") as f:
+            html = f.read()
+        self.assertIn('content="v6.17"', html)
+        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
+            snapshot = json.load(f)
+        # deals.json can remain a last-known-good snapshot until a real online run succeeds.
+        self.assertEqual(snapshot.get("processing_version"), "v6.17")
+
+
+class V617CoreParserTests(unittest.TestCase):
+    """v6.17 核心解析器：非重疊 Span、中文數字、品牌／通路作用域與公平排程。"""
+
+    def test_chinese_numerals_support_compound_values(self):
+        cases = {"二": 2, "兩": 2, "十六": 16, "十九": 19, "二十一": 21,
+                 "二十五": 25, "一百零二": 102, "711": 711}
+        for raw, expected in cases.items():
+            with self.subTest(raw=raw):
+                self.assertEqual(scraper.parse_zh_or_int(raw), expected)
+
+    def test_date_is_masked_but_buy_gift_survives_double_eleven(self):
+        text = "11/11 買11送11，活動限量"
+        found = scraper.extract_offers_non_overlapping(text)
+        self.assertEqual([x["mechanism"] for x in found], ["buy_x_get_y"])
+        self.assertEqual((found[0]["buy"], found[0]["get"]), (11, 11))
+        self.assertEqual(text[found[0]["span_start"]:found[0]["span_end"]], "買11送11")
+
+    def test_second_cup_is_not_misread_as_two_cups_bundle(self):
+        found = scraper.extract_offers_non_overlapping("第 2 杯 11 元")
+        self.assertEqual(len(found), 1)
+        self.assertEqual(found[0]["mechanism"], "second_cup_discount")
+        self.assertEqual(found[0]["value"], 11)
+        self.assertFalse(any(x["mechanism"] == "n_cups_fixed_price" for x in found))
+
+    def test_chinese_buy_gift_and_bundle_price_are_parsed(self):
+        buy = scraper.extract_offers_non_overlapping("買二送一")
+        bundle = scraper.extract_offers_non_overlapping("任選十九杯711元")
+        self.assertEqual((buy[0]["buy"], buy[0]["get"]), (2, 1))
+        self.assertEqual((bundle[0]["count"], bundle[0]["price"]), (19, 711))
+
+    def test_flat_discount_and_second_cup_half_price_are_distinct(self):
+        flat = scraper.extract_offers_non_overlapping("單杯現折10元")
+        second = scraper.extract_offers_non_overlapping("第二杯5折")
+        self.assertEqual(flat[0]["mechanism"], "flat_discount")
+        self.assertEqual(flat[0]["amount"], 10)
+        self.assertEqual(second[0]["mechanism"], "second_cup_discount")
+        self.assertEqual((second[0]["value"], second[0]["unit"]), (5, "折"))
+
+    def test_bold_brand_prefix_inside_paragraph_switches_scope(self):
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup('<article><p><strong>7-ELEVEN：</strong>門市特大美式買2送2。</p><p><strong>【全家】</strong>特大美式任選2杯95元。</p></article>', "html.parser")
+        scoped = scraper.scope_article_blocks(scraper.extract_dom_article_blocks(soup))
+        self.assertEqual(scoped[0]["brand"], "7-ELEVEN")
+        self.assertEqual(scoped[-1]["brand"], "全家")
+
+    def test_711_bundle_price_is_not_a_7eleven_brand_switch(self):
+        scoped = scraper.scope_article_blocks(["【萊爾富】", "大杯卡布奇諾19杯711元"])
+        self.assertEqual(scoped[-1]["brand"], "萊爾富")
+        self.assertFalse(scoped[-1]["neutral_intro"])
+
+    def test_multi_brand_intro_clears_previous_brand_context(self):
+        scoped = scraper.scope_article_blocks([
+            "【7-ELEVEN】",
+            "雙11到了，7-ELEVEN、全家、萊爾富各推優惠",
+            "特大美式買11送11",
+        ])
+        self.assertTrue(scoped[1]["neutral_intro"])
+        self.assertIsNone(scoped[1]["brand"])
+        self.assertIsNone(scoped[2]["brand"])
+
+    def test_channel_scope_inherits_within_brand_and_resets_on_brand_change(self):
+        scoped = scraper.scope_article_blocks([
+            "【7-ELEVEN】", "OPENPOINT APP 行動隨時取", "特大美式買11送11",
+            "【全家】", "特大經典美式任選2杯95元",
+        ])
+        self.assertEqual(scoped[2]["channel_scope"], "app")
+        self.assertEqual(scoped[4]["channel_scope"], "unknown")
+
+    def test_make_deal_persists_channel_scope_as_top_level_field(self):
+        deal = scraper.make_deal("7-ELEVEN", "特大美式買11送11", "https://example.com/a",
+                                 "測試", channel_scope="app", channel_scope_text="OPENPOINT APP")
+        self.assertEqual(deal["channel_scope"], "app")
+        self.assertEqual(deal["channel_scope_text"], "OPENPOINT APP")
+
+    def test_fair_scheduler_round_robins_eleven_brands_and_respects_source_cap(self):
+        brands = scraper.STORE_ORDER[:11]
+        articles = []
+        for brand in brands:
+            for i in range(30):
+                articles.append({"url": f"https://{brand.replace(' ', '').replace('/', '')}.example/{i}",
+                                 "title": f"{brand} 咖啡優惠 {i}", "published": f"2026-11-{(i % 8) + 1:02d}",
+                                 "brand_hints": [brand], "source_bucket": brand})
+        scheduled = scraper.schedule_fair_article_quota(articles, max_total=160, max_per_source=25)
+        self.assertEqual(len(scheduled), 160)
+        counts = {brand: sum(1 for item in scheduled if item.get("scheduled_for_brand") == brand)
+                  for brand in brands}
+        self.assertLessEqual(max(counts.values()) - min(counts.values()), 1)
+        sources = {}
+        for item in scheduled:
+            source = item["scheduled_source_bucket"]
+            sources[source] = sources.get(source, 0) + 1
+        self.assertTrue(all(value <= 25 for value in sources.values()))
+
+    def test_cross_brand_same_url_is_scheduled_once(self):
+        articles = [
+            {"url": "https://example.com/shared", "title": "四大超商咖啡優惠", "published": "2026-11-08",
+             "brand_hints": ["7-ELEVEN", "全家", "萊爾富", "OKmart"], "source_bucket": "Yahoo"},
+            {"url": "https://example.com/shared?utm_source=google", "title": "四大超商咖啡優惠", "published": "2026-11-08",
+             "brand_hints": ["7-ELEVEN", "全家"], "source_bucket": "GoogleNews"},
+        ]
+        scheduled = scraper.schedule_fair_article_quota(articles, max_total=10, max_per_source=25)
+        self.assertEqual(len(scheduled), 1)
+        self.assertEqual(set(scheduled[0]["brand_hints"]), {"7-ELEVEN", "全家", "萊爾富", "OKmart"})
+
+    def test_static_html_fixtures_are_parseable_without_network(self):
+        from bs4 import BeautifulSoup
+        fixture_dir = os.path.join(HERE, "tests", "fixtures")
+        files = ["nownews_6888826.html", "nownews_6889517.html", "nownews_6889553.html", "yahoo_double11_4stores.html"]
+        self.assertTrue(all(os.path.isfile(os.path.join(fixture_dir, name)) for name in files))
+        expected = {
+            "nownews_6888826.html": {"7-ELEVEN", "全家"},
+            "nownews_6889517.html": {"7-ELEVEN", "全家"},
+            "nownews_6889553.html": {"7-ELEVEN", "全家"},
+            "yahoo_double11_4stores.html": {"7-ELEVEN", "全家", "萊爾富", "OKmart"},
+        }
+        for filename, expected_brands in expected.items():
+            with open(os.path.join(fixture_dir, filename), encoding="utf-8") as fixture:
+                soup = BeautifulSoup(fixture.read(), "html.parser")
+            blocks = scraper.extract_dom_article_blocks(soup)
+            scoped = scraper.scope_article_blocks(blocks)
+            brands = {x["brand"] for x in scoped if x.get("brand")}
+            self.assertTrue(expected_brands.issubset(brands), (filename, brands))
+        with open(os.path.join(fixture_dir, "yahoo_double11_4stores.html"), encoding="utf-8") as fixture:
+            soup = BeautifulSoup(fixture.read(), "html.parser")
+        scoped = scraper.scope_article_blocks(scraper.extract_dom_article_blocks(soup))
+        self.assertTrue(any(x["brand"] == "7-ELEVEN" and x["channel_scope"] == "app" for x in scoped))
+
+    def test_snapshot_schema_and_version_are_v617(self):
+        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
+            snapshot = json.load(f)
+        self.assertEqual(snapshot.get("processing_version"), "v6.17")
+        self.assertEqual(snapshot.get("count"), len(snapshot.get("deals", [])))
+        self.assertTrue(all("channel_scope" in item for item in snapshot.get("deals", [])))
+        self.assertTrue(all(item["channel_scope"] in {"app", "store", "delivery", "unknown"}
+                            for item in snapshot.get("deals", [])))
+
+
+
+    def test_official_probe_classifies_403_without_throwing(self):
+        import importlib.util
+        from unittest.mock import Mock
+        path = os.path.join(HERE, "tools", "probe_official_sources.py")
+        spec = importlib.util.spec_from_file_location("probe_official_sources", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        response = Mock()
+        response.status_code = 403
+        response.content = b"<html><body>Forbidden</body></html>"
+        response.url = "https://www.7-11.com.tw/"
+        response.headers = {"Content-Type": "text/html"}
+        response.ok = False
+        session = Mock()
+        session.get.return_value = response
+        result = module.inspect_url(session, "7-ELEVEN", response.url, timeout=1)
+        self.assertEqual(result["http_status"], 403)
+        self.assertEqual(result["result"], "blocked_or_shell")
+        self.assertEqual(result["response_bytes"], len(response.content))

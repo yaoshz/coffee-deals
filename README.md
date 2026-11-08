@@ -1,81 +1,76 @@
-# 省咖啡 v6.15 修正版
+# 省咖啡｜優惠雷達 v6.17
 
-## v6.15：修復全聯 OFF COFFEE 自帶杯優惠遭過濾的問題
+## v6.17 核心重構
 
-- `split_compound_offer()` 的商品白名單加入英文單字 `\bcoffee\b`。
-- `is_non_offer_record()` 的 `valid_products` 加入英文單字 `\bcoffee\b`。
-- 不把「全聯／PX Mart」品牌名稱當成飲品品項白名單，避免放寬過濾器造成非優惠資料誤收。
-- 新增兩項回歸測試：確認全聯自帶杯卡片通過單筆過濾，並能完整通過 `deduplicate_deals()`。
-- `deals.json` 補入一筆 OFF COFFEE 自備環保杯折 5 元資料，狀態為 `verify`，起訖日期留空。
-- 版號更新為 v6.15；保留既有 v6.14 全聯來源、PXGo 分批取、入口及三語設定。
+- **Span-Based Offer Parser**：先遮蔽日期區間，再依促銷語法優先級擷取互不重疊的字元區間；避免「第 2 杯 11 元」被誤讀為「2 杯 11 元」。
+- **中文數字**：支援零至九、十、十一、十六、十九、二十一、二十五、百／千等常見促銷數字。
+- **Hybrid Section Splitter**：保留 H2/H3/H4、段落、清單及粗體資訊；以明確品牌前綴切換品牌，遇到多品牌導言時重置品牌上下文，不讓前言污染後續優惠。
+- **Brand Scope + Channel Scope**：同時維護品牌與通路；`channel_scope` 成為 `deals.json` 一級欄位，允許值為 `app`、`store`、`delivery`、`unknown`。沒有明確證據時預設 `unknown`，不猜測門市。
+- **Fair-Share Round Robin**：同一 URL 全域只排程一次；依發布日期排序後按品牌輪替，並限制單一來源最多 25 篇，總量仍受 `MAX_ARTICLES=160` 控制。
+- **離線 HTML fixtures**：四篇指定 NOWnews／Yahoo 文章使用靜態 HTML 測試素材，單元測試不連線新聞網站。
+- **GitHub Actions**：新增每日台灣時間 07:30 更新流程，先跑離線測試再執行爬蟲並提交 `deals.json`；另有獨立官方來源探測 workflow。
+- **官方來源獨立探測**：新增 `tools/probe_official_sources.py` 與獨立 GitHub Actions workflow。探測 7-ELEVEN、全家官方首頁及最多 8 個可發現的站內活動／咖啡候選頁，記錄 HTTP 狀態、回應大小、文字長度、關鍵字與候選連結；403／429 僅記錄，不繞過網站防護，也不阻擋主爬蟲。
+- **前端通路標籤**：卡片可顯示 APP／線上寄杯、門市、外送；`unknown` 不顯示錯誤的門市標籤。
 
-## 測試
+## 驗收
 
-執行：`python -m unittest -v test_scraper_dedup.py`
-
-本版測試涵蓋正則過濾、完整去重流程、資料快照筆數與狀態統計、前端版號及既有來源功能。
-
----
-
-# 省咖啡｜優惠雷達 v6.13
-
-## 本版重點
-
-- **逐來源動態文章發現**：新增 NOWnews、Yahoo 新聞／Yahoo 股市、蘋果仁、中天、Cosmopolitan 的來源限定 Google News RSS 搜尋；每個來源各自記錄查詢成功率與新文章數。
-- **官方來源補充**：保留 NOWnews 生活分類、85°C 官方消息列表、路易莎官方消息列表入口。官方列表和 RSS 發現彼此補充，不依賴固定文章 ID。
-- **容錯隔離**：每個列表／RSS 查詢獨立執行；單一來源封鎖、逾時或改版，不會中止其他來源。文章仍須成功開啟原文，才會進入正文解析。
-- **優惠資料品質**：保留原有多優惠拆分、日期解析、通路區隔、跨來源去重、舊資料保護與安全寫檔。
-- **Facebook 限制**：不把一般 Facebook 粉專頁當成可靠的匿名爬取入口。品牌貼文可由搜尋引擎索引作為發現線索，但不保證每篇都能索引或讀取；穩定自動化仍需 Meta API 權限，或人工核對後匯入。
-- **測試日期固定**：舊快照回歸測試固定使用 2026-10-23 作為測試基準，避免日期推移造成舊測試案例失效；正式程式仍使用台灣當日日期。
-
-## 來源與限制
-
-| 來源 | 動態發現方式 | 備註 |
-|---|---|---|
-| NOWnews | 生活分類列表 + 來源限定 RSS | 文章列表 DOM 變更時查看 `listing_discovery` |
-| Yahoo 新聞／股市 | 來源限定 RSS 搜尋 | RSS 結果仍需追蹤跳轉至原文 |
-| 蘋果仁 | 來源限定 RSS 搜尋 | 非官方 API，可能受索引延遲影響 |
-| 中天新聞 | 來源限定 RSS 搜尋 | 非官方 API，可能受索引延遲影響 |
-| Cosmopolitan | 來源限定 RSS 搜尋 | 非官方 API，可能受索引延遲影響 |
-| 85°C | 官方消息列表 + 來源限定 RSS | Facebook 貼文非保證來源 |
-| 路易莎 | 官方消息列表 + 來源限定 RSS | Facebook 貼文非保證來源 |
-| 星巴克、7-ELEVEN、全家、萊爾富 | 來源限定 RSS 搜尋 | 若官方公告未被索引，仍可能漏抓 |
-
-Google News RSS 是文章發現補充機制，不是各媒體的官方 API，也不保證即時、完整或每篇都能成功解析。Facebook 搜尋結果只能作為線索，不代表已讀取官方貼文全文。
-
-## 部署
-
-將 `scraper.py`、`deals.json`、`index.html`、`requirements.txt` 和 `test_scraper_dedup.py` 覆蓋到 GitHub 專案。保留原有 `.github/workflows/update-coffee-deals.yml`。
-
-完成覆蓋後，在 GitHub Actions 手動執行更新工作流程。檢查 `scrape_report`：
-
-- `listing_discovery`：NOWnews、85°C、路易莎官方列表是否成功。
-- `source_rss_discovery`：逐來源 RSS 查詢成功率、搜尋結果數與去重後新文章數。
-- `articles_fetched_successfully`：成功開啟原文的文章數。
-- `articles_failed_or_low_content`：無法讀取的文章數。
-
-## 測試
+本次版本離線回歸測試共 **128 項，全部通過**。測試涵蓋既有去重案例、4 篇靜態新聞 fixture、Span 衝突、中文數字、品牌／通路作用域、公平配額與官方探測 403 模擬。
 
 ```bash
 python -m unittest -v test_scraper_dedup.py
-python -m py_compile scraper.py
+python -m py_compile scraper.py tools/probe_official_sources.py
 python -m json.tool deals.json > /dev/null
+python tools/probe_official_sources.py --output official_source_probe.json
 ```
 
-本次離線回歸測試涵蓋既有優惠解析／去重案例、逐來源 RSS 成功與失敗隔離、文章 URL 去重、NOWnews 動態文章連結解析，以及 2026-10-31 到期優惠在 2026-11-06 不得標為有效。
+官方探測是獨立診斷，不屬於主爬蟲必要步驟。GitHub Actions Runner 可能因 IP／WAF 政策得到 403 或 429；這只代表該次 Runner 的可讀性，不代表官網永遠不可用。可透過 `OFFICIAL_PROBE_URLS` 環境變數，以分號加入已確認的官方活動頁網址。
+
+## GitHub Actions 部署（首次上傳前必讀）
+
+### 1. 確認 GitHub Actions 寫入權限
+
+本專案的 `.github/workflows/update-coffee-deals.yml` 已在 YAML 中設定：
+
+```yaml
+permissions:
+  contents: write
+```
+
+這是讓該 workflow 的 `GITHUB_TOKEN` 可以提交更新後 `deals.json` 的必要設定。上傳後仍請到 GitHub repository：
+
+**Settings → Actions → General → Workflow permissions**
+
+選擇 **Read and write permissions**，再按 **Save**。若組織政策限制 workflow 權限，仍須由有權限的管理者確認。
+
+### 2. 檢查舊的排程 workflow，避免重複執行
+
+上傳前，先檢查 repository 的 `.github/workflows/` 目錄。如果原本已有其他會定時執行 `scraper.py`、更新 `deals.json` 或推送相同資料的 workflow（例如 `main.yml`、`scraper.yml`、`update.yml`），請停用或移除重複的排程，避免兩個流程同時提交而發生 push conflict。
+
+**不要刪除所有舊 workflow。** 只處理確認與本專案更新工作重複的流程；其他用途的 Actions 可以保留。完成後，本專案的主要排程檔為：
+
+- `.github/workflows/update-coffee-deals.yml`：每日台灣時間 07:30 更新優惠。
+- `.github/workflows/probe-official-sources.yml`：每週獨立探測官方來源，不會執行主爬蟲或提交 `deals.json`。
+
+主更新 workflow 已設定 `concurrency`，可避免同一個 workflow 群組的更新工作重疊；但它不能取代停用其他重複 workflow。
+
+### 3. 上傳整個專案
+
+請保留專案中的 `.github/`、`tests/`、`tools/` 與 `reports/` 目錄。`reports/.gitkeep` 是用來讓 Git 保留目前沒有報告檔案的空目錄，不是爬蟲執行的必要程式。
+
+第一次上傳後，到 **Actions** 頁面確認 workflow 有出現。可以先手動執行 `Update coffee deals`，檢查測試、爬蟲及 `deals.json` 自動提交是否成功。
+
+## 主爬蟲執行
+
+```bash
+pip install -r requirements.txt
+python scraper.py
+```
+
+主爬蟲仍使用新聞 RSS 與媒體列表發現文章；官方來源探測不會被主爬蟲呼叫。請檢查 `deals.json` 的 `scrape_report`，並回原文核對日期、通路、限量與會員條件。
 
 ## 重要限制
 
-- 本次測試為離線測試，沒有宣稱已在 GitHub Actions 或各網站完成即時全站抓取。
-- 動態發現能降低固定文章 ID 漏抓問題，但無法保證搜尋引擎已索引所有新文章。
-- 85°C／路易莎 2026-10-31 截止的舊活動應依目前日期顯示為過期，不應當作本週有效優惠。
-
-
-## v6.14 全聯（PX Mart）補強
-
-- 新增全聯 OFF COFFEE／分批取的 Google News RSS 動態發現查詢。
-- 將「分批取」加入線上通路辨識，避免與門市優惠混淆。
-- 新增全聯官方入口與繁中／英文／泰文名稱。
-- 新增 OFF COFFEE 自帶杯優惠保底。注意：全聯目前官方品牌頁列示折 5 元；歷史 8 元是舊活動，不再當作現行優惠。官方頁未標截止日，因此資料列為日期待確認，不虛構有效期限。
-- 補入 2026/10/24–10/26 精品美式 9 杯 199 元、小農拿鐵 6 杯 199 元兩筆歷史分批取優惠；截至 2026/11/06 均標示過期。
-- 增加 5 項 PX Mart 專屬回歸測試。
+- 本版交付的 `deals.json` 是 2026-11-08 的離線正規化快照，不代表已在本次環境完成全站即時抓取。
+- Google News RSS 是文章發現補充來源，不是官方 API，也不保證完整或即時。
+- 本機與 GitHub Actions 對同一官網可能得到不同 HTTP 結果；不要以單次 403 推斷網站永久不可用。
+- 文章導言或同一段落出現多品牌時，採保守策略不繼承品牌；無法確定品牌／通路時保留 `unknown`，避免錯誤優惠卡。
