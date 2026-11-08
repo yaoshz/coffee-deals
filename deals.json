@@ -1,7 +1,7 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-08T21:19:40.968592+08:00",
+  "updated_at": "2026-11-08T21:40:38.969311+08:00",
   "today": "2026-11-08",
   "count": 98,
   "counts": {
@@ -2440,7 +2440,7 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 611,
+    "source_rss_articles_added_before_dedup": 608,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
@@ -2503,12 +2503,12 @@
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 59,
+        "discovered": 57,
         "query_results": [
           {
             "ok": true,
-            "found": 59,
-            "unique_added": 59
+            "found": 57,
+            "unique_added": 57
           }
         ]
       },
@@ -2621,12 +2621,12 @@
       "全聯": {
         "ok": true,
         "queries": 1,
-        "discovered": 11,
+        "discovered": 10,
         "query_results": [
           {
             "ok": true,
-            "found": 11,
-            "unique_added": 11
+            "found": 10,
+            "unique_added": 10
           }
         ]
       }
@@ -2636,7 +2636,7 @@
     "urls_for_articles_with_no_extracted_offers": 7,
     "rss_queries_failed": 0,
     "curated_records": 53,
-    "dynamic_records_before_dedup": 141,
+    "dynamic_records_before_dedup": 137,
     "fair_schedule": {
       "max_total": 160,
       "max_per_source": 25,
