@@ -1,8 +1,8 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-08T21:40:38.969311+08:00",
-  "today": "2026-11-08",
+  "updated_at": "2026-11-09T06:16:19.113436+08:00",
+  "today": "2026-11-09",
   "count": 98,
   "counts": {
     "active": 39,
@@ -2440,12 +2440,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 608,
+    "source_rss_articles_added_before_dedup": 607,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 182,
+        "discovered": 176,
         "query_results": [
           {
             "ok": true,
@@ -2455,7 +2455,7 @@
           {
             "ok": true,
             "found": 100,
-            "unique_added": 82
+            "unique_added": 76
           }
         ]
       },
@@ -2479,36 +2479,36 @@
       "蘋果仁": {
         "ok": true,
         "queries": 1,
-        "discovered": 60,
+        "discovered": 59,
         "query_results": [
           {
             "ok": true,
-            "found": 60,
-            "unique_added": 60
+            "found": 59,
+            "unique_added": 59
           }
         ]
       },
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 77,
+        "discovered": 84,
         "query_results": [
           {
             "ok": true,
-            "found": 77,
-            "unique_added": 77
+            "found": 84,
+            "unique_added": 84
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 57,
+        "discovered": 59,
         "query_results": [
           {
             "ok": true,
-            "found": 57,
-            "unique_added": 57
+            "found": 59,
+            "unique_added": 59
           }
         ]
       },
@@ -2551,12 +2551,12 @@
       "7-ELEVEN": {
         "ok": true,
         "queries": 2,
-        "discovered": 28,
+        "discovered": 27,
         "query_results": [
           {
             "ok": true,
-            "found": 20,
-            "unique_added": 20
+            "found": 19,
+            "unique_added": 19
           },
           {
             "ok": true,
@@ -2568,7 +2568,7 @@
       "全家": {
         "ok": true,
         "queries": 2,
-        "discovered": 21,
+        "discovered": 20,
         "query_results": [
           {
             "ok": true,
@@ -2577,8 +2577,8 @@
           },
           {
             "ok": true,
-            "found": 17,
-            "unique_added": 16
+            "found": 16,
+            "unique_added": 15
           }
         ]
       },
@@ -2621,12 +2621,12 @@
       "全聯": {
         "ok": true,
         "queries": 1,
-        "discovered": 10,
+        "discovered": 9,
         "query_results": [
           {
             "ok": true,
-            "found": 10,
-            "unique_added": 10
+            "found": 9,
+            "unique_added": 9
           }
         ]
       }
@@ -2655,10 +2655,10 @@
       },
       "brand_coverage": {
         "星巴克": 26,
-        "7-ELEVEN": 41,
-        "全家": 45,
+        "7-ELEVEN": 40,
+        "全家": 46,
         "萊爾富": 33,
-        "OKmart": 22,
+        "OKmart": 23,
         "美廉社": 19,
         "小北百貨": 0,
         "路易莎": 17,
@@ -2667,29 +2667,29 @@
         "全聯": 15
       },
       "scheduled_by_source": {
-        "7-ELEVEN": 13,
+        "7-ELEVEN": 12,
         "85°C": 16,
-        "Cosmopolitan": 14,
+        "Cosmopolitan": 13,
         "ETtoday新聞雲": 5,
         "LINE TODAY": 1,
         "NOWnews": 25,
-        "NOWnews今日新聞": 18,
+        "NOWnews今日新聞": 21,
         "Newtalk新聞": 1,
         "OKmart": 5,
         "PChome Online 新聞": 1,
-        "Starbucks Taiwan": 7,
+        "Starbucks Taiwan": 6,
         "TVBS新聞網": 3,
-        "WalkerLand 窩客島": 2,
+        "UDN": 1,
+        "WalkerLand 窩客島": 1,
         "Yahoo新聞": 9,
         "nownews.com": 4,
         "tw.news.yahoo.com": 2,
         "三立新聞網SETN.com": 1,
-        "中天新聞": 4,
+        "中天新聞": 5,
         "今周刊": 1,
         "全家": 3,
         "全聯": 7,
         "卡優新聞網": 1,
-        "經濟日報": 1,
         "美廉社": 1,
         "蘋果仁": 3,
         "路易莎官方": 7,
