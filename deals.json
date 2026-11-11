@@ -1,14 +1,14 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-11T14:42:26.146868+08:00",
-  "today": "2026-11-11",
+  "updated_at": "2026-11-12T03:43:41.192713+08:00",
+  "today": "2026-11-12",
   "count": 88,
   "counts": {
-    "active": 20,
+    "active": 14,
     "upcoming": 0,
     "verify": 17,
-    "expired": 51
+    "expired": 57
   },
   "disclaimer": "資料來自近期固定保底文章、動態新聞／官方消息列表、近 30 天逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
   "deals": [
@@ -302,7 +302,7 @@
     {
       "store": "7-ELEVEN",
       "offer": "CITY PEARL咖啡珍珠歐蕾6杯組300元(限量3萬組)",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-07",
       "end_date": "2026-11-11",
       "date_text": "11月7日至11月11日",
@@ -323,7 +323,7 @@
     {
       "store": "7-ELEVEN",
       "offer": "CITY TEA蕎麥奶茶6杯組280元(限量3萬組)",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-07",
       "end_date": "2026-11-11",
       "date_text": "11月7日至11月11日",
@@ -344,7 +344,7 @@
     {
       "store": "7-ELEVEN",
       "offer": "CITY TEA青梅冰茶/一顆檸檬青茶/一顆檸檬紅茶任選6杯組240元(限量3萬組)",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-07",
       "end_date": "2026-11-11",
       "date_text": "11月7日至11月11日",
@@ -720,7 +720,7 @@
     {
       "store": "7-ELEVEN",
       "offer": "CITY PEARL黑糖珍珠撞奶買10送10(限量3萬組)",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-07",
       "end_date": "2026-11-11",
       "date_text": "11月7日至11月11日",
@@ -749,7 +749,7 @@
     {
       "store": "7-ELEVEN",
       "offer": "CITY TEA黃金蕎麥茶買10送10 (限量3萬組)全台販售",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-07",
       "end_date": "2026-11-11",
       "date_text": "11月7日至11月11日",
@@ -1793,7 +1793,7 @@
     {
       "store": "OKmart",
       "offer": "拿鐵限時 買2送2",
-      "status": "active",
+      "status": "expired",
       "start_date": "2026-11-11",
       "end_date": "2026-11-11",
       "date_text": "11月11日",
@@ -2152,12 +2152,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 631,
+    "source_rss_articles_added_before_dedup": 626,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 176,
+        "discovered": 181,
         "query_results": [
           {
             "ok": true,
@@ -2167,7 +2167,7 @@
           {
             "ok": true,
             "found": 100,
-            "unique_added": 76
+            "unique_added": 81
           }
         ]
       },
@@ -2191,48 +2191,48 @@
       "蘋果仁": {
         "ok": true,
         "queries": 1,
-        "discovered": 71,
+        "discovered": 64,
         "query_results": [
           {
             "ok": true,
-            "found": 71,
-            "unique_added": 71
+            "found": 64,
+            "unique_added": 64
           }
         ]
       },
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 96,
+        "discovered": 93,
         "query_results": [
           {
             "ok": true,
-            "found": 96,
-            "unique_added": 96
+            "found": 93,
+            "unique_added": 93
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 55,
+        "discovered": 51,
         "query_results": [
           {
             "ok": true,
-            "found": 55,
-            "unique_added": 55
+            "found": 51,
+            "unique_added": 51
           }
         ]
       },
       "85°C": {
         "ok": true,
         "queries": 1,
-        "discovered": 22,
+        "discovered": 27,
         "query_results": [
           {
             "ok": true,
-            "found": 22,
-            "unique_added": 22
+            "found": 27,
+            "unique_added": 27
           }
         ]
       },
@@ -2263,24 +2263,24 @@
       "7-ELEVEN": {
         "ok": true,
         "queries": 2,
-        "discovered": 25,
+        "discovered": 22,
         "query_results": [
           {
             "ok": true,
-            "found": 14,
-            "unique_added": 14
+            "found": 13,
+            "unique_added": 13
           },
           {
             "ok": true,
-            "found": 15,
-            "unique_added": 11
+            "found": 10,
+            "unique_added": 9
           }
         ]
       },
       "全家": {
         "ok": true,
         "queries": 2,
-        "discovered": 27,
+        "discovered": 25,
         "query_results": [
           {
             "ok": true,
@@ -2289,20 +2289,20 @@
           },
           {
             "ok": true,
-            "found": 23,
-            "unique_added": 21
+            "found": 21,
+            "unique_added": 19
           }
         ]
       },
       "萊爾富": {
         "ok": true,
         "queries": 1,
-        "discovered": 11,
+        "discovered": 14,
         "query_results": [
           {
             "ok": true,
-            "found": 11,
-            "unique_added": 11
+            "found": 14,
+            "unique_added": 14
           }
         ]
       },
@@ -2321,12 +2321,12 @@
       "美廉社": {
         "ok": true,
         "queries": 1,
-        "discovered": 11,
+        "discovered": 12,
         "query_results": [
           {
             "ok": true,
-            "found": 11,
-            "unique_added": 11
+            "found": 12,
+            "unique_added": 12
           }
         ]
       },
@@ -2343,12 +2343,12 @@
         ]
       }
     },
-    "articles_fetched_successfully": 10,
-    "articles_failed_or_low_content": 150,
-    "urls_for_articles_with_no_extracted_offers": 7,
+    "articles_fetched_successfully": 12,
+    "articles_failed_or_low_content": 148,
+    "urls_for_articles_with_no_extracted_offers": 9,
     "rss_queries_failed": 0,
     "curated_records": 53,
-    "dynamic_records_before_dedup": 76,
+    "dynamic_records_before_dedup": 75,
     "fair_schedule": {
       "max_total": 160,
       "max_per_source": 25,
@@ -2366,12 +2366,12 @@
         "全聯": 15
       },
       "brand_coverage": {
-        "星巴克": 25,
-        "7-ELEVEN": 40,
-        "全家": 46,
+        "星巴克": 23,
+        "7-ELEVEN": 38,
+        "全家": 44,
         "萊爾富": 33,
         "OKmart": 21,
-        "美廉社": 19,
+        "美廉社": 18,
         "小北百貨": 0,
         "路易莎": 17,
         "85°C": 16,
@@ -2379,32 +2379,31 @@
         "全聯": 15
       },
       "scheduled_by_source": {
-        "7-ELEVEN": 13,
+        "7-ELEVEN": 12,
         "85°C": 16,
-        "Cosmopolitan": 15,
-        "ETtoday新聞雲": 4,
+        "Cosmopolitan": 14,
+        "ETtoday新聞雲": 5,
         "Life 生活網": 1,
         "NOWnews": 25,
-        "NOWnews今日新聞": 20,
+        "NOWnews今日新聞": 15,
         "Newtalk新聞": 1,
         "OKmart": 3,
-        "Starbucks Taiwan": 4,
+        "Starbucks Taiwan": 2,
         "TVBS新聞網": 3,
         "UDN": 1,
         "WalkerLand 窩客島": 1,
-        "Yahoo新聞": 11,
+        "Yahoo新聞": 16,
         "nownews.com": 2,
         "tw.news.yahoo.com": 1,
         "三立新聞網SETN.com": 2,
         "上報Up Media": 1,
         "中天新聞": 6,
         "今周刊": 1,
-        "全家": 4,
-        "全聯": 7,
-        "美廉社": 2,
+        "全家": 3,
+        "全聯": 9,
+        "美廉社": 3,
         "蘋果仁": 4,
-        "路易莎官方": 7,
-        "鏡週刊Mirror Media": 1,
+        "路易莎官方": 9,
         "風傳媒": 4
       }
     },
