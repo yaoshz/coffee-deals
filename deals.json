@@ -1,14 +1,14 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-14T03:51:43.446907+08:00",
+  "updated_at": "2026-11-14T14:41:36.471589+08:00",
   "today": "2026-11-14",
-  "count": 89,
+  "count": 90,
   "counts": {
     "active": 6,
     "upcoming": 0,
-    "verify": 18,
-    "expired": 65
+    "verify": 17,
+    "expired": 67
   },
   "disclaimer": "資料來自近期固定保底文章、動態新聞／官方消息列表、近 30 天逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
   "deals": [
@@ -114,6 +114,35 @@
     },
     {
       "store": "7-ELEVEN",
+      "offer": "精品香椰厚拿鐵享第2杯10元",
+      "status": "expired",
+      "start_date": "2026-07-11",
+      "end_date": "2026-07-11",
+      "date_text": "7-11",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "4大超商雙11「咖啡買11送11、珍奶買2送2」！ 再抽10萬元金豆",
+      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html",
+      "source_urls": [
+        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html"
+      ],
+      "published": "2026-11-05T19:15:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "second_cup_discount",
+          "value": 10,
+          "unit": "元",
+          "text": "第2杯10元"
+        }
+      ]
+    },
+    {
+      "store": "7-ELEVEN",
       "offer": "CAFE RESERVE+TEA 不可思議茶BAR 11月4日至11月9日蹦米香茶拿鐵系列2杯100元，全品項2杯79折、4杯75折",
       "status": "expired",
       "start_date": "2026-11-04",
@@ -201,6 +230,35 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
+      "article_title": "4大超商雙11「咖啡買11送11、珍奶買2送2」！ 再抽10萬元金豆",
+      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html",
+      "source_urls": [
+        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html"
+      ],
+      "published": "2026-11-05T19:15:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "buy_x_get_y",
+          "buy": 2,
+          "get": 2,
+          "text": "買2送2"
+        }
+      ]
+    },
+    {
+      "store": "7-ELEVEN",
+      "offer": "香鑽水果茶則有買2送2",
+      "status": "expired",
+      "start_date": "2026-07-11",
+      "end_date": "2026-07-11",
+      "date_text": "7-11",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
       "article_title": "4大超商雙11「咖啡買11送11、珍奶買2送2」！ 再抽10萬元金豆",
       "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html",
       "source_urls": [
@@ -2121,27 +2179,6 @@
       "needs_check": false,
       "category": "coffee",
       "details": "全聯 OFF COFFEE 官方品牌頁目前列示：自備環保杯購買咖啡享 5 元優惠。官方頁未標示活動截止日，使用前請以門市及官方頁面為準。"
-    },
-    {
-      "store": "品牌待確認",
-      "offer": "6塊炸雞、烤雞209元、大披薩199元 CAMA居然免費喝？",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "4大超商雙11「咖啡買11送11、珍奶買2送2」！ 再抽10萬元金豆",
-      "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html",
-      "source_urls": [
-        "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E9%9B%9911-%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html"
-      ],
-      "published": "2026-11-05T19:15:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     }
   ],
   "scrape_report": {
@@ -2165,12 +2202,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 589,
+    "source_rss_articles_added_before_dedup": 600,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 176,
+        "discovered": 178,
         "query_results": [
           {
             "ok": true,
@@ -2179,8 +2216,8 @@
           },
           {
             "ok": true,
-            "found": 99,
-            "unique_added": 76
+            "found": 100,
+            "unique_added": 78
           }
         ]
       },
@@ -2204,48 +2241,48 @@
       "蘋果仁": {
         "ok": true,
         "queries": 1,
-        "discovered": 49,
+        "discovered": 54,
         "query_results": [
           {
             "ok": true,
-            "found": 49,
-            "unique_added": 49
+            "found": 54,
+            "unique_added": 54
           }
         ]
       },
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 91,
+        "discovered": 86,
         "query_results": [
           {
             "ok": true,
-            "found": 91,
-            "unique_added": 91
+            "found": 86,
+            "unique_added": 86
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 43,
+        "discovered": 42,
         "query_results": [
           {
             "ok": true,
-            "found": 43,
-            "unique_added": 43
+            "found": 42,
+            "unique_added": 42
           }
         ]
       },
       "85°C": {
         "ok": true,
         "queries": 1,
-        "discovered": 28,
+        "discovered": 36,
         "query_results": [
           {
             "ok": true,
-            "found": 28,
-            "unique_added": 28
+            "found": 36,
+            "unique_added": 36
           }
         ]
       },
@@ -2276,16 +2313,16 @@
       "7-ELEVEN": {
         "ok": true,
         "queries": 2,
-        "discovered": 18,
+        "discovered": 19,
         "query_results": [
           {
             "ok": true,
-            "found": 10,
-            "unique_added": 10
+            "found": 11,
+            "unique_added": 11
           },
           {
             "ok": true,
-            "found": 9,
+            "found": 10,
             "unique_added": 8
           }
         ]
@@ -2322,12 +2359,12 @@
       "OKmart": {
         "ok": true,
         "queries": 1,
-        "discovered": 9,
+        "discovered": 10,
         "query_results": [
           {
             "ok": true,
-            "found": 9,
-            "unique_added": 9
+            "found": 10,
+            "unique_added": 10
           }
         ]
       },
@@ -2373,48 +2410,48 @@
         "OKmart": 16,
         "美廉社": 16,
         "小北百貨": 0,
-        "路易莎": 16,
+        "路易莎": 15,
         "85°C": 16,
         "cama": 1,
         "全聯": 16
       },
       "brand_coverage": {
-        "星巴克": 22,
-        "7-ELEVEN": 36,
-        "全家": 46,
-        "萊爾富": 31,
-        "OKmart": 22,
+        "星巴克": 21,
+        "7-ELEVEN": 35,
+        "全家": 44,
+        "萊爾富": 30,
+        "OKmart": 20,
         "美廉社": 18,
         "小北百貨": 0,
-        "路易莎": 17,
+        "路易莎": 16,
         "85°C": 16,
         "cama": 1,
         "全聯": 16
       },
       "scheduled_by_source": {
-        "7-ELEVEN": 9,
+        "7-ELEVEN": 11,
         "85°C": 16,
-        "Cosmopolitan": 18,
+        "Cosmopolitan": 14,
         "ETtoday新聞雲": 3,
-        "Life 生活網": 2,
+        "Life 生活網": 4,
         "NOWnews": 25,
-        "NOWnews今日新聞": 8,
+        "NOWnews今日新聞": 9,
         "Newtalk新聞": 1,
         "OKmart": 2,
-        "Starbucks Taiwan": 3,
+        "Starbucks Taiwan": 4,
         "TVBS新聞網": 4,
         "UDN": 1,
-        "WalkerLand 窩客島": 2,
-        "Yahoo新聞": 24,
+        "WalkerLand 窩客島": 3,
+        "Yahoo新聞": 25,
         "Yahoo股市": 1,
         "nownews.com": 2,
         "tw.news.yahoo.com": 1,
-        "三立新聞網SETN.com": 2,
+        "三立新聞網SETN.com": 1,
         "中天新聞": 4,
-        "中天新聞網": 1,
+        "中天新聞網": 2,
         "今周刊": 1,
-        "全家": 5,
-        "全聯": 8,
+        "全家": 3,
+        "全聯": 6,
         "美廉社": 2,
         "蘋果仁": 3,
         "路易莎官方": 10,
