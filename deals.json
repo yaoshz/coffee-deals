@@ -1,7 +1,7 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-15T02:16:43.225017+08:00",
+  "updated_at": "2026-11-15T06:37:09.686267+08:00",
   "today": "2026-11-15",
   "count": 88,
   "counts": {
@@ -2144,12 +2144,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 609,
+    "source_rss_articles_added_before_dedup": 608,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 179,
+        "discovered": 180,
         "query_results": [
           {
             "ok": true,
@@ -2159,7 +2159,7 @@
           {
             "ok": true,
             "found": 100,
-            "unique_added": 79
+            "unique_added": 80
           }
         ]
       },
@@ -2183,36 +2183,36 @@
       "蘋果仁": {
         "ok": true,
         "queries": 1,
-        "discovered": 55,
+        "discovered": 58,
         "query_results": [
           {
             "ok": true,
-            "found": 55,
-            "unique_added": 55
+            "found": 58,
+            "unique_added": 58
           }
         ]
       },
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 87,
+        "discovered": 84,
         "query_results": [
           {
             "ok": true,
-            "found": 87,
-            "unique_added": 87
+            "found": 84,
+            "unique_added": 84
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 47,
+        "discovered": 46,
         "query_results": [
           {
             "ok": true,
-            "found": 47,
-            "unique_added": 47
+            "found": 46,
+            "unique_added": 46
           }
         ]
       },
@@ -2255,7 +2255,7 @@
       "7-ELEVEN": {
         "ok": true,
         "queries": 2,
-        "discovered": 18,
+        "discovered": 19,
         "query_results": [
           {
             "ok": true,
@@ -2265,14 +2265,14 @@
           {
             "ok": true,
             "found": 9,
-            "unique_added": 7
+            "unique_added": 8
           }
         ]
       },
       "全家": {
         "ok": true,
         "queries": 2,
-        "discovered": 27,
+        "discovered": 26,
         "query_results": [
           {
             "ok": true,
@@ -2281,20 +2281,20 @@
           },
           {
             "ok": true,
-            "found": 23,
-            "unique_added": 22
+            "found": 22,
+            "unique_added": 21
           }
         ]
       },
       "萊爾富": {
         "ok": true,
         "queries": 1,
-        "discovered": 14,
+        "discovered": 13,
         "query_results": [
           {
             "ok": true,
-            "found": 14,
-            "unique_added": 14
+            "found": 13,
+            "unique_added": 13
           }
         ]
       },
@@ -2352,32 +2352,32 @@
         "OKmart": 16,
         "美廉社": 16,
         "小北百貨": 0,
-        "路易莎": 15,
+        "路易莎": 16,
         "85°C": 16,
         "cama": 1,
         "全聯": 16
       },
       "brand_coverage": {
-        "星巴克": 21,
+        "星巴克": 22,
         "7-ELEVEN": 36,
-        "全家": 45,
+        "全家": 44,
         "萊爾富": 30,
         "OKmart": 20,
-        "美廉社": 16,
+        "美廉社": 17,
         "小北百貨": 0,
-        "路易莎": 16,
+        "路易莎": 17,
         "85°C": 16,
         "cama": 1,
-        "全聯": 17
+        "全聯": 16
       },
       "scheduled_by_source": {
         "7-ELEVEN": 10,
         "85°C": 16,
         "Cosmopolitan": 18,
-        "ETtoday新聞雲": 3,
+        "ETtoday新聞雲": 4,
         "Life 生活網": 4,
         "NOWnews": 25,
-        "NOWnews今日新聞": 8,
+        "NOWnews今日新聞": 6,
         "Newtalk新聞": 1,
         "OKmart": 2,
         "Starbucks Taiwan": 4,
@@ -2389,15 +2389,15 @@
         "nownews.com": 2,
         "tw.news.yahoo.com": 1,
         "三立新聞網SETN.com": 2,
-        "中天新聞": 4,
+        "中天新聞": 3,
         "中天新聞網": 1,
         "今周刊": 1,
         "全家": 2,
-        "全聯": 6,
+        "全聯": 7,
         "美廉社": 2,
         "蘋果仁": 3,
         "路易莎官方": 10,
-        "風傳媒": 2
+        "風傳媒": 3
       }
     },
     "note": "v6.17 使用品牌輪替公平配額、每來源上限 25 篇，並於 deals.json 增加 channel_scope；原有近 30 天 Google News RSS 發現流程保留。v6.16 使用近 30 天的各媒體／品牌 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。"
