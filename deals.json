@@ -1,14 +1,14 @@
 {
   "processing_version": "v6.17",
   "schema_version": 2,
-  "updated_at": "2026-11-16T14:45:37.603813+08:00",
-  "today": "2026-11-16",
-  "count": 90,
+  "updated_at": "2026-11-17T06:18:01.356167+08:00",
+  "today": "2026-11-17",
+  "count": 127,
   "counts": {
     "active": 6,
     "upcoming": 0,
-    "verify": 19,
-    "expired": 65
+    "verify": 45,
+    "expired": 76
   },
   "disclaimer": "資料來自近期固定保底文章、動態新聞／官方消息列表、近 30 天逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
   "deals": [
@@ -2112,6 +2112,348 @@
     },
     {
       "store": "85°C",
+      "offer": "「UBE雲朵蜜桃荔枝美式」則以大杯冰飲88元登場，將紫山藥香甜融合蜜桃、荔枝果香，再加入美式咖啡的微苦韻味，呈現酸甜果香與咖啡香氣交織的風味",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-07 紫色風潮來襲！85度C推「UBE雲朵系列」 夢幻紫山藥3款必喝",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10026",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10026"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 88,
+          "text": "美式」則以大杯冰飲88元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "「桑椹冰美式」大杯冰飲售價75元，桑椹酸甜果香融合冰美式醇厚咖啡韻，入口清爽順口，酸甜與微苦交織，層次豐富又沁涼",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-09-02 85℃秋季新品登場！黑寶石桑椹尬咖啡、氣泡飲，酸甜滋味超有秋天感",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9935",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9935"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 75,
+          "text": "美式」大杯冰飲售價75元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "「桑椹紅茶」則推出大杯冰、熱飲，售價55元，將桑椹果香融入醇厚紅茶茶韻，果香與茶香層層交織，酸甜平衡、清爽順口，是炎炎夏日午後的消暑好選擇",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-09-02 85℃秋季新品登場！黑寶石桑椹尬咖啡、氣泡飲，酸甜滋味超有秋天感",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9935",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9935"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 55,
+          "text": "大杯冰、熱飲，售價55元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "「甘梅冰美式」大杯售價75元以甘梅微酸甜的果香，融合美式咖啡醇厚苦韻，入口清爽、酸甜與咖啡香氣交織，呈現簡單卻有層次的夏日風味",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-08-21 桃你歡心、梅你不行！85度C三種咖啡新滋味登場",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9906",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9906"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 75,
+          "text": "美式」大杯售價75元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "喜歡更強烈爽感的消費者，推薦「桑椹氣泡美式」，大杯冰飲售價85元，桑椹果香與冰美式完美融合，再加入氣泡水，氣泡感在舌尖跳動，酸甜果韻與咖啡香氣交織，每一口都帶來暢快清爽的夏日感受",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-09-02 85℃秋季新品登場！黑寶石桑椹尬咖啡、氣泡飲，酸甜滋味超有秋天感",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9935",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9935"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 85,
+          "text": "美式」，大杯冰飲售價85元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "除了經典咖啡系列「義式咖啡豆」及「厚咖啡風味豆」，於2024年ITQI國際風味評鑑中獲得二星及一星獎章，消費者還可加價升級2024年台灣唯一獲得國際咖啡品鑑大賽「鉑金獎咖啡豆」，中杯加價25元、大杯加價35元，咖啡愛好者可依照個人喜好選擇風味",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 25,
+          "text": "中杯加價25元"
+        },
+        {
+          "mechanism": "single_price",
+          "price": 35,
+          "text": "大杯加價35元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "10月起，從國際咖啡日限定果咖優惠到咖啡日會員抽獎活動，85℃邀請消費者一起享受咖啡好滋味，讓每一杯咖啡都充滿期待",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "每週五｜週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "喜歡水果系飲品的消費者，還有「蜜桃咖啡冰沙」大杯售價85元（限定門市販售），香甜蜜桃融合濃郁咖啡香，搭配綿密滑順的冰沙口感，果香與咖啡層層交織，在清爽果香中帶出醇厚餘韻，為炎炎夏日增添一杯甜蜜又消暑的選擇",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-08-21 桃你歡心、梅你不行！85度C三種咖啡新滋味登場",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9906",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9906"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 85,
+          "text": "大杯售價85元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "85℃國際咖啡日從10月1日至11日，連續11天推出八款人氣果咖任選第二杯半價",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85℃在國際咖啡日，推出指定八款果咖第二杯半價優惠，活動自10月1日至10月11日止",
+      "status": "expired",
+      "start_date": "2026-10-01",
+      "end_date": "2026-10-11",
+      "date_text": "10月1日至10月11日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "APP",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "「甘梅氣泡美式」大杯售價85元，加入細緻氣泡，襯托甘梅果香與咖啡醇香，沁涼爽快之餘，酸甜回甘與氣泡感在口中交織，更添活潑風味，上市同步推出第二杯半價優惠，邀請消費者揪好友一起喝",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-08-21 桃你歡心、梅你不行！85度C三種咖啡新滋味登場",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9906",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9906"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 85,
+          "text": "美式」大杯售價85元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯咖啡限時第二杯35折",
+      "status": "expired",
+      "start_date": "2026-09-28",
+      "end_date": "2026-09-28",
+      "date_text": "9月28日",
+      "schedule_note": "10:00–22:00；星期一",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "second_cup_discount",
+          "value": 35,
+          "unit": "折",
+          "text": "第二杯35折"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "每逢週五咖啡日，85℃全台門市同步推出中、大杯咖啡系列第二杯半價優惠，限同品項、同大小，不限冰熱",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
       "offer": "萬聖節限定｜大杯咖啡系列第二杯 4 折",
       "status": "expired",
       "start_date": "2026-10-31",
@@ -2123,13 +2465,574 @@
       "article_title": "星巴克買一送一咖啡優惠大杯55元起！萬聖節躲貓貓藍莓星冰樂開喝",
       "article_url": "https://www.nownews.com/news/6886549",
       "source_urls": [
-        "https://www.nownews.com/news/6886549"
+        "https://www.nownews.com/news/6886549",
+        "https://www.85cafe.com/News_content.php?data=10042"
       ],
       "published": "2026-10-26",
       "source": "NOWnews 報導／品牌活動資訊",
       "needs_check": true,
       "category": "coffee",
       "details": "限大杯咖啡系列，限同品項、不限冰熱；現購現取，每人限購 3 組。鉑金獎豆品項可依規定加價升級；不適用外送及電話訂購。實際品項與寄杯辦法請以門市公告為準。"
+    },
+    {
+      "store": "85°C",
+      "offer": "迎接10月1日國際咖啡日，85℃推出雙重咖啡優惠，從10月1日至10月11日，全台門市指定八款果咖任選第二杯半價，從清爽酸甜的蜜桃冰美式、荔枝冰美式、葡萄冰美式、椪柑冰美式到芒果雲朵咖啡、芭樂西西里咖啡，集結多款人氣水果風味，讓咖啡控一次享受果香與咖啡交織的豐富層次",
+      "status": "expired",
+      "start_date": "2026-10-01",
+      "end_date": "2026-10-11",
+      "date_text": "10月1日至10月11日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯卡布奇諾 / 摩卡咖啡：2 杯原價 200 元，特價 135 元，平均每杯 67.5 元",
+      "status": "expired",
+      "start_date": "2026-09-28",
+      "end_date": "2026-09-28",
+      "date_text": "9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 135,
+          "text": "大杯拿鐵咖啡為例，2杯優惠價僅需135元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯拿鐵兩杯則可省下60元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-30 85℃萬聖節咖啡優惠來了！10/31大杯第二杯4折 美式平均52.5元",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10042",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10042"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 60,
+          "text": "大杯拿鐵兩杯則可省下60元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯榛果/香草/重拿鐵/焦糖瑪奇朵：2 杯原價 210 元，特價 141 元，平均每杯 70.5 元",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 210,
+          "text": "拿鐵/焦糖瑪奇朵：2 杯原價 210 元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯美式咖啡兩杯特價105元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-30 85℃萬聖節咖啡優惠來了！10/31大杯第二杯4折 美式平均52.5元",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10042",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10042"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 105,
+          "text": "大杯美式咖啡兩杯特價105元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯美式咖啡：2 杯原價 150 元，特價 101 元，平均每杯 50.5 元",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 150,
+          "text": "大杯美式咖啡：2 杯原價 150 元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯拿鐵咖啡 10 杯：原價 1,000 元，特價 675 元（平均每杯 67.5 元）",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "大杯美式咖啡 10 杯：原價 750 元，特價 505 元（平均每杯 50.5 元）",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 750,
+          "text": "大杯美式咖啡 10 杯：原價 750 元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "若選擇購買10杯寄杯卡，最高還可省下315元，適合平時有固定喝咖啡習慣的消費者",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-30 85℃萬聖節咖啡優惠來了！10/31大杯第二杯4折 美式平均52.5元",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10042",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10042"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85 Cafe APP會員於「週五咖啡日」當天",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "app",
+      "channel_scope_text": "APP",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85 Cafe APP註冊會員單筆消費一次購買2張(含)以上週五咖啡日寄杯卡，結帳時報會員電話，即可獲得抽獎機會，消費筆數越多，參加抽獎的機會也越多",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "app",
+      "channel_scope_text": "APP",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85℃「週五咖啡日」自10月2日起到12月25日推出會員專屬抽獎活動",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "2026-12-25",
+      "date_text": "12月25日",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "門市現場",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85℃週五咖啡日單筆買2張咖啡寄杯卡，結帳報會員電話，週週抽iPhone 17或跑步機",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "85度C咖啡優惠僅限現場購買，寄杯與外送服務不適用此折扣",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "「UBE雲朵咖啡」以UBE紫山藥香甜風味搭配醇厚咖啡，再覆上一層雲朵奶霜，呈現綿密滑順的口感，大杯冰、熱飲皆為88元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-07 紫色風潮來襲！85度C推「UBE雲朵系列」 夢幻紫山藥3款必喝",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10026",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10026"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 88,
+          "text": "大杯冰、熱飲皆為88元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "優惠限門市現場購買，外送、電話訂購及85 Cafe APP線上訂餐不適用，寄杯辦法依各門市公告為主",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "在門市單筆購買兩張咖啡寄杯卡",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "app",
+      "channel_scope_text": "APP",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "折扣力度比一般週五咖啡日更加優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-30 85℃萬聖節咖啡優惠來了！10/31大杯第二杯4折 美式平均52.5元",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10042",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10042"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "此次優惠適用大杯咖啡系列，包含鉑金咖啡系列，消費者也可每杯加價35元升級鉑金豆咖啡",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-30 85℃萬聖節咖啡優惠來了！10/31大杯第二杯4折 美式平均52.5元",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10042",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10042"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "焦糖瑪奇朵等熱門風味通通有折扣",
+      "status": "expired",
+      "start_date": "2026-09-28",
+      "end_date": "2026-09-28",
+      "date_text": "9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "而最令人驚喜的莫過於「芭樂西西里咖啡」售價90元（大杯），將紅心芭樂、檸檬與濃醇咖啡結合，果香襯托咖啡醇韻，酸甜明亮的風味讓西西里咖啡展現全新面貌，帶來令人驚喜的夏季新體驗",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-07-30 芭樂控必喝！85℃紅心芭樂系列7/30酸甜上市一次解鎖奶蓋、果茶、冰沙、西西里咖啡四種夏日喝法",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9875",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9875"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "若不想喝咖啡，「UBE雲朵奶綠」以紫山藥濃郁香甜搭配奶綠醇厚茶香，呈現綿密滑順口感，大杯冰、熱飲售價皆為80元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "85°C 官方消息｜2026-10-07 紫色風潮來襲！85度C推「UBE雲朵系列」 夢幻紫山藥3款必喝",
+      "article_url": "https://www.85cafe.com/News_content.php?data=10026",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=10026"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 80,
+          "text": "大杯冰、熱飲售價皆為80元"
+        }
+      ]
+    },
+    {
+      "store": "85°C",
+      "offer": "鉑金獎豆寄杯優惠：選購獲國際 IIAC 鉑金獎的指定咖啡豆寄杯，最高可省下 455 元",
+      "status": "expired",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-28",
+      "date_text": "9月26日至9月28日",
+      "schedule_note": "",
+      "channel_scope": "store",
+      "channel_scope_text": "全台門市",
+      "article_title": "85°C 官方消息｜2026-09-21 85℃教師節12小時限時骨折價！大杯咖啡第二杯35折起、拿鐵每杯67.5元，寄杯最高狂省455元全攻略",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9988",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9988"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "store": "85°C",
+      "offer": "除了國際咖啡日優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "2026-12-25",
+      "date_text": "12月25日",
+      "schedule_note": "週五咖啡日",
+      "channel_scope": "store",
+      "channel_scope_text": "門市現場",
+      "article_title": "85°C 官方消息｜2026-09-30 國際咖啡日85℃指定果咖第二杯半價週抽iPhone17、跑步機",
+      "article_url": "https://www.85cafe.com/News_content.php?data=9989",
+      "source_urls": [
+        "https://www.85cafe.com/News_content.php?data=9989"
+      ],
+      "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
     },
     {
       "store": "全聯",
@@ -2216,12 +3119,12 @@
       }
     },
     "listing_articles_added_before_dedup": 20,
-    "source_rss_articles_added_before_dedup": 585,
+    "source_rss_articles_added_before_dedup": 423,
     "source_rss_discovery": {
       "NOWnews": {
         "ok": true,
         "queries": 2,
-        "discovered": 176,
+        "discovered": 177,
         "query_results": [
           {
             "ok": true,
@@ -2230,20 +3133,20 @@
           },
           {
             "ok": true,
-            "found": 100,
-            "unique_added": 76
+            "found": 98,
+            "unique_added": 77
           }
         ]
       },
       "Yahoo新聞": {
         "ok": true,
         "queries": 2,
-        "discovered": 102,
+        "discovered": 2,
         "query_results": [
           {
-            "ok": true,
-            "found": 100,
-            "unique_added": 100
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=site%3Atw.news.yahoo.com%20%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0%20OR%20%E8%B6%85%E5%95%86%E5%84%AA"
           },
           {
             "ok": true,
@@ -2255,142 +3158,142 @@
       "蘋果仁": {
         "ok": true,
         "queries": 1,
-        "discovered": 59,
+        "discovered": 66,
         "query_results": [
           {
             "ok": true,
-            "found": 59,
-            "unique_added": 59
+            "found": 66,
+            "unique_added": 66
           }
         ]
       },
       "中天新聞": {
         "ok": true,
         "queries": 1,
-        "discovered": 72,
+        "discovered": 68,
         "query_results": [
           {
             "ok": true,
-            "found": 72,
-            "unique_added": 72
+            "found": 68,
+            "unique_added": 68
           }
         ]
       },
       "Cosmopolitan": {
         "ok": true,
         "queries": 1,
-        "discovered": 44,
+        "discovered": 50,
         "query_results": [
           {
             "ok": true,
-            "found": 44,
-            "unique_added": 44
+            "found": 50,
+            "unique_added": 50
           }
         ]
       },
       "85°C": {
-        "ok": true,
-        "queries": 1,
-        "discovered": 33,
-        "query_results": [
-          {
-            "ok": true,
-            "found": 33,
-            "unique_added": 33
-          }
-        ]
-      },
-      "路易莎": {
-        "ok": true,
+        "ok": false,
         "queries": 1,
         "discovered": 0,
         "query_results": [
           {
-            "ok": true,
+            "ok": false,
             "found": 0,
-            "unique_added": 0
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=85%E5%BA%A6C%20%E5%AE%98%E6%96%B9%20%E5%84%AA%E6%83%A0%20%E7%AC%AC%E4%BA%8C%E6%9D%AF%20%E5%92%96%E"
+          }
+        ]
+      },
+      "路易莎": {
+        "ok": false,
+        "queries": 1,
+        "discovered": 0,
+        "query_results": [
+          {
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=%E8%B7%AF%E6%98%93%E8%8E%8E%20%E5%AE%98%E6%96%B9%20%E5%84%AA%E6%83%A0%20%E8%B2%B7%E4%B8%80%E9%80%8"
           }
         ]
       },
       "星巴克": {
-        "ok": true,
+        "ok": false,
         "queries": 1,
-        "discovered": 16,
+        "discovered": 0,
         "query_results": [
           {
-            "ok": true,
-            "found": 16,
-            "unique_added": 16
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=%E6%98%9F%E5%B7%B4%E5%85%8B%20%E5%AE%98%E6%96%B9%20%E6%B4%BB%E5%8B%95%20%E5%92%96%E5%95%A1%E5%84%A"
           }
         ]
       },
       "7-ELEVEN": {
         "ok": true,
         "queries": 2,
-        "discovered": 16,
+        "discovered": 9,
         "query_results": [
+          {
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=7-ELEVEN%20CITY%20CAFE%20CITY%20TEA%20CITY%20PEARL%20%E5%AE%98%E6%96%B9%20%E5%84%AA%E6%83%A0%20%E8"
+          },
           {
             "ok": true,
             "found": 9,
             "unique_added": 9
-          },
-          {
-            "ok": true,
-            "found": 10,
-            "unique_added": 7
           }
         ]
       },
       "全家": {
         "ok": true,
         "queries": 2,
-        "discovered": 25,
+        "discovered": 23,
         "query_results": [
           {
             "ok": true,
-            "found": 5,
-            "unique_added": 5
+            "found": 7,
+            "unique_added": 7
           },
           {
             "ok": true,
-            "found": 21,
-            "unique_added": 20
+            "found": 19,
+            "unique_added": 16
           }
         ]
       },
       "萊爾富": {
-        "ok": true,
+        "ok": false,
         "queries": 1,
-        "discovered": 12,
+        "discovered": 0,
         "query_results": [
           {
-            "ok": true,
-            "found": 12,
-            "unique_added": 12
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=%E8%90%8A%E7%88%BE%E5%AF%8C%20Hi%20Cafe%20%E5%AE%98%E6%96%B9%20%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A"
           }
         ]
       },
       "OKmart": {
         "ok": true,
         "queries": 1,
-        "discovered": 10,
+        "discovered": 9,
         "query_results": [
           {
             "ok": true,
-            "found": 10,
-            "unique_added": 10
+            "found": 9,
+            "unique_added": 9
           }
         ]
       },
       "美廉社": {
         "ok": true,
         "queries": 1,
-        "discovered": 12,
+        "discovered": 11,
         "query_results": [
           {
             "ok": true,
-            "found": 12,
-            "unique_added": 12
+            "found": 11,
+            "unique_added": 11
           }
         ]
       },
@@ -2407,70 +3310,68 @@
         ]
       }
     },
-    "articles_fetched_successfully": 12,
-    "articles_failed_or_low_content": 148,
-    "urls_for_articles_with_no_extracted_offers": 9,
-    "rss_queries_failed": 0,
+    "articles_fetched_successfully": 20,
+    "articles_failed_or_low_content": 140,
+    "urls_for_articles_with_no_extracted_offers": 10,
+    "rss_queries_failed": 4,
     "curated_records": 53,
-    "dynamic_records_before_dedup": 77,
+    "dynamic_records_before_dedup": 140,
     "fair_schedule": {
       "max_total": 160,
       "max_per_source": 25,
       "scheduled_by_brand": {
-        "星巴克": 16,
-        "7-ELEVEN": 16,
-        "全家": 16,
-        "萊爾富": 16,
-        "OKmart": 16,
-        "美廉社": 16,
+        "星巴克": 18,
+        "7-ELEVEN": 18,
+        "全家": 18,
+        "萊爾富": 17,
+        "OKmart": 17,
+        "美廉社": 17,
         "小北百貨": 0,
-        "路易莎": 16,
-        "85°C": 16,
+        "路易莎": 11,
+        "85°C": 10,
         "cama": 1,
         "全聯": 16
       },
       "brand_coverage": {
-        "星巴克": 24,
-        "7-ELEVEN": 33,
-        "全家": 44,
-        "萊爾富": 31,
+        "星巴克": 21,
+        "7-ELEVEN": 37,
+        "全家": 50,
+        "萊爾富": 37,
         "OKmart": 20,
-        "美廉社": 17,
+        "美廉社": 18,
         "小北百貨": 0,
-        "路易莎": 17,
-        "85°C": 16,
+        "路易莎": 12,
+        "85°C": 10,
         "cama": 1,
         "全聯": 16
       },
       "scheduled_by_source": {
-        "7-ELEVEN": 8,
-        "85°C": 16,
-        "Cosmopolitan": 18,
-        "ETtoday新聞雲": 4,
-        "Life 生活網": 5,
+        "7-ELEVEN": 5,
+        "85°C 官方": 10,
+        "Cosmopolitan": 23,
+        "ETtoday新聞雲": 5,
+        "LIFE 生活網": 1,
         "NOWnews": 25,
-        "NOWnews今日新聞": 17,
+        "NOWnews今日新聞": 23,
         "Newtalk新聞": 1,
-        "OKmart": 2,
-        "Starbucks Taiwan": 3,
+        "OKmart": 4,
         "TVBS新聞網": 4,
         "UDN": 1,
-        "WalkerLand 窩客島": 3,
-        "Yahoo新聞": 17,
+        "WalkerLand 窩客島": 1,
+        "Yahoo新聞": 14,
         "Yahoo股市": 1,
         "nownews.com": 2,
         "tw.news.yahoo.com": 1,
-        "udn 女子漾": 1,
         "三立新聞網SETN.com": 2,
-        "中天新聞": 1,
-        "中天新聞網": 1,
+        "上報Up Media": 1,
+        "中天新聞": 5,
+        "中天新聞網": 2,
         "今周刊": 1,
-        "全家": 1,
-        "全聯": 7,
+        "全家": 4,
+        "全聯": 8,
         "美廉社": 2,
         "蘋果仁": 3,
-        "路易莎官方": 9,
-        "風傳媒": 3,
+        "路易莎官方": 10,
         "食尚玩家": 1
       }
     },
