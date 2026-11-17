@@ -1,1 +1,28 @@
+name: Probe official coffee sources
 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 1 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install probe dependencies
+        run: python -m pip install requests beautifulsoup4
+      - name: Probe official source static readability
+        run: python tools/probe_official_sources.py --output official_source_probe.json
+      - name: Upload probe report
+        uses: actions/upload-artifact@v4
+        with:
+          name: official-source-probe
+          path: official_source_probe.json
+          if-no-files-found: error
