@@ -1,4 +1,23 @@
-# 省咖啡｜優惠雷達 v6.18.1
+# 省咖啡｜優惠雷達 v6.19
+
+## v6.19 追加修補（2026-11-17）
+
+本版重點是**動態發現新文章、保留媒體小標、正確拆出商品／日期／優惠**，並非每天手動加入固定新聞 URL。
+
+- 直接列表新增 Cosmopolitan 嬌點話題、ETtoday 民生消費、星巴克台灣活動頁；有 keyword 篩選與逐來源報告，任何一個列表失敗不阻擋其他來源。
+- Cosmopolitan 支援 `/g數字/` 圖集文章，補齊 `br` 換行、Hearst DOM 內容區以及「商品名／活動日期／買一送一」三個相鄰段落的合併解析。
+- NOWnews、ETtoday 通用支援 `🟡`、`📍`、`◾`、`★`、`■` 等段落符號，保留品牌、通路和活動日期上下文；支援 `LINE禮物（7-11電子票券）` 作為 7-ELEVEN 品牌小標。
+- `split_compound_offer()` 不再用頓號分開同一句的美式／拿鐵，避免只保留一個商品。
+- 新增 `test_v619_regressions.py`（以媒體版型建立的**模擬 HTML** 回歸測試，而非完整新聞原始 HTML）。三個指定新聞網址不會被塞進日常 `SEED_ARTICLES`。
+- **已完成 150 項離線測試**；沒有在 GitHub Actions 上對三篇新聞進行真實下載驗收，且 ETtoday 在本次網路檢查中無法直接開啟，不能保證其來源一定可用。
+- **重要：** 本 ZIP 的 `deals.json` 為前一輪保存的快照（`processing_version` 可能仍顯示 v6.18.1）。請部署後手動跑 Actions 生成新的 v6.19 快照，別誤認 ZIP 裡的舊快照已更新優惠。
+
+### 上線後請檢查
+
+1. `deals.json` 的 `processing_version` 是否更新為 `v6.19`，`updated_at` 是否為本次執行時間。
+2. `scrape_report.listing_discovery` 中的 `cosmo`、`ettoday`、`starbucks` 是否有 `ok` 及 `discovered`；若 `ok=true, discovered=0`，可能是頁面未提供新優惠連結或版型變更。
+3. 在 `deals` 搜尋 `family-mart-1117`、`6892960`、`3273004` **僅作為測試觀察**：這些 URL 不在硬編碼保底清單，是否出現取決於本輪來源成功發現、下載與解析。
+4. 不要在沒有完成 Actions 實際抓取前，宣稱全部來源與品牌已補齊。
 
 ## v6.18.1 部署前防護補強
 
@@ -33,7 +52,7 @@
 - Google News RSS 先以優惠相關標題及近 30 天發布日期篩選；每個查詢最多解碼 8 篇，單次執行全域最多 40 篇。
 - 更新流程先比較 `deals.json`；沒有檔案差異時會略過 commit/push 並正常結束。
 - ZIP 不包含 `__pycache__`、`.pyc`、`.DS_Store` 或編號副本檔。
-- 本機離線回歸測試：143 項通過。此結果不等於 GitHub Actions 已完成線上抓取；首次上線仍須手動執行 Workflow 驗證來源連線。
+- 本機離線回歸測試：150 項通過。此結果不等於 GitHub Actions 已完成線上抓取；首次上線仍須手動執行 Workflow 驗證來源連線。
 
 ### 5. 安裝與本機測試
 
@@ -70,3 +89,12 @@ python -m json.tool deals.json > /dev/null
 這是多來源盡力發現，不可能保證抓到全網每一篇新聞。分類頁可能改版、網站可能回傳 403/429、原生 RSS 可能延遲或不收錄部分文章、Google News 解碼也可能因 Google 格式改變而失效。請以 `scrape_report` 判斷每個來源的實際結果，不要只看 Workflow 顯示綠色就認定每篇文章都已抓到。
 
 `deals.json` 隨 ZIP 附帶的是上一輪資料快照；上傳新版後，請在 GitHub Actions 手動執行一次 **Update coffee deals**，成功提交新的 `deals.json` 後，GitHub Pages 才會顯示新一輪結果。
+
+
+## v6.20：審慎加入 HTTP 備援與標題雜訊過濾
+
+- 預設仍使用 `requests`，不需要安裝 Scrapling，原有解析與測試全部保留。
+- 若從 GitHub Actions 的 `scrape_report` 確認 Cosmopolitan、ETtoday、TVBS 的原文因 HTTP 403 無法取得，可以在 Repository → Settings → Secrets and variables → Actions → **Variables** 設定 `COFFEE_SCRAPLING_FALLBACK=1`。此時 workflow 才會安裝 `requirements-scrapling-optional.txt`，並僅在上述白名單媒體回傳 403 時以 Scrapling HTTP Fetcher 嘗試一次（每次執行最多 8 次）。**不需要下載無頭瀏覽器**；但 HTTP 備援不保證通過 403 或 JS 驗證，請遵守目標網站的存取規定。
+- 不要使用 `pip install scrapling` 取代依賴檔：其基本安裝不包含 fetcher 依賴。本專案的可選依賴是 `scrapling[fetchers]`。
+- `is_unsupported_title_only_candidate` 僅拒絕「日期皆空、無正文 details/schedule、新聞標題與 offer 實質相同」的媒體候選卡，不會刪掉有明確商品優惠或官方長期卡的 verify 記錄。**不是把全部 91 筆待確認資料一次刪除。** 報表新增 `title_only_undated_candidates_rejected` 與 `undated_verify_records_retained`，可量化效果。
+- 首次上線請先以預設模式執行一次；檢查 `articles_failed_or_low_content`、`scrapling_fallback_attempts`、`title_only_undated_candidates_rejected`，再決定是否開啟 HTTP 備援。

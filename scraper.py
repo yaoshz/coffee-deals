@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.18
+"""省咖啡｜優惠雷達 v6.20
 
 目標：
 - 以動態分類／官方消息列表、媒體原生 RSS 與 Google News RSS 發現新文章；不依賴固定新聞網址清單。
@@ -44,6 +44,12 @@ MAX_ARTICLES = 160
 MAX_ARTICLES_PER_SOURCE = 25
 REQUEST_DELAY_SECONDS = 0.25
 REQUEST_TIMEOUT = 14
+# 僅在明確啟用且目標媒體回傳 403 時使用 Scrapling HTTP 備援；不安裝瀏覽器。
+ENABLE_SCRAPLING_FALLBACK = os.getenv("COFFEE_SCRAPLING_FALLBACK", "0") == "1"
+SCRAPLING_FALLBACK_HOSTS = {"www.cosmopolitan.com", "www.ettoday.net", "news.tvbs.com.tw"}
+SCRAPLING_FALLBACK_ATTEMPTS = 0
+SCRAPLING_FALLBACK_SUCCESSES = 0
+SCRAPLING_FALLBACK_MAX_ATTEMPTS = 8
 MIN_SUCCESSFUL_ARTICLES_TO_REPLACE = 2
 GOOGLE_NEWS_DECODE_FAILURES = 0
 # 每次 Actions 執行的 Google News 解碼防線：只處理標題相關、近 30 天文章。
@@ -88,6 +94,9 @@ URL_YAHOO_DOUBLE11 = (
 URL_NOWNEWS_LISTING = "https://www.nownews.com/cat/life/"
 URL_NOWNEWS_CONSUMER_LISTING = "https://www.nownews.com/cat/life/smart-life/"
 URL_TVBS_LISTING = "https://news.tvbs.com.tw/life"
+URL_COSMO_LISTING = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/"
+URL_ETTODAY_LISTING = "https://www.ettoday.net/news/focus/%E6%B0%91%E7%94%9F%E6%B6%88%E8%B2%BB/"
+URL_STARBUCKS_EVENTS = "https://www.starbucks.com.tw/stores/allevent.jspx"
 URL_APPLEALMOND_FEED = "https://applealmond.com/feed"
 URL_85C_NEWS_LISTING = "https://www.85cafe.com/News.php"
 URL_LOUISA_NEWS_LISTING = "https://www.louisacoffee.co/news"
@@ -192,9 +201,9 @@ STORE_PATTERNS = [
 
 CHANNEL_SCOPE_VALUES = {"app", "store", "delivery", "unknown"}
 CHANNEL_SCOPE_PATTERNS = {
-    "app": re.compile(r"OPENPOINT|APP|隨買跨店取|行動隨時取|分批取|線上寄杯", re.I),
+    "app": re.compile(r"OPENPOINT|APP|優惠趣|隨買跨店取|行動隨時取|分批取|線上寄杯", re.I),
     "delivery": re.compile(r"Uber\s*Eats|foodpanda|外送限定|外送優惠", re.I),
-    "store": re.compile(r"門市限定|全台門市|實體門市|門市現場|門市現煮|門市活動|門市優惠|門市購買|店頭限定", re.I),
+    "store": re.compile(r"^門市\s*[｜|:：]|門市限定|全台門市|實體門市|門市現場|門市現煮|門市活動|門市優惠|門市購買|店頭限定", re.I),
 }
 
 
@@ -871,12 +880,29 @@ def make_deal(store, offer, url, title, start="", end="", date_text="", publishe
     return _normalize_schedule_fields(item)
 
 
+MEDIA_BULLET_RE = re.compile(r"^[\s★☆🟡🔴🔵🟢📍◾▪●•◆◇▶►■□]+")
+MEDIA_SPLIT_RE = re.compile(r"(?<!^)(?=[🟡📍◾▪●•◆★☆▶►](?:[\w一-鿿]))")
+
+def strip_media_prefix(text: str) -> str:
+    """只移除行首媒體裝飾符號，保留括號及產品名稱語意。"""
+    return MEDIA_BULLET_RE.sub("", normalize_space(text)).strip()
+
+def media_node_text(node) -> str:
+    """將同一 p 中的 br 轉換為換行，避免品牌和通路上下文黏在一起。"""
+    from bs4 import BeautifulSoup as _BS
+    cloned = _BS(str(node), "html.parser")
+    for br in cloned.find_all("br"):
+        br.replace_with("\n")
+    return cloned.get_text(" ", strip=False).strip()
+
 def is_brand_heading(text: str) -> bool:
     """辨識獨立店名標題；短店名不可在斷句或雜訊過濾階段被丟掉。"""
-    t = normalize_space(text).strip("【】[]()（）:：▶► ")
+    t = strip_media_prefix(text).strip("【】[]()（）:：▶► ")
     if not t:
         return False
     if re.fullmatch(r"7\s*[-－]?\s*(?:11|eleven)", t, re.I):
+        return True
+    if re.fullmatch(r"全家便利商店|全聯福利中心|大全聯|美廉社|萊爾富|OK\s*mart|OK超商", t, re.I):
         return True
     return any(t.casefold() == name.casefold() or pattern.fullmatch(t) for name, pattern in STORE_PATTERNS)
 
@@ -1264,6 +1290,15 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         elif source_key == "tvbs":
             if host != "news.tvbs.com.tw" or not re.match(r"^/(?:life|news)/\d+/?$", parsed.path, re.I):
                 continue
+        elif source_key == "cosmo":
+            if host != "cosmopolitan.com" or not re.match(r"^/tw/lifestyle/hot-topics/[ag]\d+/", parsed.path):
+                continue
+        elif source_key == "ettoday":
+            if host != "ettoday.net" or not re.match(r"^/news/\d{8}/\d+\.htm$", parsed.path):
+                continue
+        elif source_key == "starbucks":
+            if host != "starbucks.com.tw" or not parsed.path.endswith("/show.jspx") or "n=" not in parsed.query:
+                continue
         elif source_key == "85c":
             if host != "85cafe.com" or not re.search(r"/News_content\.php$", parsed.path, re.I):
                 continue
@@ -1277,9 +1312,9 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         clean_url = canonical_url(href)
         if clean_url == canonical_url(listing_url):
             continue
-        prefix = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
-        source_bucket = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
-        brand_hints = {"85c": ["85°C"], "louisa": ["路易莎"]}.get(source_key, [])
+        prefix = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "starbucks": "星巴克官方", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
+        source_bucket = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "starbucks": "星巴克官方", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
+        brand_hints = {"85c": ["85°C"], "louisa": ["路易莎"], "starbucks": ["星巴克"]}.get(source_key, [])
         found.setdefault(clean_url, {"title": f"{prefix}｜{label[:180]}", "url": clean_url, "published": "",
                                      "source_bucket": source_bucket, "brand_hints": brand_hints})
         if len(found) >= limit:
@@ -1293,6 +1328,9 @@ def discover_listing_articles():
         ("nownews", URL_NOWNEWS_LISTING, 30),
         ("nownews_consumption", URL_NOWNEWS_CONSUMER_LISTING, 30),
         ("tvbs", URL_TVBS_LISTING, 30),
+        ("cosmo", URL_COSMO_LISTING, 30),
+        ("ettoday", URL_ETTODAY_LISTING, 30),
+        ("starbucks", URL_STARBUCKS_EVENTS, 30),
         ("85c", URL_85C_NEWS_LISTING, 10),
         ("louisa", URL_LOUISA_NEWS_LISTING, 10),
     ]
@@ -1484,10 +1522,11 @@ def is_global_summary_line(value: str) -> bool:
 def split_text_to_lines(text: str):
     text = html.unescape(str(text or "")).replace("\xa0", " ")
     text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"(?<!^)(?=[🟡📍◾▪●•◆★☆▶►])", "\n", text)
     raw_parts = re.split(r"[\r\n]+|(?<=[。！？])\s*|(?<=；)\s*|(?<=;)", text)
     lines = []
     for part in raw_parts:
-        line = normalize_space(part).strip(" •◾▪● \t\u200b")
+        line = strip_media_prefix(part).strip(" \t\u200b")
         if not line:
             continue
         if has_unmatched_closing_quote(line):
@@ -1499,12 +1538,11 @@ def split_text_to_lines(text: str):
         if any(marker in original_line for marker in SIDEBAR_TAIL_MARKERS) and is_brand_heading(line):
             continue
         if is_brand_heading(line):
-            if line not in lines:
-                lines.append(line)
+            lines.append(line)
             continue
         if len(line) < 3 or len(line) > 1200:
             continue
-        if line not in lines:
+        if not lines or line != lines[-1]:
             lines.append(line)
     return lines
 
@@ -1527,11 +1565,11 @@ _BRAND_PREFIX_PATTERNS = {
 
 def identify_block_brand(text: str, current_brand: str = "", tag: str = "", strong_texts=None) -> tuple[str | None, bool]:
     """回傳 (brand, is_neutral_intro)；一般內文提到品牌不會自動切換上下文。"""
-    value = normalize_space(text)
+    value = strip_media_prefix(text)
     strong_texts = strong_texts or []
     # 粗體品牌若位於段落開頭，視為編輯使用的品牌小標。
     for strong in strong_texts:
-        strong_value = normalize_space(strong)
+        strong_value = strip_media_prefix(strong)
         matched = next((brand for brand, pattern in _BRAND_PREFIX_PATTERNS.items()
                         if pattern.search(strong_value)), None)
         # is_brand_heading() 只代表「像品牌標題」，不能在 next() 中讓第一個品牌無條件命中。
@@ -1539,6 +1577,9 @@ def identify_block_brand(text: str, current_brand: str = "", tag: str = "", stro
             matched = find_explicit_store(strong_value) or None
         if matched and value.startswith(strong_value[:max(1, min(len(strong_value), 12))]):
             return matched, False
+    # LINE 禮物（7-11 電子票券）是通路加品牌的明確小標。
+    if re.match(r"^LINE\s*禮物\s*[（(]\s*7\s*[-－]\s*(?:11|ELEVEN)", value, re.I):
+        return "7-ELEVEN", False
     for brand, pattern in _BRAND_PREFIX_PATTERNS.items():
         if pattern.search(value):
             # 即使以品牌開頭，若同段還混入其他品牌且不是標題／粗體子區塊，也先中立化。
@@ -1563,18 +1604,19 @@ def extract_dom_article_blocks(soup: BeautifulSoup) -> list[dict]:
     """保留文章 DOM 區塊及粗體品牌標籤，供 HTML 結構和文字前綴混合切割。"""
     roots = []
     for selector in ('[itemprop="articleBody"]', "article", ".article-body", ".articleBody",
-                     ".entry-content", ".post-content", ".article-content", ".story-content", "main"):
+                     ".entry-content", ".post-content", ".article-content", ".story-content",
+                     "[data-journey-content]", ".listicle-container", "main"):
         roots.extend(soup.select(selector))
     if not roots and soup.body:
         roots = [soup.body]
     blocks, seen_nodes = [], set()
     previous_text = None
     for root in roots:
-        for node in root.select("h2,h3,h4,p,li,td,th,figcaption,blockquote"):
+        for node in root.select("h2,h3,h4,p,li,td,th,figcaption,blockquote,[class*=listicle-slide-hed]"):
             if id(node) in seen_nodes:
                 continue
             seen_nodes.add(id(node))
-            text = normalize_space(node.get_text(" ", strip=True))
+            text = media_node_text(node)
             if not text or text == previous_text:
                 continue
             # 只去除 DOM 流中相鄰的重複區塊；不同品牌章節可保留相同優惠句。
@@ -1637,10 +1679,97 @@ def scope_article_blocks(blocks_or_lines, initial_brand: str | None = None) -> l
     return records
 
 
+def combine_listicle_offer_blocks(blocks: list[dict]) -> list[dict]:
+    """Hearst 圖集常把商品、日期、機制拆成三個獨立區塊。僅合併相鄰短段且不跨品牌。"""
+    output = []
+    product = ""
+    date_line = ""
+    for block in blocks:
+        line = normalize_space(block.get("text", ""))
+        if not line:
+            continue
+        stripped = strip_media_prefix(line)
+        if is_brand_heading(stripped):
+            product = date_line = ""
+            output.append(block)
+            continue
+        if re.search(r"(?:活動時間|活動日期)\s*[：:]", stripped) and date_context(stripped)[0]:
+            date_line = stripped
+            output.append(block)
+            continue
+        if (re.search(r"買\s*[一二兩\d]+\s*送\s*[一二兩\d]+|[二兩\d]+\s*杯.{0,8}\d+\s*元|單杯特價\d+\s*元", stripped)
+                and product and len(stripped) < 100):
+            joined = " ".join(part for part in (product, date_line, stripped) if part)
+            output.append({"text": joined, "tag": block.get("tag", "p"), "strong_texts": []})
+            product = date_line = ""
+            continue
+        # 避免導言當成商品。商品標頭通常短、無日期、沒有任何優惠機制。
+        if (3 <= len(stripped) <= 25 and not OFFER_RE.search(stripped)
+                and not DATE_RANGE_RE.search(stripped) and not SINGLE_DATE_RE.search(stripped)
+                and re.search(r"咖啡|美式|拿鐵|奶茶|茶|仙草|芝麻糊|酷繽|冰磚", stripped)):
+            product = stripped
+            date_line = ""
+        output.append(block)
+    return output
+
+
+def fetch_article_http_response(url):
+    """主流程 requests；403 時可選擇在有限白名單內用 HTTP-only Scrapling 重試。
+
+    後備不承諾繞過網站存取限制，不作瀏覽器自動化、不重試 429。
+    """
+    global SCRAPLING_FALLBACK_ATTEMPTS, SCRAPLING_FALLBACK_SUCCESSES
+    response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+    if (getattr(response, "status_code", 200) != 403 or not ENABLE_SCRAPLING_FALLBACK
+            or urlparse(url).hostname not in SCRAPLING_FALLBACK_HOSTS
+            or SCRAPLING_FALLBACK_ATTEMPTS >= SCRAPLING_FALLBACK_MAX_ATTEMPTS):
+        return response
+    SCRAPLING_FALLBACK_ATTEMPTS += 1
+    try:
+        from scrapling.fetchers import Fetcher
+        page = Fetcher.get(url, impersonate="chrome", timeout=REQUEST_TIMEOUT,
+                           retries=1, follow_redirects="safe")
+        if page.status != 200 or not page.body:
+            logging.warning("SCRAPLING HTTP FALLBACK returned status=%s for %s", page.status, url)
+            return response
+        adapted = requests.Response()
+        adapted.status_code = page.status
+        adapted._content = bytes(page.body)
+        adapted.url = str(getattr(page, "url", url) or url)
+        adapted.encoding = "utf-8"
+        SCRAPLING_FALLBACK_SUCCESSES += 1
+        logging.info("SCRAPLING HTTP FALLBACK OK %s", url)
+        return adapted
+    except (ImportError, Exception) as exc:
+        logging.warning("SCRAPLING HTTP FALLBACK unavailable/failed for %s: %s", url, exc)
+        return response
+
+
+def is_unsupported_title_only_candidate(item):
+    """只拒絕無日期、無正文細節、優惠文字就是新聞標題的媒體候選卡。
+
+    官方常態無日期活動及從正文拆出的明確優惠保留 verify；避免一次刪光有效長青卡。
+    """
+    if item.get("start_date") or item.get("end_date"):
+        return False
+    if normalize_space(item.get("details", "")) or normalize_space(item.get("schedule_note", "")):
+        return False
+    if not item.get("article_title") or not item.get("article_url"):
+        return False
+    source_host = urlparse(item.get("article_url", "")).hostname or ""
+    media_hosts = ("nownews.com", "tvbs.com.tw", "ettoday.net", "cosmopolitan.com",
+                   "yahoo.com", "ctinews.com", "applealmond.com")
+    if not any(source_host == host or source_host.endswith("." + host) for host in media_hosts):
+        return False
+    def norm(value):
+        return re.sub(r"[^\w\u4e00-\u9fff]", "", normalize_space(value).casefold())
+    return bool(norm(item.get("offer", "")) and norm(item.get("offer", "")) == norm(item.get("article_title", "")))
+
+
 def fetch_article(article):
     url = canonical_url(article.get("url", ""))
     try:
-        response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+        response = fetch_article_http_response(url)
         response.raise_for_status()
         final_url = canonical_url(response.url)
         soup = BeautifulSoup(response.content, "html.parser")
@@ -1669,6 +1798,8 @@ def fetch_article(article):
         for body in parse_jsonld_article_bodies(soup):
             lines.extend(split_text_to_lines(body))
         blocks = extract_dom_article_blocks(soup)
+        if "cosmopolitan.com" in urlparse(final_url).netloc and re.search(r"/g\d+/", urlparse(final_url).path):
+            blocks = combine_listicle_offer_blocks(blocks)
         # JSON-LD 有時包含正文而 DOM 只有空殼；將 JSON-LD 獨有段落補入區塊串，
         # 避免 scope parser 只解析到 DOM 而漏掉搜尋引擎可見的 articleBody。
         block_texts = {normalize_space(block.get("text", "")).casefold() for block in blocks}
@@ -1683,7 +1814,7 @@ def fetch_article(article):
         for selector in [
             '[itemprop="articleBody"]', "article", ".article-body", ".articleBody",
             ".entry-content", ".post-content", ".article-content", ".story-content",
-            "main"
+            "[data-journey-content]", ".listicle-container", "main"
         ]:
             roots.extend(soup.select(selector))
         if not roots and soup.body:
@@ -1695,7 +1826,7 @@ def fetch_article(article):
                 continue
             seen_roots.add(marker)
             for node in root.select("h1,h2,h3,h4,p,li,td,th,figcaption,blockquote"):
-                txt = normalize_space(node.get_text(" ", strip=True))
+                txt = media_node_text(node)
                 if txt:
                     lines.extend(split_text_to_lines(txt))
             if not lines:
@@ -1858,8 +1989,8 @@ def is_activity_context_line(line: str) -> bool:
 
 
 def split_compound_offer(line: str):
-    """若同一段真的列出多個獨立優惠，拆成單筆；單一優惠的補充說明不拆。"""
-    parts = [normalize_space(p) for p in re.split(r"(?:[，、；;。]+|(?<!\d),(?!\d))", line or "") if normalize_space(p)]
+    """若同一段真的列出多個獨立優惠，拆成單筆；保留頓號連結的並列飲品。"""
+    parts = [normalize_space(p) for p in re.split(r"(?:[，；;。]+|(?<!\d),(?!\d))", line or "") if normalize_space(p)]
     product_re = re.compile(
         r"咖啡|\bcoffee\b|美式|馥芮白|拿鐵|拿堤|燕麥|重乳|特濃|濃萃|紅茶|綠茶|青茶|奶茶|抹茶|珍珠|"
         r"冰沙|果昔|霜淇淋|酷繽果|酷繽沙|Fami!?ce|不可思議咖啡|思樂冰|歐蕾|瑪奇朵|可可|蕎麥|檸檬茶|水果茶|星沁爽|厚乳|SHOWBA|星巴克|Starbucks|路易莎|Louisa|cama|丹堤|怡客|85\s*°?\s*C|茶品|茶|\btea\b",
@@ -3458,12 +3589,16 @@ def main():
                 preserve.append(old)
         fresh = deduplicate_deals(fresh + preserve)
 
+    # 不將「無日期、僅新聞標題、無正文細節」候選卡當成可展示優惠。
+    # 有實際品項／機制但尚無日期的記錄依舊保留 verify，不能從 91 筆盲刪。
+    rejected_title_only = sum(is_unsupported_title_only_candidate(item) for item in fresh)
+    fresh = [item for item in fresh if not is_unsupported_title_only_candidate(item)]
     final_deals = refresh_statuses(fresh)
     final_deals.sort(key=deal_sort_key)
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
-        "processing_version": "v6.18.1",
+        "processing_version": "v6.20",
         "schema_version": 2,
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
@@ -3477,6 +3612,11 @@ def main():
         "deals": final_deals,
         "scrape_report": {
             "articles_discovered": len(to_fetch),
+            "title_only_undated_candidates_rejected": rejected_title_only,
+            "undated_verify_records_retained": sum(1 for d in final_deals if d.get("status") == "verify" and not d.get("start_date") and not d.get("end_date")),
+            "scrapling_fallback_enabled": ENABLE_SCRAPLING_FALLBACK,
+            "scrapling_fallback_attempts": SCRAPLING_FALLBACK_ATTEMPTS,
+            "scrapling_fallback_successes": SCRAPLING_FALLBACK_SUCCESSES,
             "articles_skipped_known_stale": skipped_known_stale,
             "known_article_rescan_window_days": 3,
             "listing_discovery": listing_stats,
@@ -3498,7 +3638,7 @@ def main():
                               "scheduled_by_brand": {brand: sum(1 for a in to_fetch if a.get("scheduled_for_brand") == brand) for brand in STORE_ORDER[:11]},
                               "brand_coverage": {brand: sum(1 for a in to_fetch if brand in (a.get("brand_hints") or [])) for brand in STORE_ORDER[:11]},
                               "scheduled_by_source": {src: sum(1 for a in to_fetch if a.get("scheduled_source_bucket") == src) for src in sorted({a.get("scheduled_source_bucket", "") for a in to_fetch})}},
-            "note": "v6.18.1 使用 NOWnews／TVBS 分類頁、蘋果仁原生 RSS、Google News RSS 真實網址解碼、品牌輪替公平配額；日期解析排除無年份 X-Y，正文清洗只去除相鄰重複行，舊優惠未過期則延續。" +
+            "note": "v6.20 可選 HTTP-only 403 後備與無日期標題卡精準過濾；v6.19 增加 Cosmopolitan、ETtoday、星巴克活動直連列表；保留 br 換行、媒體符號小標與 Hearst 圖集商品／日期／優惠合併；延續原有 Google News 解碼與有效舊優惠。" +
                     "v6.16 使用近 30 天的各媒體／品牌 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。",
         },
     }
