@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.17
+"""省咖啡｜優惠雷達 v6.18
 
 目標：
-- 抓取固定指定文章 + 動態分類／官方消息列表 + Google News RSS 發現的近期文章。
+- 以動態分類／官方消息列表、媒體原生 RSS 與 Google News RSS 發現新文章；不依賴固定新聞網址清單。
 - 優先讀取 JSON-LD articleBody、文章正文、段落、清單與標題。
 - 一篇文章可拆出多筆優惠，支援段落日期上下文、民國年與西元年。
 - 將使用者已提供且可辨識的 Yahoo／中天優惠以結構化資料保底，避免網站封鎖時漏掉已知資訊。
@@ -45,6 +45,11 @@ MAX_ARTICLES_PER_SOURCE = 25
 REQUEST_DELAY_SECONDS = 0.25
 REQUEST_TIMEOUT = 14
 MIN_SUCCESSFUL_ARTICLES_TO_REPLACE = 2
+GOOGLE_NEWS_DECODE_FAILURES = 0
+# 每次 Actions 執行的 Google News 解碼防線：只處理標題相關、近 30 天文章。
+MAX_GOOGLE_NEWS_DECODE_TOTAL = 40
+MAX_GOOGLE_NEWS_DECODE_PER_QUERY = 8
+GOOGLE_NEWS_DECODE_BUDGET_REMAINING = MAX_GOOGLE_NEWS_DECODE_TOTAL
 
 HEADERS = {
     "User-Agent": (
@@ -80,30 +85,18 @@ URL_YAHOO_DOUBLE11 = (
     "%E5%92%96%E5%95%A1%E8%B2%B711%E9%80%8111-%E7%8F%8D%E5%A5%B6%E8%B2%B72%E9%80%812-"
     "%E5%86%8D%E6%8A%BD10%E8%90%AC%E5%85%83%E9%87%91%E8%B1%86-001500987.html"
 )
-URL_NOWNEWS_LISTING = "https://www.nownews.com/cat/lifestyle/"
+URL_NOWNEWS_LISTING = "https://www.nownews.com/cat/life/"
+URL_NOWNEWS_CONSUMER_LISTING = "https://www.nownews.com/cat/life/smart-life/"
+URL_TVBS_LISTING = "https://news.tvbs.com.tw/life"
+URL_APPLEALMOND_FEED = "https://applealmond.com/feed"
 URL_85C_NEWS_LISTING = "https://www.85cafe.com/News.php"
 URL_LOUISA_NEWS_LISTING = "https://www.louisacoffee.co/news"
 URL_COSMO = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74211453/hilife-coffee-1022/"
 URL_STARBUCKS_UNIOPEN = "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935"
 
-SEED_ARTICLES = [
-    # 近期真實文章保底入口：確保搜尋索引延遲時，已知最新文章仍進入解析流程。
-    {"title": "Yahoo 新聞｜四大超商雙11咖啡買11送11、珍奶買2送2", "url": URL_YAHOO_DOUBLE11, "published": "2026-11-05T19:15:00+08:00"},
-    {"title": "NOWnews｜7-11咖啡買2送2、買11送11；全家單品咖啡優惠", "url": URL_NOWNEWS_6889553, "published": "2026-11-05T09:29:13+08:00"},
-    {"title": "NOWnews｜限5天！7-11雙11優惠、全家罐裝咖啡15元", "url": URL_NOWNEWS_6889517, "published": "2026-11-05T00:07:00+08:00"},
-    {"title": "NOWnews｜7-11雙11咖啡買11送11、全家與萊爾富優惠", "url": URL_NOWNEWS_6888826, "published": "2026-11-03T09:53:35+08:00"},
-    {"title": "Yahoo 新聞｜四大超商光復節連假咖啡優惠", "url": URL_YAHOO_GENERAL, "published": "2026-10-22"},
-    {"title": "中天新聞｜超商咖啡優惠整理", "url": URL_CTINEWS, "published": "2026-10-22"},
-    {"title": "蘋果仁｜2026 光復節超商咖啡優惠懶人包", "url": URL_APPLE_329785, "published": "2026-10-22"},
-    {"title": "Yahoo 新聞｜颱風假咖啡優惠、萊爾富買一送一、7-11 美式 2 杯 66 元", "url": URL_YAHOO_TYPHOON, "published": ""},
-    {"title": "蘋果仁｜2026 本週咖啡優惠 10/19～10/25", "url": URL_APPLE_329295, "published": "2026-10-19"},
-    {"title": "蘋果仁｜2026 雙十國慶咖啡優惠懶人包", "url": URL_APPLE_328076, "published": ""},
-    {"title": "NOWnews｜本週咖啡優惠", "url": URL_NOWNEWS, "published": ""},
-    {"title": "NOWnews｜本週咖啡優惠 10/25～10/31", "url": URL_NOWNEWS_WEEKLY, "published": "2026-10-25"},
-    {"title": "NOWnews｜星巴克買一送一、85度C萬聖節第二杯4折", "url": URL_NOWNEWS_CURRENT, "published": "2026-10-26"},
-    {"title": "NOWnews｜路易莎買一送一、Uber Eats與門市優惠", "url": URL_NOWNEWS_LOUISA, "published": "2026-10-19"},
-    {"title": "Cosmopolitan Taiwan｜萊爾富咖啡優惠", "url": URL_COSMO, "published": "2026-10-22"},
-]
+# 不再把已知新聞網址當作日常發現來源。過去文章只保留在離線 fixture 回歸測試；
+# 長期優惠由 curated_deals() 與上一輪未過期 deals.json 延續。
+SEED_ARTICLES = []
 
 RSS_QUERIES = [
     '台灣 超商咖啡優惠 本週 買一送一 買2送2 寄杯',
@@ -127,6 +120,13 @@ RSS_QUERIES = [
 # v6.13：逐來源動態發現。Google News RSS 是「發現新文章」的補充入口，
 # 不取代各站原文；site 限定可降低跨站雜訊。各查詢獨立記錄成功／失敗。
 SOURCE_DISCOVERY_QUERIES = {
+    "TVBS新聞": [
+        "site:news.tvbs.com.tw/life 咖啡優惠 OR 超商優惠 OR 買一送一 OR 買11送11",
+        "site:news.tvbs.com.tw/life 全家咖啡 OR CITY CAFE OR 寄杯",
+    ],
+    "ETtoday": [
+        "site:ettoday.net/news 咖啡優惠 OR 超商優惠 OR 買一送一 OR 寄杯",
+    ],
     "NOWnews": [
         "site:nownews.com/news 咖啡優惠 OR 超商優惠 OR 買一送一 OR 買11送11",
         "site:nownews.com/news CITY CAFE OR 全家咖啡 OR 萊爾富咖啡",
@@ -236,12 +236,14 @@ OFFER_RE = re.compile(
     re.I,
 )
 
+# 無年份時只接受「11/11」或「11月11日」；連字號只允許出現在有年份的 ISO 日期，
+# 避免將品牌名稱 7-11 誤判為 7 月 11 日。
+_DATE_PART_1 = r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*(?(1)[月/.-]|[月/])\s*(\d{1,2})\s*日?"
+_DATE_PART_2 = r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*(?(4)[月/.-]|[月/])\s*(\d{1,2})\s*日?"
 DATE_RANGE_RE = re.compile(
-    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
-    r"\s*(?:至|到|～|~|－|—|–|-|起至)\s*"
-    r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?"
+    _DATE_PART_1 + r"\s*(?:至|到|～|~|－|—|–|-|起至)\s*" + _DATE_PART_2
 )
-SINGLE_DATE_RE = re.compile(r"(?:(20\d{2}|1\d{2})\s*[年/.-]\s*)?(\d{1,2})\s*[月/.-]\s*(\d{1,2})\s*日?")
+SINGLE_DATE_RE = re.compile(_DATE_PART_1)
 
 
 def canonical_url(url: str) -> str:
@@ -1040,11 +1042,120 @@ def curated_deals():
     louisa_store["source"] = "NOWnews 報導／品牌活動資訊"
     louisa_store["needs_check"] = True
 
-    return out
+    # 保底清單只保留長青或目前尚未到期的資料；過期的硬編碼檔期不再每次重灌。
+    retained = []
+    for item in out:
+        end_text = item.get("end_date") or ""
+        try:
+            if end_text and date.fromisoformat(end_text) < TODAY:
+                continue
+        except ValueError:
+            pass
+        retained.append(item)
+    return retained
+
+
+def is_google_news_url(url: str) -> bool:
+    host = urlparse(url or "").netloc.lower()
+    return host.endswith("news.google.com")
+
+
+def resolve_google_news_url(url: str):
+    """將 Google News 加密文章連結解碼成媒體原始 URL；解碼失敗時回傳空字串。"""
+    global GOOGLE_NEWS_DECODE_FAILURES
+    if not is_google_news_url(url):
+        return canonical_url(url), "direct"
+    try:
+        from googlenewsdecoder import gnewsdecoder
+        try:
+            result = gnewsdecoder(url, interval=1)
+        except TypeError:
+            result = gnewsdecoder(url)
+        if isinstance(result, dict):
+            decoded = result.get("decoded_url") or result.get("url") or ""
+            ok = result.get("status", bool(decoded))
+            if ok and decoded and not is_google_news_url(decoded):
+                return canonical_url(decoded), "googlenewsdecoder"
+        elif isinstance(result, str) and result.startswith(("https://", "http://")) and not is_google_news_url(result):
+            return canonical_url(result), "googlenewsdecoder"
+    except Exception as exc:
+        logging.warning("Google News URL decode failed: %s", str(exc)[:160])
+
+    # 最後嘗試一般 HTTP redirect；若仍停留 Google 網域，不把空殼頁送進正文解析。
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+        final_url = canonical_url(response.url)
+        if response.ok and final_url and not is_google_news_url(final_url):
+            return final_url, "http_redirect"
+    except Exception as exc:
+        logging.warning("Google News redirect fallback failed: %s", str(exc)[:160])
+    GOOGLE_NEWS_DECODE_FAILURES += 1
+    return "", "unresolved_google_news"
+
+
+def resolve_google_news_urls(urls: list[str]):
+    """批次解碼 RSS 內的 Google News 連結，減少逐篇解碼造成的請求量。"""
+    global GOOGLE_NEWS_DECODE_FAILURES
+    output = {}
+    pending = []
+    for url in urls:
+        clean = canonical_url(url)
+        if not clean:
+            continue
+        if is_google_news_url(clean):
+            pending.append(clean)
+        else:
+            output[clean] = (clean, "direct")
+    if not pending:
+        return output
+
+    decoded_results = []
+    try:
+        from googlenewsdecoder import gnewsdecoder
+        try:
+            decoded_results = gnewsdecoder(pending, interval=1)
+        except TypeError:
+            decoded_results = gnewsdecoder(pending)
+        if isinstance(decoded_results, dict):
+            decoded_results = [decoded_results]
+        if not isinstance(decoded_results, list):
+            decoded_results = []
+    except Exception as exc:
+        logging.warning("Google News batch decode failed: %s", str(exc)[:160])
+        decoded_results = []
+
+    for index, raw_url in enumerate(pending):
+        result = decoded_results[index] if index < len(decoded_results) else {}
+        decoded = ""
+        if isinstance(result, dict):
+            decoded = result.get("decoded_url") or result.get("url") or ""
+            success = result.get("success", result.get("status", bool(decoded)))
+            if not success:
+                decoded = ""
+        elif isinstance(result, str):
+            decoded = result
+        if decoded.startswith(("https://", "http://")) and not is_google_news_url(decoded):
+            output[raw_url] = (canonical_url(decoded), "googlenewsdecoder")
+            continue
+
+        # 批次解碼失敗才做單筆 HTTP redirect fallback；停留 Google 網域就不送正文解析。
+        try:
+            response = requests.get(raw_url, headers=HEADERS, timeout=REQUEST_TIMEOUT, allow_redirects=True)
+            final_url = canonical_url(response.url)
+            if response.ok and final_url and not is_google_news_url(final_url):
+                output[raw_url] = (final_url, "http_redirect")
+                continue
+        except Exception as exc:
+            logging.warning("Google News redirect fallback failed: %s", str(exc)[:160])
+        GOOGLE_NEWS_DECODE_FAILURES += 1
+        logging.warning("Unresolved Google News link skipped: %s", raw_url[:160])
+        output[raw_url] = ("", "unresolved_google_news")
+    return output
 
 
 def rss(query: str):
-    # 動態搜尋近 30 天，不把月份／年份寫死在查詢字串；新文章才有機會被抓進來。
+    """Google News RSS 作廣度補充；先按標題／日期篩選，再限量解碼真實媒體 URL。"""
+    global GOOGLE_NEWS_DECODE_BUDGET_REMAINING
     normalized_query = normalize_space(query)
     if not re.search(r"\bwhen:\d+[dwmy]\b", normalized_query, re.I):
         normalized_query += " when:30d"
@@ -1052,19 +1163,73 @@ def rss(query: str):
     response = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     root = ET.fromstring(response.content)
-    results = []
+    raw_items = []
+    cutoff = TODAY - timedelta(days=30)
     for item in root.findall(".//item"):
         title = normalize_space(item.findtext("title") or "")
         link = canonical_url(item.findtext("link") or "")
         published = item.findtext("pubDate") or ""
         source_node = item.find("source")
         source_bucket = normalize_space(source_node.text if source_node is not None else "")
+        if not link or not title or not LISTING_OFFER_HINT_RE.search(title):
+            continue
+        pub_day = parse_published(published)
+        if pub_day and pub_day < cutoff:
+            continue
+        raw_items.append((title, link, published, source_bucket))
+
+    # Google News 解碼可能逐篇發送請求。只解碼標題相關、近 30 天文章，
+    # 每個查詢最多 8 篇，整次 Actions 最多 40 篇，避免大量 RSS 查詢拖垮工作流程。
+    raw_items.sort(key=lambda row: parse_published(row[2]) or date.min, reverse=True)
+    budget = max(0, min(MAX_GOOGLE_NEWS_DECODE_PER_QUERY, GOOGLE_NEWS_DECODE_BUDGET_REMAINING))
+    selected = raw_items[:budget]
+    GOOGLE_NEWS_DECODE_BUDGET_REMAINING -= len(selected)
+    raw_links = [row[1] for row in selected]
+    resolved_map = resolve_google_news_urls(raw_links)
+    results = []
+    for title, raw_link, published, source_bucket in selected:
+        resolved, resolution = resolved_map.get(raw_link, ("", "unresolved_google_news"))
+        if not resolved:
+            continue
         if not source_bucket:
-            host = urlparse(link).netloc.lower().removeprefix("www.") if link else "unknown_source"
-            source_bucket = "GoogleNews" if host.endswith("news.google.com") else host
-        if link:
-            results.append({"title": title, "url": link, "published": published, "source_bucket": source_bucket})
+            source_bucket = urlparse(resolved).netloc.lower().removeprefix("www.")
+        results.append({"title": title, "url": resolved, "published": published,
+                        "source_bucket": source_bucket, "url_resolution": resolution})
+    logging.info("Google News RSS filtered %d candidates; decoded %d (remaining budget %d)",
+                 len(raw_items), len(selected), GOOGLE_NEWS_DECODE_BUDGET_REMAINING)
     return results
+
+
+def discover_native_rss_articles():
+    """讀取媒體原生 RSS，優先取得可直接開啟的文章網址。"""
+    feeds = [("蘋果仁", URL_APPLEALMOND_FEED)]
+    articles, stats = [], {}
+    for source_name, feed_url in feeds:
+        found = {}
+        try:
+            response = requests.get(feed_url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+            root = ET.fromstring(response.content)
+            nodes = root.findall(".//item") + root.findall(".//{http://www.w3.org/2005/Atom}entry")
+            for node in nodes:
+                title = normalize_space(node.findtext("title") or node.findtext("{http://www.w3.org/2005/Atom}title") or "")
+                link = node.findtext("link") or ""
+                if not link:
+                    atom_link = node.find("{http://www.w3.org/2005/Atom}link")
+                    link = atom_link.get("href", "") if atom_link is not None else ""
+                published = (node.findtext("pubDate") or node.findtext("{http://www.w3.org/2005/Atom}published")
+                             or node.findtext("{http://www.w3.org/2005/Atom}updated") or "")
+                link = canonical_url(urljoin(feed_url, link))
+                if link and title and LISTING_OFFER_HINT_RE.search(title):
+                    found.setdefault(link, {"title": title, "url": link, "published": published,
+                                            "source_bucket": source_name, "source_buckets": [source_name]})
+            articles.extend(found.values())
+            stats[source_name] = {"ok": True, "discovered": len(found), "url": feed_url}
+            logging.info("Native RSS OK (%s): %d articles", source_name, len(found))
+        except Exception as exc:
+            stats[source_name] = {"ok": False, "discovered": 0, "url": feed_url, "error": str(exc)[:200]}
+            logging.warning("Native RSS ERROR (%s): %s", source_name, exc)
+    return articles, stats
 
 
 LISTING_OFFER_HINT_RE = re.compile(
@@ -1093,8 +1258,11 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         if not label or not LISTING_OFFER_HINT_RE.search(label):
             continue
 
-        if source_key == "nownews":
+        if source_key in {"nownews", "nownews_consumption"}:
             if host != "nownews.com" or not re.match(r"^/(?:amp/)?news/\d+/?$", parsed.path):
+                continue
+        elif source_key == "tvbs":
+            if host != "news.tvbs.com.tw" or not re.match(r"^/(?:life|news)/\d+/?$", parsed.path, re.I):
                 continue
         elif source_key == "85c":
             if host != "85cafe.com" or not re.search(r"/News_content\.php$", parsed.path, re.I):
@@ -1109,8 +1277,8 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         clean_url = canonical_url(href)
         if clean_url == canonical_url(listing_url):
             continue
-        prefix = {"nownews": "NOWnews", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
-        source_bucket = {"nownews": "NOWnews", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
+        prefix = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
+        source_bucket = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
         brand_hints = {"85c": ["85°C"], "louisa": ["路易莎"]}.get(source_key, [])
         found.setdefault(clean_url, {"title": f"{prefix}｜{label[:180]}", "url": clean_url, "published": "",
                                      "source_bucket": source_bucket, "brand_hints": brand_hints})
@@ -1122,7 +1290,9 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
 def discover_listing_articles():
     """動態發現 NOWnews 與品牌消息連結；各列表各自失敗，不阻斷 RSS／固定種子。"""
     listings = [
-        ("nownews", URL_NOWNEWS_LISTING, 15),
+        ("nownews", URL_NOWNEWS_LISTING, 30),
+        ("nownews_consumption", URL_NOWNEWS_CONSUMER_LISTING, 30),
+        ("tvbs", URL_TVBS_LISTING, 30),
         ("85c", URL_85C_NEWS_LISTING, 10),
         ("louisa", URL_LOUISA_NEWS_LISTING, 10),
     ]
@@ -1397,16 +1567,18 @@ def extract_dom_article_blocks(soup: BeautifulSoup) -> list[dict]:
         roots.extend(soup.select(selector))
     if not roots and soup.body:
         roots = [soup.body]
-    blocks, seen_nodes, seen_text = [], set(), set()
+    blocks, seen_nodes = [], set()
+    previous_text = None
     for root in roots:
         for node in root.select("h2,h3,h4,p,li,td,th,figcaption,blockquote"):
             if id(node) in seen_nodes:
                 continue
             seen_nodes.add(id(node))
             text = normalize_space(node.get_text(" ", strip=True))
-            if not text or text in seen_text:
+            if not text or text == previous_text:
                 continue
-            seen_text.add(text)
+            # 只去除 DOM 流中相鄰的重複區塊；不同品牌章節可保留相同優惠句。
+            previous_text = text
             strongs = [normalize_space(item.get_text(" ", strip=True)) for item in node.find_all(["strong", "b"])]
             blocks.append({"text": text, "tag": node.name.lower(), "strong_texts": [x for x in strongs if x]})
     return blocks
@@ -1530,14 +1702,17 @@ def fetch_article(article):
                 lines.extend(split_text_to_lines(root.get_text("\n", strip=True)))
 
         clean = []
-        seen = set()
+        previous_key = None
         for line in lines:
             line = strip_caption(normalize_space(line))
             key = re.sub(r"\W", "", line.lower())
-            if not key or key in seen or is_noise(line):
+            if not key or is_noise(line):
                 continue
-            seen.add(key)
+            # 只刪除相鄰重複行；跨段落相同優惠文字可能屬於不同品牌／通路，必須保留。
+            if key == previous_key:
+                continue
             clean.append(line)
+            previous_key = key
         ok = len(clean) >= 2 and any(is_coffee_related(x) for x in [title, *clean])
         logging.info("FETCH %s (%s): %s lines", "OK" if ok else "LOW CONTENT", final_url, len(clean))
         if not ok:
@@ -3175,11 +3350,49 @@ def prioritize_articles(articles, limit=MAX_ARTICLES):
     return schedule_fair_article_quota(articles, max_total=limit)
 
 
+
+def filter_known_stale_articles(articles, previous_snapshot, rescan_days=3):
+    """近 3 天文章每輪重掃；更舊且已有未過期優惠紀錄的 URL 不重抓。"""
+    known_active_urls = set()
+    for deal in (previous_snapshot or {}).get("deals", []):
+        if not isinstance(deal, dict) or is_non_offer_record(deal):
+            continue
+        end_text = deal.get("end_date") or ""
+        try:
+            if end_text and date.fromisoformat(end_text) < TODAY:
+                continue
+        except ValueError:
+            continue
+        if not end_text and deal.get("status") not in {"active", "upcoming", "verify"}:
+            continue
+        urls = [deal.get("article_url", "")]
+        extra = deal.get("source_urls") or []
+        if isinstance(extra, str):
+            extra = [extra]
+        if isinstance(extra, (list, tuple, set)):
+            urls.extend(extra)
+        known_active_urls.update(canonical_url(url) for url in urls if url)
+
+    cutoff = TODAY - timedelta(days=rescan_days)
+    kept, skipped = [], 0
+    for article in articles:
+        url = canonical_url(article.get("url", ""))
+        published = parse_published(article.get("published", ""))
+        if url and url in known_active_urls and published and published < cutoff:
+            skipped += 1
+            continue
+        kept.append(article)
+    return kept, skipped
+
 def main():
+    global GOOGLE_NEWS_DECODE_BUDGET_REMAINING
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+    GOOGLE_NEWS_DECODE_BUDGET_REMAINING = MAX_GOOGLE_NEWS_DECODE_TOTAL
     articles = list(SEED_ARTICLES)
     listing_articles, listing_stats = discover_listing_articles()
     articles.extend(listing_articles)
+    native_rss_articles, native_rss_stats = discover_native_rss_articles()
+    articles.extend(native_rss_articles)
     source_rss_articles, source_rss_stats = discover_source_rss_articles()
     articles.extend(source_rss_articles)
     rss_failures = 0
@@ -3194,6 +3407,8 @@ def main():
             rss_failures += 1
             logging.warning("RSS ERROR (%s): %s", query, exc)
 
+    previous = load_existing()
+    articles, skipped_known_stale = filter_known_stale_articles(articles, previous, rescan_days=3)
     to_fetch = prioritize_articles(articles, MAX_ARTICLES)
     fetched_success = 0
     failed_urls = set()
@@ -3217,7 +3432,6 @@ def main():
 
     curated = curated_deals()
     fresh = deduplicate_deals(curated + dynamic_deals)
-    previous = load_existing()
 
     if fetched_success < MIN_SUCCESSFUL_ARTICLES_TO_REPLACE and previous and previous.get("deals"):
         logging.warning("本輪成功讀取文章數偏低：合併既有資料、保底資料及本輪成功擷取內容，避免不完整結果覆寫舊資料。")
@@ -3228,11 +3442,7 @@ def main():
         for old in previous["deals"]:
             if not isinstance(old, dict) or not old.get("offer"):
                 continue
-            urls = old.get("source_urls") or [old.get("article_url", "")]
-            url_list = [canonical_url(u) for u in urls if u]
-            retainable_urls = failed_urls | empty_extraction_urls
-            if not url_list or not any(u in retainable_urls for u in url_list):
-                continue
+            # 既有優惠不因新聞列表下架或來源本輪未被發現而消失；只要未過期就延續。
             end_text = old.get("end_date") or ""
             try:
                 if end_text and date.fromisoformat(end_text) < TODAY:
@@ -3253,7 +3463,7 @@ def main():
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
-        "processing_version": "v6.17",
+        "processing_version": "v6.18.1",
         "schema_version": 2,
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
@@ -3267,21 +3477,28 @@ def main():
         "deals": final_deals,
         "scrape_report": {
             "articles_discovered": len(to_fetch),
+            "articles_skipped_known_stale": skipped_known_stale,
+            "known_article_rescan_window_days": 3,
             "listing_discovery": listing_stats,
             "listing_articles_added_before_dedup": len(listing_articles),
+            "native_rss_articles_added_before_dedup": len(native_rss_articles),
+            "native_rss_discovery": native_rss_stats,
             "source_rss_articles_added_before_dedup": len(source_rss_articles),
             "source_rss_discovery": source_rss_stats,
             "articles_fetched_successfully": fetched_success,
             "articles_failed_or_low_content": len(failed_urls),
             "urls_for_articles_with_no_extracted_offers": len(empty_extraction_urls),
             "rss_queries_failed": rss_failures,
+            "google_news_decode_failures": GOOGLE_NEWS_DECODE_FAILURES,
+            "google_news_decode_budget_total": MAX_GOOGLE_NEWS_DECODE_TOTAL,
+            "google_news_decode_budget_remaining": GOOGLE_NEWS_DECODE_BUDGET_REMAINING,
             "curated_records": len(curated),
             "dynamic_records_before_dedup": len(dynamic_deals),
             "fair_schedule": {"max_total": MAX_ARTICLES, "max_per_source": MAX_ARTICLES_PER_SOURCE,
                               "scheduled_by_brand": {brand: sum(1 for a in to_fetch if a.get("scheduled_for_brand") == brand) for brand in STORE_ORDER[:11]},
                               "brand_coverage": {brand: sum(1 for a in to_fetch if brand in (a.get("brand_hints") or [])) for brand in STORE_ORDER[:11]},
                               "scheduled_by_source": {src: sum(1 for a in to_fetch if a.get("scheduled_source_bucket") == src) for src in sorted({a.get("scheduled_source_bucket", "") for a in to_fetch})}},
-            "note": "v6.17 使用品牌輪替公平配額、每來源上限 25 篇，並於 deals.json 增加 channel_scope；原有近 30 天 Google News RSS 發現流程保留。" +
+            "note": "v6.18.1 使用 NOWnews／TVBS 分類頁、蘋果仁原生 RSS、Google News RSS 真實網址解碼、品牌輪替公平配額；日期解析排除無年份 X-Y，正文清洗只去除相鄰重複行，舊優惠未過期則延續。" +
                     "v6.16 使用近 30 天的各媒體／品牌 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。",
         },
     }

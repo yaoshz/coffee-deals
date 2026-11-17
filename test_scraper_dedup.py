@@ -1137,15 +1137,7 @@ class ListingDiscoveryRegressionTests(unittest.TestCase):
     def test_curated_current_offers_have_separate_channel_labels_and_end_dates(self):
         items = scraper.curated_deals()
         selected = [x for x in items if x.get('article_url', '').endswith('/news/6884695')]
-        offers = [x['offer'] for x in selected]
-        self.assertTrue(any('Uber Eats' in offer and '買 1 送 1' in offer for offer in offers))
-        self.assertTrue(any('磚壓套餐限時 6 折' in offer for offer in offers))
-        self.assertTrue(any('門市限定' in offer and '芒果綠茶' in offer for offer in offers))
-        self.assertTrue(all(x['end_date'] == '2026-10-31' for x in selected))
-        deduped = scraper.deduplicate_deals(selected)
-        self.assertEqual(len(deduped), 3)
-        scopes = {scraper._deal_channel_scope(x) for x in deduped}
-        self.assertEqual(scopes, {'delivery', 'store'})
+        self.assertEqual(selected, [], '已過期的 2026-10-31 路易莎檔期不應再由保底清單重灌')
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
@@ -1263,15 +1255,12 @@ class PXMartV614Tests(unittest.TestCase):
     def test_pxmart_october_batch_pickup_offers_are_expired(self):
         px = [d for d in scraper.curated_deals() if d.get("store") == "全聯"]
         batch = [d for d in px if "分批取" in d.get("offer", "")]
-        self.assertEqual(len(batch), 2)
-        self.assertTrue(all(d["status"] == "expired" for d in batch))
-        self.assertTrue(any("9 杯 199 元" in d["offer"] for d in batch))
-        self.assertTrue(any("6 杯 199 元" in d["offer"] for d in batch))
+        self.assertEqual(batch, [], '已過期的 2026-10-24～10-26 檔期不應再出現在 curated_deals')
 
     def test_frontend_has_pxmart_portal_and_v614_version(self):
         with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
             html = f.read()
-        self.assertIn('content="v6.17"', html)
+        self.assertIn('content="v6.18.1"', html)
         self.assertIn('href="https://pxbox.pxmart.com.tw/"', html)
         self.assertIn("'portal-12':'全聯福利中心|PX Pay 分批取'", html)
         self.assertIn("'portal-12':'PX Mart|PX Pay Bundles'", html)
@@ -1300,14 +1289,12 @@ class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
         }
         return scraper.deduplicate_deals(scraper.extract_article_deals(article, fetched))
 
-    def test_all_four_user_supplied_articles_are_seeded(self):
-        urls = {x["url"] for x in scraper.SEED_ARTICLES}
-        self.assertTrue({
-            "https://www.nownews.com/news/6889517",
-            "https://www.nownews.com/news/6889553",
-            "https://www.nownews.com/news/6888826",
-            scraper.URL_YAHOO_DOUBLE11,
-        }.issubset(urls))
+    def test_historical_news_urls_are_not_used_as_daily_seed_sources(self):
+        self.assertEqual(scraper.SEED_ARTICLES, [])
+        # Known historic articles remain in offline fixtures for regression tests, not production discovery.
+        fixture_dir = os.path.join(HERE, "tests", "fixtures")
+        self.assertTrue(os.path.isdir(fixture_dir))
+        self.assertTrue(any(name.endswith(".html") for name in os.listdir(fixture_dir)))
 
     def test_rss_queries_are_not_tied_to_a_stale_month(self):
         combined = " ".join(scraper.RSS_QUERIES + [q for qs in scraper.SOURCE_DISCOVERY_QUERIES.values() for q in qs])
@@ -1422,7 +1409,7 @@ class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
     def test_v616_artifact_versions_are_consistent(self):
         with open(os.path.join(HERE, "index.html"), encoding="utf-8") as f:
             html = f.read()
-        self.assertIn('content="v6.17"', html)
+        self.assertIn('content="v6.18.1"', html)
         with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
             snapshot = json.load(f)
         # deals.json can remain a last-known-good snapshot until a real online run succeeds.
@@ -1430,7 +1417,7 @@ class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
 
 
 class V617CoreParserTests(unittest.TestCase):
-    """v6.17 核心解析器：非重疊 Span、中文數字、品牌／通路作用域與公平排程。"""
+    """v6.18 核心解析器：非重疊 Span、中文數字、品牌／通路作用域與公平排程。"""
 
     def test_chinese_numerals_support_compound_values(self):
         cases = {"二": 2, "兩": 2, "十六": 16, "十九": 19, "二十一": 21,
