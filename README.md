@@ -1,3 +1,32 @@
+# 省咖啡｜優惠雷達 v6.21（安全升級套件）
+
+## 本版最重要的部署提醒
+
+**本版故意不附帶 `deals.json`**：舊 ZIP 所附資料仍是 11/8 快照，若一次拖曳上傳會覆蓋你 GitHub 目前較新的 11/17 優惠資料。請把本 ZIP 解壓縮後「內層檔案與子資料夾」一次拖曳上傳原倉庫根目錄；GitHub 上原有 `deals.json` 請保留，不要刪除。`test_scraper_dedup.py` 中以前依賴固定快照的測試，現在使用 `tests/fixtures/v617_snapshot.json`，因此上線後不會因為 live 資料更新而失敗。
+
+**注意：** 如果要建立全新空白倉庫，請先自行準備合法 `deals.json` 快照再啟動前端；這份 ZIP 專供已存在的 `yaoshz/coffee-deals` 倉庫升級使用。
+
+## v6.21 更新（2026-11-17）
+
+- 新增東森財經 `fnc.ebc.net.tw/fncnews/life` 的分類列表與 `site:` RSS 動態來源。
+- Google News 解碼改為按來源輪流處理查詢，每來源每輪最多 2 篇，總上限仍為 40，避免 Yahoo、東森排在後面完全沒額度；但不保證任何來源每次一定有新聞。
+- 修正「門市限定、行動隨時取不適用」的否定通路語句，避免誤標 APP。
+- 增加 `og:image` / `twitter:image` 擷取並寫入動態優惠的 `image_url`；並非所有新聞都有可用圖片，前端自動改用品牌封面。
+- 限縮明顯非飲品品項（如衛生紙、染髮霜）混入；不採用一律排除「茶葉蛋」等合理搭配品項的過度黑名單。
+- 全新暖白／深焙棕、響應式 16:9 卡片介面：圖片、品牌／促銷標籤、商品標題、價格機制、通路、活動期間、發布時間、來源連結；圖片與新聞文字都安全處理。
+- 附帶使用者提出版型的本地 HTML 實作；中英泰切換**僅完整支援介面文字**，新聞商品仍顯示中文原文，不宣稱已自動翻譯。
+- 新增 `test_v621_regressions.py`，並更新 9 個已過時的前端 DOM 測試，使其驗證新版卡片頁結構。
+
+## 驗收時必查
+
+1. GitHub Actions → `Update coffee deals` → `Run workflow`，確認 tests 與 scraper 全成功且 `deals.json` 有新 commit。
+2. 瀏覽 `/coffee-deals/deals.json` 的 `processing_version` 是否變為 `v6.21`，`updated_at` 是否變新。
+3. 搜尋 `6892960`、`3273004`、`222884` 以及 Yahoo 星巴克文章網址是否在 `article_url` / `source_urls`，核對各筆 `store`、`start_date`、`end_date`、`channel_scope` 和 `status`；**URL 出現不代表該篇所有優惠都已成功解析。**
+4. 檢查 `scrape_report.listing_discovery.ebc`、`source_rss_discovery.東森財經`、`source_rss_discovery.Yahoo新聞`。如發現 403、列表 0 筆或正文截斷，仍須根據真實 Actions log 修正該媒體 parser。無法保證四篇全部成功入庫。
+5. 文章縮圖由來源站提供，可能因 og:image 缺少、熱連結防護或低解析度而退回品牌封面；不會憑空製造原圖。
+
+---
+
 # 省咖啡｜優惠雷達 v6.19
 
 ## v6.19 追加修補（2026-11-17）

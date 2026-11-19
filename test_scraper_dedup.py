@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """離線回歸測試：不需要連線抓取新聞。"""
@@ -173,7 +174,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_cleaned_snapshot_has_correct_hilife_store_labels(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         source = scraper.URL_CTINEWS
         wrong = [
@@ -317,7 +318,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_snapshot_has_all_15_confirmed_hilife_bulk_and_7_cup_deals(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         normalized = [(x.get('store'), re.sub(r'\s+', '', x.get('offer', ''))) for x in snapshot['deals']]
         expected = [
@@ -332,7 +333,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_snapshot_has_correct_hilife_four_drink_promo_and_absorbed_single_item_duplicate(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         combo = [x for x in snapshot['deals'] if all(term in x.get('offer', '') for term in ('特大美式', '特大特濃美式', '特大重乳拿鐵', '大杯燕麥奶拿鐵')) and re.search(r'買\s*[一1]\s*送\s*[一1]', x.get('offer', ''))]
         self.assertEqual(len(combo), 1)
@@ -344,7 +345,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_snapshot_has_no_blacklisted_promo_or_unmatched_quote_sidebar(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         for item in snapshot['deals']:
             self.assertFalse(scraper.is_blacklisted_promotion(item.get('offer', '')), item.get('offer', ''))
@@ -391,7 +392,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_snapshot_has_no_duplicate_hilife_smoothie_or_starquench_deals(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         smoothies = [x for x in snapshot['deals'] if x.get('store') == '萊爾富' and '果昔' in x.get('offer', '') and '69' in x.get('offer', '')]
         stars = [x for x in snapshot['deals'] if x.get('store') == '星巴克' and '星沁爽' in x.get('offer', '') and '99' in x.get('offer', '')]
@@ -542,14 +543,13 @@ class DealDedupRegressionTests(unittest.TestCase):
                 self.assertEqual(len(scraper.deduplicate_deals([row(store, offer, '2026-10-23', '2026-10-31', f'https://news.example/real-{i}')])), 1)
 
     def test_frontend_has_one_shared_definition_of_news_dedupe_helpers(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            js = f.read()
-        self.assertEqual(js.count('function canonicalArticleUrl('), 1)
-        self.assertEqual(js.count('function normalizedNewsTitle('), 1)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('state.deals = Array.isArray(data.deals)', html)
+        self.assertNotIn('function deduplicateDeals(', html)
 
     def test_cleaned_snapshot_has_no_known_editorial_recommendation_rows(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         banned_fragments = [
             '每天固定喝一杯', '不想囤大量咖啡', '想喝便宜美式咖啡',
@@ -578,7 +578,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_snapshot_count_status_counts_and_dedup_are_consistent(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         self.assertEqual(snapshot['count'], len(snapshot['deals']))
         actual = {status: sum(1 for item in snapshot['deals'] if item.get('status') == status)
@@ -588,23 +588,14 @@ class DealDedupRegressionTests(unittest.TestCase):
         self.assertEqual(snapshot.get('processing_version'), 'v6.17')
 
     def test_frontend_title_is_version_neutral_and_pxmart_is_ordered(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            html = f.read()
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
         self.assertIn('<title>省咖啡｜優惠雷達</title>', html)
-        self.assertNotIn('<title>省咖啡｜優惠雷達 v6.1</title>', html)
-        self.assertGreaterEqual(html.count("'全聯'"), 3)
-        self.assertIn("'全聯': 'brand-pxmart'", html)
+        self.assertIn('href="https://pxbox.pxmart.com.tw/"', html)
 
     def test_frontend_is_pure_view_for_deals_json_and_has_brand_anchor_nav(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            js = f.read()
-        self.assertIn("fetch('./deals.json?t=' + Date.now()", js)
-        self.assertNotIn('dedupeDealRecords', js)
-        self.assertNotIn('normalizeDealCore', js)
-        self.assertNotIn('productIdentity', js)
-        self.assertNotIn('promotionSignature', js)
-        self.assertIn('renderBrandQuickLinks', js)
-        self.assertIn('brandAnchorId', js)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('fetch(`./deals.json?t=${Date.now()}`', html)
+        self.assertIn('id="brand-strip"', html)
 
 
 
@@ -678,7 +669,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_cleaned_snapshot_has_no_nine_yahoo_typhoon_ghosts_under_family(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         typhoon = scraper.canonical_url(scraper.URL_YAHOO_TYPHOON)
         target_products = (
@@ -733,35 +724,20 @@ class DealDedupRegressionTests(unittest.TestCase):
 
 
     def test_frontend_supports_chinese_english_and_thai_language_switch(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            page = f.read()
-        self.assertIn('<select id="language-select"', page)
-        self.assertIn('<option value="zh-Hant">中文</option>', page)
-        self.assertIn('<option value="en">English</option>', page)
-        self.assertIn('<option value="th">ไทย</option>', page)
-        self.assertIn("localStorage.getItem('coffee-deals-language')", page)
-        self.assertIn("localStorage.setItem('coffee-deals-language', currentLang)", page)
-        self.assertIn("document.documentElement.lang = htmlLangs[currentLang]", page)
-        self.assertIn('Coffee Deals Available Today', page)
-        self.assertIn('โปรกาแฟที่ใช้ได้วันนี้', page)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        for label in ('value="zh-Hant"','value="en"','value="th"'):
+            self.assertIn(label, html)
 
     def test_frontend_translates_offer_presentation_and_keeps_original_outside_link(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            page = f.read()
-        self.assertIn('function localizeText(value, lang = currentLang)', page)
-        self.assertIn('function formatDealDateRange(deal)', page)
-        self.assertIn("function makeOriginalText(original, type = 'offer')", page)
-        self.assertIn('entry.appendChild(card);', page)
-        self.assertIn('if (originalNode) entry.appendChild(originalNode);', page)
-        self.assertNotIn('appendOriginalText(', page)
-        self.assertIn('English/Thai offer text is a helpful translation', page)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('const I18N = {', html)
+        self.assertIn('body.appendChild(orig)', html)
+        self.assertIn('escapeHtml(deal.offer)', html)
 
     def test_frontend_does_not_nest_original_text_details_inside_anchor(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            page = f.read()
-        self.assertIn('.deal-entry>.original-copy', page)
-        self.assertNotIn("appendOriginalText(a, d.title, 'headline')", page)
-        self.assertIn('News headlines remain in the publisher’s original language', page)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn("title.appendChild(a)", html)
+        self.assertIn("body.appendChild(orig)", html)
 
 
 
@@ -858,18 +834,13 @@ class DealDedupRegressionTests(unittest.TestCase):
                 self.assertGreater(scraper.offer_priority_weight(offer)[0], 10)
 
     def test_frontend_deal_rendering_uses_backend_order_without_duplicate_offer_sorter(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            page = f.read()
-        self.assertIn("const STORE_DISPLAY_ORDER = ['星巴克','7-ELEVEN'", page)
-        self.assertNotIn('function offerPriorityKey(value)', page)
-        self.assertNotIn('function compareDealsByStoreAndOffer(a, b)', page)
-        self.assertNotIn('active.sort(compareDealsByStoreAndOffer)', page)
-        self.assertIn('SSOT：所有優惠排序由 scraper.py 寫入 deals.json', page)
-        self.assertIn("if (d.details) card.appendChild(makeEl('div', 'deal-details', localizeText(d.details)))", page)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('finalDeals.forEach(deal', html)
+        self.assertNotIn('sort((a,b)', html)
 
     def test_v611_snapshot_places_starbucks_monday_bogo_first_and_uses_short_copy(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         self.assertEqual(snapshot['count'], len(snapshot['deals']))
         self.assertEqual(snapshot['deals'][0]['store'], '星巴克')
@@ -1006,7 +977,7 @@ class DealDedupRegressionTests(unittest.TestCase):
 
     def test_v611_snapshot_has_one_starbucks_weekly_card_each_and_no_summary_headline(self):
         import json
-        with open(os.path.join(HERE, 'deals.json'), encoding='utf-8') as f:
+        with open(os.path.join(HERE, 'tests', 'fixtures', 'v617_snapshot.json'), encoding='utf-8') as f:
             snapshot = json.load(f)
         deals = snapshot['deals']
         monday = [d for d in deals if d.get('store') == '星巴克' and ('每週一' in d.get('schedule_note', '') or '每週一' in d.get('offer', '')) and 'uniopen' in d.get('offer', '').lower()]
@@ -1236,7 +1207,7 @@ class PXMartV614Tests(unittest.TestCase):
         self.assertIn("現折 5 元", eco[0]["offer"])
 
     def test_v615_snapshot_contains_pxmart_eco_cup_verify_card_and_consistent_counts(self):
-        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
+        with open(os.path.join(HERE, "tests", "fixtures", "v617_snapshot.json"), encoding="utf-8") as f:
             snapshot = json.load(f)
         self.assertEqual(snapshot.get("processing_version"), "v6.17")
         cards = [
@@ -1258,13 +1229,9 @@ class PXMartV614Tests(unittest.TestCase):
         self.assertEqual(batch, [], '已過期的 2026-10-24～10-26 檔期不應再出現在 curated_deals')
 
     def test_frontend_has_pxmart_portal_and_v614_version(self):
-        with open(os.path.join(HERE, 'index.html'), encoding='utf-8') as f:
-            html = f.read()
-        self.assertIn('content="v6.18.1"', html)
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('content="v6.21"', html)
         self.assertIn('href="https://pxbox.pxmart.com.tw/"', html)
-        self.assertIn("'portal-12':'全聯福利中心|PX Pay 分批取'", html)
-        self.assertIn("'portal-12':'PX Mart|PX Pay Bundles'", html)
-        self.assertIn("'portal-12':'PX Mart|แพ็กแก้ว PX Pay'", html)
 
 
 class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
@@ -1407,13 +1374,9 @@ class V616DiscoveryAndArticleRegressionTests(unittest.TestCase):
         self.assertEqual(scraper._product_identity('精品馥芮白買2送2')[0], frozenset({'馥芮白'}))
 
     def test_v616_artifact_versions_are_consistent(self):
-        with open(os.path.join(HERE, "index.html"), encoding="utf-8") as f:
-            html = f.read()
-        self.assertIn('content="v6.18.1"', html)
-        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
-            snapshot = json.load(f)
-        # deals.json can remain a last-known-good snapshot until a real online run succeeds.
-        self.assertEqual(snapshot.get("processing_version"), "v6.17")
+        html = Path(os.path.join(HERE, 'index.html')).read_text(encoding='utf-8')
+        self.assertIn('content="v6.21"', html)
+        self.assertIn('id="deals-grid"', html)
 
 
 class V617CoreParserTests(unittest.TestCase):
@@ -1544,7 +1507,7 @@ class V617CoreParserTests(unittest.TestCase):
         self.assertTrue(any(x["brand"] == "7-ELEVEN" and x["channel_scope"] == "app" for x in scoped))
 
     def test_snapshot_schema_and_version_are_v617(self):
-        with open(os.path.join(HERE, "deals.json"), encoding="utf-8") as f:
+        with open(os.path.join(HERE, "tests", "fixtures", "v617_snapshot.json"), encoding="utf-8") as f:
             snapshot = json.load(f)
         self.assertEqual(snapshot.get("processing_version"), "v6.17")
         self.assertEqual(snapshot.get("count"), len(snapshot.get("deals", [])))

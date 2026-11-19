@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""省咖啡｜優惠雷達 v6.20
+"""省咖啡｜優惠雷達 v6.21
 
 目標：
 - 以動態分類／官方消息列表、媒體原生 RSS 與 Google News RSS 發現新文章；不依賴固定新聞網址清單。
@@ -55,7 +55,9 @@ GOOGLE_NEWS_DECODE_FAILURES = 0
 # 每次 Actions 執行的 Google News 解碼防線：只處理標題相關、近 30 天文章。
 MAX_GOOGLE_NEWS_DECODE_TOTAL = 40
 MAX_GOOGLE_NEWS_DECODE_PER_QUERY = 8
+MAX_GOOGLE_NEWS_DECODE_PER_SOURCE_ROUND = 2
 GOOGLE_NEWS_DECODE_BUDGET_REMAINING = MAX_GOOGLE_NEWS_DECODE_TOTAL
+SOURCE_RSS_QUERY_DECODE_CAP = None
 
 HEADERS = {
     "User-Agent": (
@@ -97,6 +99,7 @@ URL_TVBS_LISTING = "https://news.tvbs.com.tw/life"
 URL_COSMO_LISTING = "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/"
 URL_ETTODAY_LISTING = "https://www.ettoday.net/news/focus/%E6%B0%91%E7%94%9F%E6%B6%88%E8%B2%BB/"
 URL_STARBUCKS_EVENTS = "https://www.starbucks.com.tw/stores/allevent.jspx"
+URL_EBC_LIFE_LISTING = "https://fnc.ebc.net.tw/fncnews/life"
 URL_APPLEALMOND_FEED = "https://applealmond.com/feed"
 URL_85C_NEWS_LISTING = "https://www.85cafe.com/News.php"
 URL_LOUISA_NEWS_LISTING = "https://www.louisacoffee.co/news"
@@ -129,6 +132,7 @@ RSS_QUERIES = [
 # v6.13：逐來源動態發現。Google News RSS 是「發現新文章」的補充入口，
 # 不取代各站原文；site 限定可降低跨站雜訊。各查詢獨立記錄成功／失敗。
 SOURCE_DISCOVERY_QUERIES = {
+    "東森財經": ["site:fnc.ebc.net.tw/fncnews/life 咖啡 OR 星巴克 OR 超商 OR 買一送一"],
     "TVBS新聞": [
         "site:news.tvbs.com.tw/life 咖啡優惠 OR 超商優惠 OR 買一送一 OR 買11送11",
         "site:news.tvbs.com.tw/life 全家咖啡 OR CITY CAFE OR 寄杯",
@@ -208,8 +212,13 @@ CHANNEL_SCOPE_PATTERNS = {
 
 
 def detect_channel_scope(text: str) -> tuple[str, str]:
-    """只根據明確通路詞判定；同一句同時提及多個通路時保守回傳 unknown。"""
+    """排除「APP/行動隨時取不適用」等否定通路描述，避免污染門市優惠。"""
     value = normalize_space(text)
+    # 只移除含否定語氣的 APP / 寄杯子句；不要把同句真正的門市資訊刪除。
+    negation = re.compile(
+        r"(?:APP|OPENPOINT|優惠趣|隨買跨店取|行動隨時取|分批取|線上寄杯)"
+        r"[^，,。；;]{0,25}?(?:不適用|不提供|不包含|不含|除外|不可使用|恕不適用|無法使用)", re.I)
+    value = negation.sub("", value)
     hits = []
     for scope in ("app", "delivery", "store"):
         match = CHANNEL_SCOPE_PATTERNS[scope].search(value)
@@ -218,7 +227,6 @@ def detect_channel_scope(text: str) -> tuple[str, str]:
     if len(hits) == 1:
         return hits[0]
     if len(hits) > 1:
-        # 以較具體的 APP／外送／門市資訊優先，但通路同句並列代表無法安全歸屬單一通路。
         return "unknown", "；".join(hit[1] for hit in hits)
     return "unknown", ""
 
@@ -859,6 +867,7 @@ def make_deal(store, offer, url, title, start="", end="", date_text="", publishe
         channel_scope, " ".join([str(offer or ""), str(schedule_note or ""), str(details or ""), str(channel_scope_text or "")])
     )
     item = {
+        "image_url": "",
         "store": store or "品牌待確認",
         "offer": normalize_space(offer),
         "status": infer_status(start, end),
@@ -1179,7 +1188,7 @@ def resolve_google_news_urls(urls: list[str]):
     return output
 
 
-def rss(query: str):
+def rss(query: str, max_decode: int | None = None):
     """Google News RSS 作廣度補充；先按標題／日期篩選，再限量解碼真實媒體 URL。"""
     global GOOGLE_NEWS_DECODE_BUDGET_REMAINING
     normalized_query = normalize_space(query)
@@ -1207,7 +1216,7 @@ def rss(query: str):
     # Google News 解碼可能逐篇發送請求。只解碼標題相關、近 30 天文章，
     # 每個查詢最多 8 篇，整次 Actions 最多 40 篇，避免大量 RSS 查詢拖垮工作流程。
     raw_items.sort(key=lambda row: parse_published(row[2]) or date.min, reverse=True)
-    budget = max(0, min(MAX_GOOGLE_NEWS_DECODE_PER_QUERY, GOOGLE_NEWS_DECODE_BUDGET_REMAINING))
+    budget = max(0, min(MAX_GOOGLE_NEWS_DECODE_PER_QUERY if max_decode is None and SOURCE_RSS_QUERY_DECODE_CAP is None else (SOURCE_RSS_QUERY_DECODE_CAP if max_decode is None else max_decode), GOOGLE_NEWS_DECODE_BUDGET_REMAINING))
     selected = raw_items[:budget]
     GOOGLE_NEWS_DECODE_BUDGET_REMAINING -= len(selected)
     raw_links = [row[1] for row in selected]
@@ -1293,6 +1302,9 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         elif source_key == "cosmo":
             if host != "cosmopolitan.com" or not re.match(r"^/tw/lifestyle/hot-topics/[ag]\d+/", parsed.path):
                 continue
+        elif source_key == "ebc":
+            if host != "fnc.ebc.net.tw" or not re.match(r"^/fncnews/(?:life|focus)/\d+/?$", parsed.path):
+                continue
         elif source_key == "ettoday":
             if host != "ettoday.net" or not re.match(r"^/news/\d{8}/\d+\.htm$", parsed.path):
                 continue
@@ -1312,8 +1324,8 @@ def extract_listing_candidates(page_html: str, listing_url: str, source_key: str
         clean_url = canonical_url(href)
         if clean_url == canonical_url(listing_url):
             continue
-        prefix = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "starbucks": "星巴克官方", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
-        source_bucket = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "starbucks": "星巴克官方", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
+        prefix = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "ebc": "東森財經", "starbucks": "星巴克官方", "85c": "85°C 官方消息", "louisa": "路易莎官方消息"}[source_key]
+        source_bucket = {"nownews": "NOWnews", "nownews_consumption": "NOWnews 生活消費", "tvbs": "TVBS", "cosmo": "Cosmopolitan", "ettoday": "ETtoday", "ebc": "東森財經", "starbucks": "星巴克官方", "85c": "85°C 官方", "louisa": "路易莎官方"}[source_key]
         brand_hints = {"85c": ["85°C"], "louisa": ["路易莎"], "starbucks": ["星巴克"]}.get(source_key, [])
         found.setdefault(clean_url, {"title": f"{prefix}｜{label[:180]}", "url": clean_url, "published": "",
                                      "source_bucket": source_bucket, "brand_hints": brand_hints})
@@ -1330,6 +1342,7 @@ def discover_listing_articles():
         ("tvbs", URL_TVBS_LISTING, 30),
         ("cosmo", URL_COSMO_LISTING, 30),
         ("ettoday", URL_ETTODAY_LISTING, 30),
+        ("ebc", URL_EBC_LIFE_LISTING, 30),
         ("starbucks", URL_STARBUCKS_EVENTS, 30),
         ("85c", URL_85C_NEWS_LISTING, 10),
         ("louisa", URL_LOUISA_NEWS_LISTING, 10),
@@ -1352,45 +1365,45 @@ def discover_listing_articles():
 
 
 def discover_source_rss_articles():
-    """v6.13：各媒體／品牌獨立查詢新文章；單一查詢失敗不影響其他來源。"""
-    articles = []
-    stats = {}
-    for source_name, queries in SOURCE_DISCOVERY_QUERIES.items():
-        source_found = {}
-        query_stats = []
-        for query in queries:
+    """逐來源輪流領取解碼額度，避免前幾家耗盡 40 篇預算、Yahoo 與東森永遠為 0。"""
+    global SOURCE_RSS_QUERY_DECODE_CAP
+    article_maps = {source: {} for source in SOURCE_DISCOVERY_QUERIES}
+    stats = {source: {"ok": False, "queries": len(queries), "discovered": 0, "query_results": []}
+             for source, queries in SOURCE_DISCOVERY_QUERIES.items()}
+    rounds = max((len(q) for q in SOURCE_DISCOVERY_QUERIES.values()), default=0)
+    for round_index in range(rounds):
+        for source_name, queries in SOURCE_DISCOVERY_QUERIES.items():
+            if round_index >= len(queries):
+                continue
+            query = queries[round_index]
+            found_map = article_maps[source_name]
             try:
+                SOURCE_RSS_QUERY_DECODE_CAP = MAX_GOOGLE_NEWS_DECODE_PER_SOURCE_ROUND
                 found = rss(query)
                 added = 0
                 for item in found:
                     url = canonical_url(item.get("url", ""))
                     if not url:
                         continue
-                    # RSS 結果可能是 Google News 跳轉網址；保留原始跳轉 URL，
-                    # fetch_article 會跟隨 redirect，並以 final_url 記錄文章來源。
                     incoming = dict(item, url=url)
                     incoming["source_buckets"] = list(dict.fromkeys(_article_source_buckets(incoming) + [source_name]))
                     if source_name in STORE_ORDER[:11]:
                         incoming["brand_hints"] = list(dict.fromkeys(_article_brand_hints(incoming) + [source_name]))
-                    if url not in source_found:
-                        source_found[url] = incoming
+                    if url not in found_map:
+                        found_map[url] = incoming
                         added += 1
                     else:
-                        source_found[url]["source_buckets"] = list(dict.fromkeys(source_found[url].get("source_buckets", []) + incoming["source_buckets"]))
-                        source_found[url]["brand_hints"] = list(dict.fromkeys(source_found[url].get("brand_hints", []) + incoming.get("brand_hints", [])))
-                query_stats.append({"ok": True, "found": len(found), "unique_added": added})
+                        found_map[url]["source_buckets"] = list(dict.fromkeys(found_map[url].get("source_buckets", []) + incoming["source_buckets"]))
+                stats[source_name]["ok"] = True
+                stats[source_name]["query_results"].append({"ok": True, "found": len(found), "unique_added": added})
                 logging.info("Source RSS OK (%s): %d results, %d new", source_name, len(found), added)
             except Exception as exc:
-                query_stats.append({"ok": False, "found": 0, "error": str(exc)[:180]})
+                stats[source_name]["query_results"].append({"ok": False, "found": 0, "error": str(exc)[:180]})
                 logging.warning("Source RSS ERROR (%s): %s", source_name, exc)
-        articles.extend(source_found.values())
-        stats[source_name] = {
-            "ok": any(q.get("ok") for q in query_stats),
-            "queries": len(queries),
-            "discovered": len(source_found),
-            "query_results": query_stats,
-        }
-    return articles, stats
+    SOURCE_RSS_QUERY_DECODE_CAP = None
+    for source, found in article_maps.items():
+        stats[source]["discovered"] = len(found)
+    return [item for found in article_maps.values() for item in found.values()], stats
 
 
 def parse_jsonld_article_bodies(soup):
@@ -1766,6 +1779,18 @@ def is_unsupported_title_only_candidate(item):
     return bool(norm(item.get("offer", "")) and norm(item.get("offer", "")) == norm(item.get("article_title", "")))
 
 
+def extract_article_image_url(soup: BeautifulSoup, base_url: str) -> str:
+    """只讀取 og:image / twitter:image，無圖片則讓前端使用品牌封面。"""
+    for attrs in ({"property": "og:image"}, {"name": "twitter:image"}, {"property": "twitter:image"}):
+        meta = soup.find("meta", attrs=attrs)
+        candidate = (meta.get("content") or "").strip() if meta else ""
+        if candidate:
+            resolved = urljoin(base_url, candidate)
+            if urlparse(resolved).scheme in {"https", "http"}:
+                return resolved
+    return ""
+
+
 def fetch_article(article):
     url = canonical_url(article.get("url", ""))
     try:
@@ -1779,6 +1804,7 @@ def fetch_article(article):
             meta = soup.find("meta", property="og:title") or soup.find("meta", attrs={"name": "twitter:title"})
             title = normalize_space(meta.get("content", "")) if meta else article.get("title", "")
         published = article.get("published", "")
+        image_url = extract_article_image_url(soup, final_url)
         for attrs in ({"property": "article:published_time"}, {"name": "pubdate"}, {"name": "date"}, {"itemprop": "datePublished"}):
             meta = soup.find("meta", attrs=attrs)
             if meta and meta.get("content"):
@@ -1848,7 +1874,7 @@ def fetch_article(article):
         logging.info("FETCH %s (%s): %s lines", "OK" if ok else "LOW CONTENT", final_url, len(clean))
         if not ok:
             return {"ok": False, "url": url, "final_url": final_url, "title": title, "published": published, "lines": []}
-        return {"ok": True, "url": url, "final_url": final_url, "title": title or article.get("title", ""), "published": published, "lines": clean, "blocks": blocks}
+        return {"ok": True, "url": url, "final_url": final_url, "title": title or article.get("title", ""), "published": published, "image_url": image_url, "lines": clean, "blocks": blocks}
     except Exception as exc:
         logging.warning("FETCH ERROR %s: %s", url, exc)
         return {"ok": False, "url": url, "final_url": url, "title": article.get("title", ""), "published": article.get("published", ""), "lines": []}
@@ -2182,6 +2208,7 @@ def extract_article_deals(article, fetched):
                 category=classify_offer_category(offer_line), schedule_note=schedule_for_offer,
                 channel_scope=current_channel_scope, channel_scope_text=current_channel_scope_text,
             )
+            item["image_url"] = fetched.get("image_url", "")
             mechanisms = extract_offers_non_overlapping(offer_line)
             if mechanisms:
                 item["promotion_mechanisms"] = [
@@ -2212,6 +2239,10 @@ def is_non_offer_record(item):
         or (re.search(r"每週二|每周二|星期二", combined_text) and re.search(r"糕點", combined_text) and re.search(r"8\s*折", combined_text))
     ):
         return False
+    if re.search(r"(?:衛生紙|抽取式面紙|染髮|護髮霜|翅腿|雞塊|漢堡|披薩|泡麵|拉麵|餅乾)", original_text, re.I):
+        # 把非咖啡商品從「咖啡優惠」頁面移除；避免把「咖啡栗棕染髮霜」當飲品。
+        if not re.search(r"(?:美式|拿鐵|咖啡飲|CITY CAFE|Let's Café|Let’s Café|星巴克|咖啡豆|現煮咖啡)", original_text, re.I):
+            return True
     if has_unmatched_closing_quote(original_text):
         return True
     text = strip_sidebar_junk(original_text)
@@ -3295,6 +3326,8 @@ def deduplicate_deals(deals):
             groups.remove(duplicate_group)
 
         match["source_urls"] = list(dict.fromkeys((match.get("source_urls") or []) + item["source_urls"]))
+        if not match.get("image_url") and item.get("image_url"):
+            match["image_url"] = item["image_url"]
         # details 必須在去重時一併保留；空白不覆蓋已有內容，不同來源的有效補充則合併。
         match["details"] = _merge_details(match.get("details", ""), item.get("details", ""))
         match["schedule_note"] = _merge_schedule_notes(match.get("schedule_note", ""), item.get("schedule_note", ""))
@@ -3598,7 +3631,7 @@ def main():
 
     counts = {s: sum(1 for d in final_deals if d.get("status") == s) for s in ["active", "upcoming", "verify", "expired"]}
     data = {
-        "processing_version": "v6.20",
+        "processing_version": "v6.21",
         "schema_version": 2,
         "updated_at": datetime.now(TZ).isoformat(),
         "today": TODAY.isoformat(),
@@ -3638,7 +3671,7 @@ def main():
                               "scheduled_by_brand": {brand: sum(1 for a in to_fetch if a.get("scheduled_for_brand") == brand) for brand in STORE_ORDER[:11]},
                               "brand_coverage": {brand: sum(1 for a in to_fetch if brand in (a.get("brand_hints") or [])) for brand in STORE_ORDER[:11]},
                               "scheduled_by_source": {src: sum(1 for a in to_fetch if a.get("scheduled_source_bucket") == src) for src in sorted({a.get("scheduled_source_bucket", "") for a in to_fetch})}},
-            "note": "v6.20 可選 HTTP-only 403 後備與無日期標題卡精準過濾；v6.19 增加 Cosmopolitan、ETtoday、星巴克活動直連列表；保留 br 換行、媒體符號小標與 Hearst 圖集商品／日期／優惠合併；延續原有 Google News 解碼與有效舊優惠。" +
+            "note": "v6.21 加入東森財經來源、RSS 公平輪替、否定通路排除、圖片欄位。v6.20 可選 HTTP-only 403 後備與無日期標題卡精準過濾；v6.19 增加 Cosmopolitan、ETtoday、星巴克活動直連列表；保留 br 換行、媒體符號小標與 Hearst 圖集商品／日期／優惠合併；延續原有 Google News 解碼與有效舊優惠。" +
                     "v6.16 使用近 30 天的各媒體／品牌 Google News RSS 查詢，加上 NOWnews、85°C、路易莎官方列表入口；RSS 是文章發現補充來源，仍須成功開啟原文才能解析。請查看 listing_discovery 與 source_rss_discovery 的逐來源狀態。Facebook 公開頁不作為可靠的匿名爬取入口；粉專貼文需正式 API 權限或人工確認匯入。",
         },
     }
