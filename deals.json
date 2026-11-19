@@ -1,14 +1,14 @@
 {
   "processing_version": "v6.21",
   "schema_version": 2,
-  "updated_at": "2026-11-19T14:10:02.670008+08:00",
+  "updated_at": "2026-11-19T23:02:46.429753+08:00",
   "today": "2026-11-19",
-  "count": 361,
+  "count": 352,
   "counts": {
-    "active": 99,
-    "upcoming": 17,
-    "verify": 175,
-    "expired": 70
+    "active": 104,
+    "upcoming": 28,
+    "verify": 188,
+    "expired": 32
   },
   "disclaimer": "資料來自近期固定保底文章、動態新聞／官方消息列表、近 30 天逐來源 Google 新聞 RSS 搜尋及已確認的結構化優惠資料。自動擷取可能因媒體防爬、網頁結構變動而漏抓；日期不完整者列為待確認。活動品項、限量、門市、會員條件與兌換規則請以來源原文及店家公告為準。",
   "deals": [
@@ -27,11 +27,11 @@
       "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
       "source_urls": [
         "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472477/costco-blackfriday",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74460030/7-elevenhello-kitty91125kitty",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
@@ -58,6 +58,40 @@
       "needs_check": false,
       "category": "coffee",
       "details": "大杯（含）以上、容量／冰熱／口味相同的指定飲料，第二杯由星巴克招待；每次最多買二送二，限當場領取。需使用合格 uniopen 聯名卡付款。"
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "星巴克",
+      "offer": "例如大杯那堤雙杯組優惠價140元，大杯美式咖啡雙杯組優惠價115元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 140,
+          "text": "大杯那堤雙杯組優惠價140元"
+        },
+        {
+          "mechanism": "single_price",
+          "price": 115,
+          "text": "大杯美式咖啡雙杯組優惠價115元"
+        }
+      ]
     },
     {
       "store": "星巴克",
@@ -144,6 +178,35 @@
       ]
     },
     {
+      "image_url": "",
+      "store": "星巴克",
+      "offer": "大杯焦糖瑪奇朵雙杯組 優惠208元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "星巴克官方｜foodomo｜指定飲品雙杯優惠 2026/11/18(三) - 11/20(五)",
+      "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486",
+      "source_urls": [
+        "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486"
+      ],
+      "published": "Thu, 19 Nov 2026 11:51:17 GMT",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 208,
+          "text": "大杯焦糖瑪奇朵雙杯組 優惠208元"
+        }
+      ]
+    },
+    {
       "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "星巴克",
       "offer": "大杯焦糖瑪奇朵雙杯組，優惠價160元，原價320元",
@@ -155,8 +218,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
       "published": "2026-11-19T07:42:23+08:00",
@@ -173,6 +238,35 @@
       ]
     },
     {
+      "image_url": "",
+      "store": "星巴克",
+      "offer": "大杯美式咖啡雙杯組 優惠150元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "星巴克官方｜foodomo｜指定飲品雙杯優惠 2026/11/18(三) - 11/20(五)",
+      "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486",
+      "source_urls": [
+        "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486"
+      ],
+      "published": "Thu, 19 Nov 2026 11:51:17 GMT",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 150,
+          "text": "大杯美式咖啡雙杯組 優惠150元"
+        }
+      ]
+    },
+    {
       "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "星巴克",
       "offer": "大杯美式咖啡雙杯組，優惠價115元，原價230元",
@@ -184,8 +278,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
       "published": "2026-11-19T07:42:23+08:00",
@@ -261,6 +357,35 @@
       ]
     },
     {
+      "image_url": "https://s.yimg.com/lo/mysterio/api/5f74d934984cddf8081ca32c430d0df2091255d4fa6a47b4a914fbf5a3270351/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fgotv_ctitv_com_tw_678%2Ffb636fa02b8c958f5fa79b48618b4152.png",
+      "store": "星巴克",
+      "offer": "超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+      "source_urls": [
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html"
+      ],
+      "published": "Wed, 18 Nov 2026 23:42:23 GMT",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 5,
+          "text": "大杯咖啡「只要5元"
+        }
+      ]
+    },
+    {
       "image_url": "https://img.news.ebc.net.tw/EbcNews/news/2026/11/13/1794570493_13478.jpg",
       "store": "星巴克",
       "offer": "連鎖咖啡星巴克先前祭出去冰補滿需加15元政策引發討論，近日有Threads網友發現，門市內的8個插座都被封住，讓她直呼「要不是為了充電我幹嘛來喝一百多的美式」，連續杯規定也讓她直呼不習慣，貼文曝光後引發討論，不少苦主紛紛留言共鳴",
@@ -283,7 +408,7 @@
       "details": ""
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://s.yimg.com/lo/mysterio/api/5f74d934984cddf8081ca32c430d0df2091255d4fa6a47b4a914fbf5a3270351/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fgotv_ctitv_com_tw_678%2Ffb636fa02b8c958f5fa79b48618b4152.png",
       "store": "星巴克",
       "offer": "星巴克另限星禮程會員，指定大杯雙杯組由品牌招待其中一杯，優惠價115元至160元",
       "status": "verify",
@@ -293,13 +418,14 @@
       "schedule_note": "",
       "channel_scope": "unknown",
       "channel_scope_text": "",
-      "article_title": "天冷4大超商「咖啡優惠」來了 可享10元一杯、買一送一",
-      "article_url": "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
       "source_urls": [
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://tw.news.yahoo.com/%E4%BA%A4%E6%8F%9B%E7%A6%AE%E7%89%A9%E8%B6%85%E5%95%86%E8%BC%95%E9%AC%86%E8%B3%BC-7-11%E5%8F%AF%E6%84%9B%E5%B0%8F%E7%89%A9%E5%85%A8%E5%82%99%E5%A6%A5-201318027.html"
       ],
-      "published": "Wed, 18 Nov 2026 12:42:00 GMT",
+      "published": "Wed, 18 Nov 2026 23:42:23 GMT",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -309,6 +435,35 @@
           "mechanism": "single_price",
           "price": 115,
           "text": "大杯雙杯組由品牌招待其中一杯，優惠價115元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "星巴克",
+      "offer": "星巴克自11月16日上午10點起至11月19日止，星禮程會員購買指定大杯飲品雙杯組，其中一杯由星巴克招待，例如大杯那堤雙杯組優惠價140元",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "2026-11-19",
+      "date_text": "11月19日",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 140,
+          "text": "大杯那堤雙杯組優惠價140元"
         }
       ]
     },
@@ -458,6 +613,36 @@
         "https://fnc.ebc.net.tw/fncnews/life/222810"
       ],
       "published": "",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "buy_x_get_y",
+          "buy": 1,
+          "get": 1,
+          "text": "買一送一"
+        }
+      ]
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "星巴克",
+      "offer": "星巴克有什麼買一送一的活動？",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -733,6 +918,28 @@
       ]
     },
     {
+      "image_url": "",
+      "store": "星巴克",
+      "offer": "活動期間點購兩杯大杯美式咖啡、那堤、焦糖瑪奇朵享雙杯組優惠價",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "星巴克官方｜foodomo｜指定飲品雙杯優惠 2026/11/18(三) - 11/20(五)",
+      "article_url": "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486",
+      "source_urls": [
+        "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5486"
+      ],
+      "published": "Thu, 19 Nov 2026 11:51:17 GMT",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://img.news.ebc.net.tw/EbcNews/news/2026/11/13/1794570493_13478.jpg",
       "store": "星巴克",
       "offer": "美式 買2送2",
@@ -850,8 +1057,8 @@
       "source_urls": [
         "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=4935",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74353309/starbucks-free-coffee-1109",
         "https://www.starbucks.com.tw/stores/allevent/show.jspx?n=5404",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74353309/starbucks-free-coffee-1109",
         "https://applealmond.com/posts/329295"
       ],
       "published": "2026-07-01",
@@ -944,8 +1151,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
       "published": "2026-11-19T07:42:23+08:00",
@@ -1012,7 +1221,7 @@
       "details": ""
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "11/10~11/24，CITY CAFE 熊津黑蔘元氣美式元氣價89元",
       "status": "active",
@@ -1022,14 +1231,16 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
-      "published": "2026-11-13T07:45:53+08:00",
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1158,6 +1369,127 @@
       ]
     },
     {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "上班族天天喝也不心疼，拿鐵美式單杯不到38元",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 38,
+          "text": "拿鐵美式單杯不到38元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "拿鐵美式單杯不到38元每天早上都要來杯咖啡提神的上班族千萬別錯過這次優惠",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 38,
+          "text": "拿鐵美式單杯不到38元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "7-ELEVEN",
+      "offer": "現萃茶CITY TEA熱飲：黑糖珍珠/ 蕎麥奶茶大杯 (原價85元)",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-24",
+      "date_text": "即日起至11/24",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "OPENPOINT",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 85,
+          "text": "大杯 (原價85元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "7-ELEVEN",
+      "offer": "現萃茶CITY TEA熱飲：黑金燒仙草大杯( 原價75元 )/ 暖心燒仙草大杯 (原價65元)",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-24",
+      "date_text": "即日起至11/24",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "OPENPOINT",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 75,
+          "text": "大杯( 原價75元"
+        },
+        {
+          "mechanism": "single_price",
+          "price": 65,
+          "text": "大杯 (原價65元"
+        }
+      ]
+    },
+    {
       "image_url": "https://hips.hearstapps.com/hmg-prod/images/120b0d93-d02a-4c1a-a6d6-32504833dd38.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
       "store": "7-ELEVEN",
       "offer": "Hello Kitty丹寧不鏽鋼保溫瓶(A/B/C款擇1)＋精品美式大杯1杯899元/組(每款50組，共150組)",
@@ -1261,8 +1593,8 @@
       "article_url": "https://www.nownews.com/news/6893296",
       "source_urls": [
         "https://www.nownews.com/news/6893296",
-        "https://www.nownews.com/news/6893458",
         "https://www.nownews.com/news/6893402",
+        "https://www.nownews.com/news/6893458",
         "https://www.nownews.com/news/6892963"
       ],
       "published": "2026-11-18T09:43:08+08:00",
@@ -1310,7 +1642,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "11/10～11/24黃金蕎麥系列第2杯半價",
       "status": "active",
@@ -1320,14 +1652,16 @@
       "schedule_note": "週六",
       "channel_scope": "unknown",
       "channel_scope_text": "",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
-      "published": "2026-11-13T07:45:53+08:00",
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -1486,8 +1820,8 @@
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
       "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -1515,10 +1849,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -1546,10 +1880,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -1619,7 +1953,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "大杯精品拿鐵/馥芮白 買2送1",
       "status": "upcoming",
@@ -1632,8 +1966,10 @@
       "article_title": "上班不憂鬱！超商咖啡買2送2 特大拿鐵11杯540元",
       "article_url": "https://ctinews.com/news/items/pRnYgqdPaY",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
       "published": "2026-11-16T07:43:29+08:00",
@@ -1653,36 +1989,6 @@
           "buy": 2,
           "get": 1,
           "text": "買2送1"
-        }
-      ]
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/f2972f4c-a464-4ef5-9e80-c6f82460c927.jpeg?crop=1.00xw:0.957xh;0,0&resize=1200:*",
-      "store": "7-ELEVEN",
-      "offer": "7-ELEVEN「7款茶飲優惠」11/10開賣，黑糖珍珠蕎麥奶茶第2杯半價、香鑽水果茶買2送2",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "11/10",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "優惠趣",
-      "article_title": "全家「咖啡買1送1」11/16快閃3天開賣，美式、拿鐵、燒仙草和醇奶茶8款飲品優惠一次看！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118"
-      ],
-      "published": "2026-11-16T03:11:50Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 2,
-          "get": 2,
-          "text": "買2送2"
         }
       ]
     },
@@ -1771,8 +2077,10 @@
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -1797,22 +2105,22 @@
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/1396e47c-4680-4bd5-8d63-2a9a2a00750e.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://cdn2.ettoday.net/images/9022/e9022087.jpg",
       "store": "7-ELEVEN",
       "offer": "琥珀小葉紅茶買2送2",
       "status": "active",
       "start_date": "2026-11-10",
       "end_date": "2026-11-24",
-      "date_text": "11月10日至11月24日",
+      "date_text": "11月10日至11月 24 日",
       "schedule_note": "",
       "channel_scope": "store",
-      "channel_scope_text": "門市限定",
+      "channel_scope_text": "全台門市",
       "article_title": "超商推「轉運奶茶」限時特價39元 燒仙草買1送1",
       "article_url": "https://www.ettoday.net/news/20261119/3274814.htm",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
+        "https://www.ettoday.net/news/20261119/3274814.htm",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
-        "https://www.ettoday.net/news/20261119/3274814.htm"
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117"
       ],
       "published": "2026-11-19T12:12:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -1872,10 +2180,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -1890,50 +2198,6 @@
           "text": "買2送2"
         }
       ]
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/5be31ae3-181d-4715-ada9-faa1ddd4f1fa.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
-      "store": "7-ELEVEN",
-      "offer": "CITY PEARL咖啡珍珠歐蕾 6杯/300元 (限量3萬組)",
-      "status": "expired",
-      "start_date": "2026-11-07",
-      "end_date": "2026-11-11",
-      "date_text": "11/7~11/11",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
-      "article_title": "7-ELEVEN「雙11優惠」即日起開跑，咖啡和茶飲買10送10、買11送11優惠限時10天 ！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
-      ],
-      "published": "2026-11-03T04:00:28Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/5be31ae3-181d-4715-ada9-faa1ddd4f1fa.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
-      "store": "7-ELEVEN",
-      "offer": "CITY TEA蕎麥奶茶 6杯/280元 (限量3萬組) 全台販售",
-      "status": "expired",
-      "start_date": "2026-11-07",
-      "end_date": "2026-11-11",
-      "date_text": "11/7~11/11",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
-      "article_title": "7-ELEVEN「雙11優惠」即日起開跑，咖啡和茶飲買10送10、買11送11優惠限時10天 ！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
-      ],
-      "published": "2026-11-03T04:00:28Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     },
     {
       "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
@@ -2038,7 +2302,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "大杯拿鐵7杯組310元",
       "status": "active",
@@ -2048,14 +2312,16 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
-      "published": "2026-11-13T07:45:53+08:00",
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -2069,7 +2335,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "大杯美式 7杯組255元",
       "status": "active",
@@ -2080,10 +2346,12 @@
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
       "published": "2026-11-19T07:42:23+08:00",
@@ -2096,11 +2364,16 @@
           "mechanism": "single_price",
           "price": 255,
           "text": "大杯美式7杯組255元"
+        },
+        {
+          "mechanism": "single_price",
+          "price": 310,
+          "text": "大杯拿鐵7杯組310元"
         }
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "黑糖珍珠撞奶、珍珠奶茶7杯組315元",
       "status": "active",
@@ -2110,21 +2383,23 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
-      "published": "2026-11-13T07:45:53+08:00",
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
       "details": ""
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "7-ELEVEN",
       "offer": "11杯最低450元，大杯濃萃拿鐵41元",
       "status": "active",
@@ -2133,16 +2408,19 @@
       "date_text": "即日起至11/21",
       "schedule_note": "",
       "channel_scope": "app",
-      "channel_scope_text": "APP",
+      "channel_scope_text": "線上寄杯",
       "article_title": "咖啡優惠來了！星巴克連4天「買一送一」 711美式11杯450元",
       "article_url": "https://fnc.ebc.net.tw/fncnews/life/222884",
       "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
         "https://news.tvbs.com.tw/life/4049568"
@@ -2154,46 +2432,17 @@
       "details": "",
       "promotion_mechanisms": [
         {
-          "mechanism": "single_price",
+          "mechanism": "n_cups_fixed_price",
+          "count": 11,
           "price": 450,
-          "text": "大杯濃萃拿鐵 / 大杯濃萃美式11杯只要450元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 540,
-          "text": "任選11杯540元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
+          "text": "11杯450元"
         }
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/a6c0a6a4-d894-456e-a267-8244a43d133d.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://hips.hearstapps.com/hmg-prod/images/0f5145f6-a21a-4e12-9c7a-986550698a95.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
       "store": "7-ELEVEN",
-      "offer": "7-11「13款咖啡、茶飲優惠」11/13起快閃9天開賣，11杯組合優惠最高省280元",
+      "offer": "7-11「13款咖啡、茶飲優惠」11/13起快閃9天開賣，11杯組合優惠最高省280元！",
       "status": "expired",
       "start_date": "2026-11-13",
       "end_date": "2026-11-13",
@@ -2201,24 +2450,19 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "星巴克4款「小熊冷水杯盲盒」11/10開賣，1款「隱藏版」小熊玻璃 TOGO 冷水杯搶先看！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74383298/starbucks-togo-1115",
+      "article_title": "萊爾富轉運奶茶「富桂紅棗茶撞奶」限時優惠39元，即日起開賣絕對要喝一杯迎好運！",
+      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472477/costco-blackfriday",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74460030/7-elevenhello-kitty91125kitty",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74383298/starbucks-togo-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74353309/starbucks-free-coffee-1109",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74406390/7-eleven-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118"
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4"
       ],
-      "published": "2026-11-10T07:54:36Z",
+      "published": "2026-11-19T03:32:34Z",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -2302,6 +2546,28 @@
       ]
     },
     {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "7-ELEVEN",
+      "offer": "包含7-ELEVEN的 OPENPOINT「行動隨時取」推出「CITY 咖啡分享季」，多款人氣飲料都有「11杯組合價」超值優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "OPENPOINT",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
       "store": "7-ELEVEN",
       "offer": "喜歡精品咖啡則可選「CITY PRIMA中杯精品馥芮白、精品拿鐵」任選11杯711元",
@@ -2332,141 +2598,89 @@
       ]
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "7-ELEVEN",
-      "offer": "大杯燕麥拿鐵11杯同樣570元",
+      "offer": "大杯燕麥拿鐵：11杯570元",
       "status": "active",
       "start_date": "2026-11-19",
       "end_date": "2026-11-21",
       "date_text": "即日起至11/21",
       "schedule_note": "",
       "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "咖啡優惠來了！星巴克連4天「買一送一」 711美式11杯450元",
-      "article_url": "https://fnc.ebc.net.tw/fncnews/life/222884",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
       "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
         "https://news.tvbs.com.tw/life/4049568"
       ],
-      "published": "Mon, 16 Nov 2026 06:15:00 GMT",
+      "published": "2026-11-19T11:00:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
       "details": "",
       "promotion_mechanisms": [
         {
-          "mechanism": "single_price",
-          "price": 450,
-          "text": "大杯濃萃拿鐵 / 大杯濃萃美式11杯只要450元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 540,
-          "text": "任選11杯540元"
-        },
-        {
           "mechanism": "n_cups_fixed_price",
           "count": 11,
           "price": 570,
-          "text": "任選11杯570元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
+          "text": "11杯570元"
         }
       ]
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "7-ELEVEN",
-      "offer": "特大杯拿鐵 11杯540元",
+      "offer": "特大杯拿鐵：11杯540元",
       "status": "active",
       "start_date": "2026-11-19",
       "end_date": "2026-11-21",
       "date_text": "即日起至11/21",
       "schedule_note": "",
       "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "上班不憂鬱！超商咖啡買2送2 特大拿鐵11杯540元",
-      "article_url": "https://ctinews.com/news/items/pRnYgqdPaY",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
       "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
         "https://news.tvbs.com.tw/life/4049568"
       ],
-      "published": "2026-11-16T07:43:29+08:00",
+      "published": "2026-11-19T11:00:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
       "details": "",
       "promotion_mechanisms": [
         {
-          "mechanism": "single_price",
-          "price": 450,
-          "text": "大杯濃萃拿鐵 / 大杯濃萃美式11杯只要450元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
           "mechanism": "n_cups_fixed_price",
           "count": 11,
           "price": 540,
-          "text": "任選11杯540元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
+          "text": "11杯540元"
         }
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/a6c0a6a4-d894-456e-a267-8244a43d133d.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
       "store": "7-ELEVEN",
       "offer": "特大濃萃美式與拿鐵任 11杯520元",
       "status": "upcoming",
@@ -2475,10 +2689,11 @@
       "date_text": "11月22日起至11月30日",
       "schedule_note": "星期五",
       "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
+      "channel_scope_text": "線上寄杯",
       "article_title": "7-ELEVEN「12款咖啡、茶飲優惠」11/22開賣，美式、拿鐵任選14杯520元！",
       "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
       "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1117"
       ],
@@ -2489,161 +2704,38 @@
       "details": "",
       "promotion_mechanisms": [
         {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
+          "mechanism": "single_price",
           "price": 520,
-          "text": "任選11杯520元"
+          "text": "美式或特大濃萃拿鐵，任選11杯同樣只要520元"
         }
       ]
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
       "store": "7-ELEVEN",
-      "offer": "蕎麥奶茶、黑糖粉粿蕎麥茶任選11杯570元",
+      "offer": "蕎麥奶茶／黑糖粉粿蕎麥茶：11杯570元",
       "status": "active",
       "start_date": "2026-11-19",
       "end_date": "2026-11-21",
       "date_text": "即日起至11/21",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
-      "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://fnc.ebc.net.tw/fncnews/life/222884",
-        "https://ctinews.com/news/items/qXWQ6D9RaR",
-        "https://ctinews.com/news/items/pRnYgqdPaY",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
-        "https://news.tvbs.com.tw/life/4049568"
-      ],
-      "published": "2026-11-19T07:42:23+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 450,
-          "text": "大杯濃萃拿鐵 / 大杯濃萃美式11杯只要450元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 540,
-          "text": "任選11杯540元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
-      "store": "7-ELEVEN",
-      "offer": "香鑽水果茶則是11杯490元",
-      "status": "active",
-      "start_date": "2026-11-19",
-      "end_date": "2026-11-21",
-      "date_text": "即日起至11/21",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "咖啡優惠來了！星巴克連4天「買一送一」 711美式11杯450元",
-      "article_url": "https://fnc.ebc.net.tw/fncnews/life/222884",
-      "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://fnc.ebc.net.tw/fncnews/life/222884",
-        "https://ctinews.com/news/items/qXWQ6D9RaR",
-        "https://ctinews.com/news/items/pRnYgqdPaY",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
-        "https://news.tvbs.com.tw/life/4049568"
-      ],
-      "published": "Mon, 16 Nov 2026 06:15:00 GMT",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 450,
-          "text": "大杯濃萃拿鐵 / 大杯濃萃美式11杯只要450元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 490,
-          "text": "任選11杯490元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 540,
-          "text": "任選11杯540元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        },
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 11,
-          "price": 570,
-          "text": "任選11杯570元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/a6c0a6a4-d894-456e-a267-8244a43d133d.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
-      "store": "7-ELEVEN",
-      "offer": "CITY TEA 冰淇淋紅茶 12杯520元（限量5萬組）",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "7-ELEVEN「12款咖啡、茶飲優惠」11/22開賣，美式、拿鐵任選14杯520元！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1117"
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+        "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
+        "https://ctinews.com/news/items/pRnYgqdPaY",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
+        "https://news.tvbs.com.tw/life/4049568"
       ],
-      "published": "2026-11-16T02:55:45Z",
+      "published": "2026-11-19T11:00:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -2651,14 +2743,53 @@
       "promotion_mechanisms": [
         {
           "mechanism": "n_cups_fixed_price",
-          "count": 12,
-          "price": 520,
-          "text": "12杯520元"
+          "count": 11,
+          "price": 570,
+          "text": "11杯570元"
         }
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/a6c0a6a4-d894-456e-a267-8244a43d133d.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "7-ELEVEN",
+      "offer": "香鑽水果茶：11杯490元",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-11-21",
+      "date_text": "即日起至11/21",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "OPENPOINT",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+        "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
+        "https://ctinews.com/news/items/pRnYgqdPaY",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
+        "https://news.tvbs.com.tw/life/4049568"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "n_cups_fixed_price",
+          "count": 11,
+          "price": 490,
+          "text": "11杯490元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
       "store": "7-ELEVEN",
       "offer": "大杯厚乳拿鐵12杯520元等多元咖啡組合",
       "status": "upcoming",
@@ -2667,10 +2798,11 @@
       "date_text": "11月22日起至11月30日",
       "schedule_note": "星期五",
       "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
+      "channel_scope_text": "線上寄杯",
       "article_title": "7-ELEVEN「12款咖啡、茶飲優惠」11/22開賣，美式、拿鐵任選14杯520元！",
       "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
       "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1117"
       ],
@@ -2689,22 +2821,24 @@
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/5be31ae3-181d-4715-ada9-faa1ddd4f1fa.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
       "store": "7-ELEVEN",
-      "offer": "CITY CAFE西西里風檸檬氣泡咖啡/檸檬咖啡 任選13杯711元 (限量8萬組)",
-      "status": "expired",
-      "start_date": "2026-11-03",
-      "end_date": "2026-11-12",
-      "date_text": "11/3~11/12",
+      "offer": "而擁有超高人氣的冰淇淋紅茶則祭出12杯520元組合",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
       "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "7-ELEVEN「雙11優惠」即日起開跑，咖啡和茶飲買10送10、買11送11優惠限時10天 ！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
+        "https://www.walkerland.com.tw/subject/view/425722",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1117"
       ],
-      "published": "2026-11-03T04:00:28Z",
+      "published": "2026-11-19T15:30:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -2712,9 +2846,9 @@
       "promotion_mechanisms": [
         {
           "mechanism": "n_cups_fixed_price",
-          "count": 13,
-          "price": 711,
-          "text": "任選13杯711元"
+          "count": 12,
+          "price": 520,
+          "text": "12杯520元"
         }
       ]
     },
@@ -2748,7 +2882,59 @@
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/a6c0a6a4-d894-456e-a267-8244a43d133d.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "CITY TEA青梅冰茶、一顆檸檬紅茶、一顆檸檬青茶任14杯520元，限量5萬組",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "n_cups_fixed_price",
+          "count": 14,
+          "price": 520,
+          "text": "任選14杯520元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "CITY TEA黑糖珍珠撞奶、琥珀小葉奶茶、梔子花奶青任14杯520元，限量5萬組",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
       "store": "7-ELEVEN",
       "offer": "像是有CITY CAFE大杯美式與大杯拿鐵任 14杯520元",
       "status": "upcoming",
@@ -2757,17 +2943,18 @@
       "date_text": "11月22日起至11月30日",
       "schedule_note": "星期五",
       "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
+      "channel_scope_text": "線上寄杯",
       "article_title": "7-ELEVEN「12款咖啡、茶飲優惠」11/22開賣，美式、拿鐵任選14杯520元！",
       "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+        "https://www.walkerland.com.tw/subject/view/425722",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472477/costco-blackfriday",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74460030/7-elevenhello-kitty91125kitty",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74383298/starbucks-togo-1115",
@@ -2794,36 +2981,11 @@
           "count": 14,
           "price": 520,
           "text": "任選14杯520元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/5be31ae3-181d-4715-ada9-faa1ddd4f1fa.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
-      "store": "7-ELEVEN",
-      "offer": "CITY CAFE特選美式/特選拿鐵 任選16杯711元(限量5萬組)",
-      "status": "expired",
-      "start_date": "2026-11-03",
-      "end_date": "2026-11-12",
-      "date_text": "11/3~11/12",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "7-ELEVEN「雙11優惠」即日起開跑，咖啡和茶飲買10送10、買11送11優惠限時10天 ！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
-      ],
-      "published": "2026-11-03T04:00:28Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
+        },
         {
-          "mechanism": "n_cups_fixed_price",
-          "count": 16,
-          "price": 711,
-          "text": "任選16杯711元"
+          "mechanism": "single_price",
+          "price": 38,
+          "text": "單杯不到38元"
         }
       ]
     },
@@ -2853,37 +3015,6 @@
           "count": 16,
           "price": 711,
           "text": "任選16杯711元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
-      "store": "7-ELEVEN",
-      "offer": "「CITY TEA琥珀小葉奶茶、梔子花奶青」任選18杯711元",
-      "status": "expired",
-      "start_date": "2026-11-03",
-      "end_date": "2026-11-12",
-      "date_text": "11/3~11/12",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
-      "article_title": "雙11咖啡囤貨戰開打！7-11買11送11、萊爾富38杯美式加38顆蛋只要1,111元",
-      "article_url": "https://supertaste.tvbs.com.tw/pack/362295",
-      "source_urls": [
-        "https://supertaste.tvbs.com.tw/pack/362295",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
-      ],
-      "published": "2026-11-05T14:38:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 18,
-          "price": 711,
-          "text": "任選18杯711元"
         }
       ]
     },
@@ -2931,51 +3062,6 @@
       "article_url": "https://supertaste.tvbs.com.tw/pack/362295",
       "source_urls": [
         "https://supertaste.tvbs.com.tw/pack/362295"
-      ],
-      "published": "2026-11-05T14:38:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 10,
-          "get": 10,
-          "text": "買10送10"
-        }
-      ]
-    },
-    {
-      "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
-      "store": "7-ELEVEN",
-      "offer": "指定茶飲買10送10",
-      "status": "expired",
-      "start_date": "2026-11-07",
-      "end_date": "2026-11-11",
-      "date_text": "11/7～11/11",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
-      "article_title": "雙11咖啡囤貨戰開打！7-11買11送11、萊爾富38杯美式加38顆蛋只要1,111元",
-      "article_url": "https://supertaste.tvbs.com.tw/pack/362295",
-      "source_urls": [
-        "https://supertaste.tvbs.com.tw/pack/362295",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1117-3",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1117",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1117",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74383298/starbucks-togo-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74406390/7-eleven-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74382448/familymart-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74212515/weekly-discount-1022",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74353309/starbucks-free-coffee-1109",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318729/7-11-icecream-1111",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74290480/family-mart-1114"
       ],
       "published": "2026-11-05T14:38:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3158,6 +3244,50 @@
       "details": ""
     },
     {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "7-11咖啡先寄杯喝起來～",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "7-11咖啡先寄杯喝起來～年底最讓人期待的黑五優惠先囤小七咖啡！",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://media.nownews.com/nn_media/thumbnail/2026/11/1795056947862-c786adaf04b84da5a174d1f47fb55786-1200x675.webp?unShow=false",
       "store": "7-ELEVEN",
       "offer": "7-11大杯咖啡28元 黑五拿鐵6折可寄杯",
@@ -3187,6 +3317,50 @@
       ]
     },
     {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "7-ELEVEN",
+      "offer": "7-11的寄杯優惠包含大杯美式、拿鐵、風味指定熱飲等多種組合，並有新品上市與點數回饋",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "7-11看準咖啡控與手搖飲愛好者的日常需求，特別推出「CITY黑五購物節」線上寄杯優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "7-ELEVEN",
       "offer": "7-ELEVEN周一限定「快樂咖啡日」",
@@ -3198,10 +3372,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3233,7 +3407,7 @@
       "details": ""
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "7-ELEVEN",
       "offer": "CITY CAFE濃抹茶拿鐵 ＋ 一份Espresso只要 +15 元",
       "status": "active",
@@ -3243,14 +3417,16 @@
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "OPENPOINT",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
-      "published": "2026-11-13T07:45:53+08:00",
+      "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -3337,6 +3513,72 @@
       ]
     },
     {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "兩項果茶系列各自限量5萬組",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "7-ELEVEN",
+      "offer": "哪些咖啡寄杯優惠？",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
+      "image_url": "https://media.walkerland.com.tw/wlk_media/thumbnail/2026/11/1795071999678-c3cf54e549324a88a721aa908c772fc9-850x446.webp",
+      "store": "7-ELEVEN",
+      "offer": "從11月22日起至11月30日止，連續9天在OPENPOINT行動隨時取祭出6大超值飲品組合，通通只要520元就能輕鬆入手，最低下殺61折起，讓民眾天天喝咖啡省荷包",
+      "status": "upcoming",
+      "start_date": "2026-11-22",
+      "end_date": "2026-11-30",
+      "date_text": "11月22日起至11月30日",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "線上寄杯",
+      "article_title": "7-11黑五12大寄杯優惠！大杯美式拿鐵任選14杯520元，單杯不到38元上班族先囤",
+      "article_url": "https://www.walkerland.com.tw/subject/view/425722",
+      "source_urls": [
+        "https://www.walkerland.com.tw/subject/view/425722"
+      ],
+      "published": "2026-11-19T15:30:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "7-ELEVEN",
       "offer": "特選咖啡限定門市銷售、兌領，咖啡智販機、行動隨時取購買及兌領不適用，也不能與其他優惠併用，亦不提供線上寄杯",
@@ -3348,10 +3590,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3400,10 +3642,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3463,8 +3705,8 @@
       "source_urls": [
         "https://www.nownews.com/news/6893609",
         "https://www.nownews.com/news/6893397",
-        "https://www.nownews.com/news/6893458",
-        "https://www.nownews.com/news/6893402"
+        "https://www.nownews.com/news/6893402",
+        "https://www.nownews.com/news/6893458"
       ],
       "published": "2026-11-19T09:42:03+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3520,10 +3762,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3568,6 +3810,35 @@
           "mechanism": "single_price",
           "price": 65,
           "text": "大杯特濃拿鐵原價65元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "全家",
+      "offer": "全家App 限時推出，大杯單品美式／拿鐵、大杯特濃美式／拿鐵加10元多一杯，可透過App享優惠價",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 10,
+          "text": "大杯單品美式／拿鐵、大杯特濃美式／拿鐵加10元"
         }
       ]
     },
@@ -3619,35 +3890,6 @@
           "mechanism": "single_price",
           "price": 10,
           "text": "美式、特濃拿鐵10元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
-      "store": "全家",
-      "offer": "全家的咖啡優惠，APP活動為：大杯單品美式／大杯單品拿鐵／大杯特濃美式／大杯特濃拿鐵，一律加10元多一杯，2026年11月18日10:00開跑",
-      "status": "expired",
-      "start_date": "2026-11-18",
-      "end_date": "2026-11-18",
-      "date_text": "2026年11月18日",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "天冷4大超商「咖啡優惠」來了 可享10元一杯、買一送一",
-      "article_url": "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-      "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html"
-      ],
-      "published": "Wed, 18 Nov 2026 12:42:00 GMT",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 10,
-          "text": "拿鐵／大杯特濃美式／大杯特濃拿鐵，一律加10元"
         }
       ]
     },
@@ -3805,36 +4047,6 @@
       ]
     },
     {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/f2972f4c-a464-4ef5-9e80-c6f82460c927.jpeg?crop=1.00xw:0.957xh;0,0&resize=1200:*",
-      "store": "全家",
-      "offer": "大單品美式 活動時間：11/16-11/18 買一送一",
-      "status": "expired",
-      "start_date": "2026-11-16",
-      "end_date": "2026-11-18",
-      "date_text": "11/16-11/18 ",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "全家「咖啡買1送1」11/16快閃3天開賣，美式、拿鐵、燒仙草和醇奶茶8款飲品優惠一次看！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118"
-      ],
-      "published": "2026-11-16T03:11:50Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
-    },
-    {
       "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "全家",
       "offer": "燒燒仙草、芝麻糊與酷繽果也是「買1送1」",
@@ -3846,11 +4058,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118"
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -3867,7 +4078,7 @@
       ]
     },
     {
-      "image_url": "https://news-images.tvbs.com.tw/api/v1/image/019ffda7-9562-7376-98ce-65f6616c3396.jpg?t=16x9&c=0,0,1200,675&w=1200&h=675",
+      "image_url": "https://news-images.tvbs.com.tw/api/v1/image/019ffd94-3504-720f-ba10-ec9dc20dac93.jpg?t=16x9&c=0,0,1200,675&w=1200&h=675",
       "store": "全家",
       "offer": "霜淇淋：買1送1",
       "status": "active",
@@ -3876,12 +4087,12 @@
       "date_text": "11月5日起至12月4日",
       "schedule_note": "週一",
       "channel_scope": "app",
-      "channel_scope_text": "App",
+      "channel_scope_text": "APP",
       "article_title": "咖啡優惠快收！7-11買11送11 美廉社限1天買2送3",
       "article_url": "https://news.tvbs.com.tw/life/4045149",
       "source_urls": [
-        "https://news.tvbs.com.tw/life/2846432",
         "https://news.tvbs.com.tw/life/2815618",
+        "https://news.tvbs.com.tw/life/2846432",
         "https://news.tvbs.com.tw/life/4045149",
         "https://news.tvbs.com.tw/life/2819201",
         "https://news.tvbs.com.tw/life/4049568"
@@ -3944,7 +4155,7 @@
       "details": ""
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "全家",
       "offer": "Let’s tea 全品項第二杯8折",
       "status": "active",
@@ -3955,10 +4166,12 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
       "published": "2026-11-19T07:42:23+08:00",
@@ -3971,7 +4184,37 @@
           "mechanism": "second_cup_discount",
           "value": 8,
           "unit": "折",
-          "text": "第2杯8折"
+          "text": "第二杯8折"
+        }
+      ]
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "store": "全家",
+      "offer": "全家Let’s Tea推出新品嚐鮮價與全品項第二杯8折，並有大特濃美式/拿鐵優惠",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+      "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
+      ],
+      "published": "2026-11-19T07:42:23+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "second_cup_discount",
+          "value": 8,
+          "unit": "折",
+          "text": "第二杯8折"
         }
       ]
     },
@@ -3997,7 +4240,42 @@
       "channel_scope_text": "APP"
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "全家",
+      "offer": "大杯特濃美式／拿鐵 第2杯10元",
+      "status": "upcoming",
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-24",
+      "date_text": "11/20-11/24",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "second_cup_discount",
+          "value": 10,
+          "unit": "元",
+          "text": "第2杯10元"
+        },
+        {
+          "mechanism": "single_price",
+          "price": 75,
+          "text": "大杯厚濃抹茶拿鐵2杯共75元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "全家",
       "offer": "Let’s Café 大杯特濃系列任選2杯89元",
       "status": "active",
@@ -4010,8 +4288,10 @@
       "article_title": "全家「咖啡買1送1、茶飲第2杯8折優惠」即日起開賣，單品美式、拿鐵買1送1、12款熱飲2件8折！",
       "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74382448/familymart-1115",
       "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74382448/familymart-1115"
       ],
@@ -4028,58 +4308,6 @@
           "text": "任選2杯89元"
         }
       ]
-    },
-    {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1776065304-wJu80o9.jpg",
-      "store": "全家",
-      "offer": "Let’s Tea 大杯仙女醇奶茶任選2杯65元",
-      "status": "expired",
-      "start_date": "2026-11-13",
-      "end_date": "2026-11-17",
-      "date_text": "11/13-11/17 ",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "上班不憂鬱！超商咖啡買2送2 特大拿鐵11杯540元",
-      "article_url": "https://ctinews.com/news/items/pRnYgqdPaY",
-      "source_urls": [
-        "https://ctinews.com/news/items/pRnYgqdPaY"
-      ],
-      "published": "2026-11-16T07:43:29+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 2,
-          "price": 65,
-          "text": "任選2杯65元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://hips.hearstapps.com/hmg-prod/images/f2972f4c-a464-4ef5-9e80-c6f82460c927.jpeg?crop=1.00xw:0.957xh;0,0&resize=1200:*",
-      "store": "全家",
-      "offer": "QQ醇奶茶 活動時間：11/16-11/18 2杯特價79元（限店）",
-      "status": "expired",
-      "start_date": "2026-11-16",
-      "end_date": "2026-11-18",
-      "date_text": "11/16-11/18 ",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "全家「咖啡買1送1」11/16快閃3天開賣，美式、拿鐵、燒仙草和醇奶茶8款飲品優惠一次看！",
-      "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118",
-      "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118"
-      ],
-      "published": "2026-11-16T03:11:50Z",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     },
     {
       "store": "全家",
@@ -4107,6 +4335,37 @@
           "count": 2,
           "price": 99,
           "text": "2杯99元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://media.nownews.com/nn_media/thumbnail/2026/02/1771994433933-7444fca2f9124c70ac5de2254ea0889c-1200x800.webp?unShow=false",
+      "store": "全家",
+      "offer": "大杯厚濃抹茶拿鐵 2杯共75元",
+      "status": "upcoming",
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-24",
+      "date_text": "11/20-11/24",
+      "schedule_note": "週五",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.nownews.com/news/6893609",
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "n_cups_fixed_price",
+          "count": 2,
+          "price": 75,
+          "text": "2杯75元"
         }
       ]
     },
@@ -4239,10 +4498,9 @@
       "article_title": "咖啡優惠來了！星巴克連4天「買一送一」 711美式11杯450元",
       "article_url": "https://fnc.ebc.net.tw/fncnews/life/222884",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
-        "https://ctinews.com/news/items/pRnYgqdPaY"
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "Mon, 16 Nov 2026 06:15:00 GMT",
       "source": "人工整理／新聞文章自動擷取",
@@ -4353,8 +4611,7 @@
       "article_title": "萊爾富「雙11優惠」11/11起開跑，咖啡與茶飲買11送11、咖啡X茶葉蛋1,111元一次看！",
       "article_url": "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
       "source_urls": [
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2"
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114"
       ],
       "published": "2026-11-03T07:38:33Z",
       "source": "人工整理／新聞文章自動擷取",
@@ -4635,6 +4892,64 @@
       ]
     },
     {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "全家",
+      "offer": "2顆茶葉蛋＋小杯熱拿鐵49元",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-12-08",
+      "date_text": "即日起至12/8",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 49,
+          "text": "小杯熱拿鐵49元"
+        }
+      ]
+    },
+    {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "全家",
+      "offer": "2顆茶葉蛋＋小杯熱美式39元",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-12-08",
+      "date_text": "即日起至12/8",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 39,
+          "text": "小杯熱美式39元"
+        }
+      ]
+    },
+    {
       "image_url": "https://media.nownews.com/nn_media/thumbnail/2026/02/1771994433933-7444fca2f9124c70ac5de2254ea0889c-1200x800.webp?unShow=false",
       "store": "全家",
       "offer": "5款周邊「喝咖啡免費換」：保溫杯、手提袋",
@@ -4745,6 +5060,28 @@
       "details": ""
     },
     {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "全家",
+      "offer": "包含：暖暖包任選加10元多1件、發熱衣單件5折（原價699元）、Let's Café / Let's Tea 指定飲品優惠等",
+      "status": "upcoming",
+      "start_date": "2026-11-20",
+      "end_date": "2026-11-24",
+      "date_text": "11/20-11/24",
+      "schedule_note": "",
+      "channel_scope": "app",
+      "channel_scope_text": "App",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": ""
+    },
+    {
       "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
       "store": "全家",
       "offer": "歐萊德Bio—咖啡因強健洗髮精 ： 第2件1元",
@@ -4822,8 +5159,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -4863,64 +5202,6 @@
       ]
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "Hi café 果昔 芋頭戀乳／芋仔憨吉：單杯優惠價39元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "related",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 39,
-          "text": "單杯優惠價39元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "Hi café 檸檬美式：單杯優惠價69元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 69,
-          "text": "美式：單杯優惠價69元"
-        }
-      ]
-    },
-    {
       "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "萊爾富",
       "offer": "大杯特濃拿鐵 55件2690元",
@@ -4932,8 +5213,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -4962,8 +5245,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -4992,8 +5277,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -5022,8 +5309,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -5052,8 +5341,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -5082,8 +5373,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -5247,36 +5540,6 @@
       "details": ""
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "FRIDAYS星期五美式餐廳：豬肋排買一送一",
-      "status": "expired",
-      "start_date": "2026-10-26",
-      "end_date": "2026-11-12",
-      "date_text": "10月26日至11月12日",
-      "schedule_note": "星期五",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
-    },
-    {
       "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
       "store": "萊爾富",
       "offer": "《好初早餐》奶茶凍買一送一！",
@@ -5307,19 +5570,34 @@
       ]
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
+      "image_url": "https://media.nownews.com/nn_media/thumbnail/2026/02/1771994433933-7444fca2f9124c70ac5de2254ea0889c-1200x800.webp?unShow=false",
       "store": "萊爾富",
       "offer": "抹茶可可QQ球5顆 買一送一",
-      "status": "verify",
-      "start_date": "",
-      "end_date": "",
-      "date_text": "活動日期尚待確認",
+      "status": "expired",
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-16",
+      "date_text": "11/16",
       "schedule_note": "",
       "channel_scope": "app",
       "channel_scope_text": "APP",
       "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
       "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
       "source_urls": [
+        "https://www.nownews.com/news/6893609",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472477/costco-blackfriday",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74460030/7-elevenhello-kitty91125kitty",
+        "https://www.nownews.com/news/6893397",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
+        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
+        "https://www.nownews.com/news/6893402",
+        "https://www.nownews.com/news/6893458",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
       ],
       "published": "2026-11-10T17:16:00+08:00",
@@ -5329,131 +5607,10 @@
       "details": "",
       "promotion_mechanisms": [
         {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "日出茶太於11月11日當天，推出金桔系列飲品 「 百香珍桔利 」、 「金桔蘋果芙緹」任選兩杯享買一送一優惠，限門市現場使用，價低者折",
-      "status": "expired",
-      "start_date": "2026-11-11",
-      "end_date": "2026-11-11",
-      "date_text": "11月11日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "日出茶太：金桔系列買1送1",
-      "status": "expired",
-      "start_date": "",
-      "end_date": "2026-11-07",
-      "date_text": "即日起至11月7日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買1送1"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "歡慶雙十一，11月11日當日至FRIDAYS星期五美式餐廳用餐，出示FB貼文活動畫面，享 「 豬肋排買一送一 」 優惠，每桌每次至多買二送二，全台門市內用、外帶皆享優惠",
-      "status": "expired",
-      "start_date": "2026-11-11",
-      "end_date": "2026-11-11",
-      "date_text": "11月11日",
-      "schedule_note": "星期五",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
+          "mechanism": "single_price",
+          "price": 10,
+          "text": "拿鐵10元"
         },
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 2,
-          "get": 2,
-          "text": "買二送二"
-        }
-      ]
-    },
-    {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
-      "store": "萊爾富",
-      "offer": "特大杯特濃咖啡(同品項)買1送1",
-      "status": "expired",
-      "start_date": "2026-11-11",
-      "end_date": "2026-11-13",
-      "date_text": "11/11～11/13",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
-      "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397"
-      ],
-      "published": "2026-11-13T07:45:53+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
         {
           "mechanism": "buy_x_get_y",
           "buy": 1,
@@ -5498,36 +5655,6 @@
       ]
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "特大杯美式／大杯燕麥奶拿鐵／特大杯特濃美式／特大杯重乳拿鐵：不限冰熱，同品項買1送1",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買1送1"
-        }
-      ]
-    },
-    {
       "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
       "store": "萊爾富",
       "offer": "萊爾富咖啡優惠買一送一 飲品也2杯打折",
@@ -5558,50 +5685,7 @@
       ]
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
-      "store": "萊爾富",
-      "offer": "萊爾富推出特大杯拿鐵買一送一",
-      "status": "expired",
-      "start_date": "2026-11-16",
-      "end_date": "2026-11-16",
-      "date_text": "11/16",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "OPENPOINT",
-      "article_title": "天冷4大超商「咖啡優惠」來了 可享10元一杯、買一送一",
-      "article_url": "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-      "source_urls": [
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74398125/7-eleven-1118",
-        "https://www.nownews.com/news/6893609",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472188/hi-life-milktea-1119",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74372109/7-eleven-1118-3",
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74472477/costco-blackfriday",
-        "https://www.nownews.com/news/6893397",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74308262/starbucks-xmas-1117",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74460030/7-elevenhello-kitty91125kitty",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318829/hi-life-1111-1114",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74354047/starbucks-free-coffee-1116",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74371514/7-eleven-1115-4",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74383298/starbucks-togo-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74318073/7-eleven-1115-2",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74353309/starbucks-free-coffee-1109",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74406390/7-eleven-1115",
-        "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74434865/family-mart-1118",
-        "https://www.nownews.com/news/6893458",
-        "https://www.nownews.com/news/6893402"
-      ],
-      "published": "Wed, 18 Nov 2026 12:42:00 GMT",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://cdn2.ettoday.net/images/8622/e8622559.jpg",
       "store": "萊爾富",
       "offer": "萊爾富的咖啡優惠，即日起至2026年12月8日止，限定門市販售特大杯特濃美式／特大杯特濃拿鐵／特大杯重乳拿鐵買一送一",
       "status": "active",
@@ -5614,12 +5698,12 @@
       "article_title": "天冷4大超商「咖啡優惠」來了 可享10元一杯、買一送一",
       "article_url": "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
       "source_urls": [
-        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
-        "https://www.ettoday.net/news/20261116/3273004.htm",
+        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
         "https://www.ettoday.net/amp/3273004",
         "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
+        "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-        "https://tw.stock.yahoo.com/news/%E9%A2%B1%E9%A2%A8%E5%81%87%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E8%90%8A%E7%88%BE%E5%AF%8C-%E8%B2%B7-%E9%80%81-7-043900203.html",
         "https://www.ettoday.net/news/20261113/3271117.htm",
         "https://www.nownews.com/news/6892713",
         "https://www.cosmopolitan.com/tw/lifestyle/hot-topics/g74212515/weekly-discount-1022"
@@ -5628,15 +5712,7 @@
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
+      "details": ""
     },
     {
       "image_url": "https://media.nownews.com/nn_media/thumbnail/2026/02/1771994433933-7444fca2f9124c70ac5de2254ea0889c-1200x800.webp?unShow=false",
@@ -5669,50 +5745,6 @@
           "text": "買一送一"
         }
       ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "TEA TOP於11月9日至11月15日期間推出限時優惠，於TEA TOP全台門市、你訂平台（商場店除外）購買指定飲品大杯：芭樂綠茶 、 芭樂檸檬綠、芭樂冬瓜露，享同品項第二杯半價！",
-      "status": "expired",
-      "start_date": "2026-11-09",
-      "end_date": "2026-11-15",
-      "date_text": "11月9日至11月15日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "TEA TOP：指定飲品同品項第二杯半價",
-      "status": "expired",
-      "start_date": "",
-      "end_date": "2026-11-07",
-      "date_text": "即日起至11月7日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     },
     {
       "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
@@ -5766,54 +5798,11 @@
       "details": ""
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "即日起至11月15日，至丘森茶室全台門市購買指定熱銷飲品：四季青茶／烏龍奶茶／冬瓜紅茶，第二杯特價11元，每人每次限購兩組，以現場購買為主",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起至11月15日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "即日起至11月7日，購買可可系列飲品2杯，享第二杯折價20元優惠，每人限購2組，活動僅限街邊門市使用",
-      "status": "expired",
-      "start_date": "",
-      "end_date": "2026-11-07",
-      "date_text": "即日起至11月7日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "萊爾富",
       "offer": "大杯咖啡全系列則是同價位「第2杯5元」，皆限當場領取、不提供寄杯，為限定門市販售",
       "status": "active",
-      "start_date": "2026-11-13",
+      "start_date": "2026-11-19",
       "end_date": "2026-12-08",
       "date_text": "即日起至12月8日",
       "schedule_note": "",
@@ -5822,6 +5811,7 @@
       "article_title": "超商周末優惠！全家泡麵雪糕買1送1 7-11水果茶買2送2",
       "article_url": "https://www.ettoday.net/news/20261113/3271117.htm",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
         "https://www.ettoday.net/news/20261113/3271117.htm"
       ],
       "published": "2026-11-13T06:30:00+08:00",
@@ -5839,26 +5829,36 @@
       ]
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
       "store": "萊爾富",
-      "offer": "大杯拿鐵全系列：不限冰熱、同價位搭配，第2杯優惠價5元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
+      "offer": "活動內容： Hi café 大杯咖啡全系列：同價位第2杯只要5元",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-12-08",
+      "date_text": "即日起至12/8",
       "schedule_note": "",
       "channel_scope": "unknown",
       "channel_scope_text": "",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
       "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
-      "published": "2026-11-10T17:16:00+08:00",
+      "published": "2026-11-19T11:00:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
-      "details": ""
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "single_price",
+          "price": 5,
+          "text": "大杯咖啡全系列：同價位第2杯只要5元"
+        }
+      ]
     },
     {
       "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
@@ -5881,35 +5881,6 @@
       "needs_check": true,
       "category": "coffee",
       "details": ""
-    },
-    {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
-      "store": "萊爾富",
-      "offer": "萊爾富即日起至12月8日，Hi café 大杯咖啡全系列，同價位第2杯只要5元",
-      "status": "active",
-      "start_date": "2026-11-19",
-      "end_date": "2026-12-08",
-      "date_text": "即日起至12月8日",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
-      "source_urls": [
-        "https://ctinews.com/news/items/qXWQ6D9RaR"
-      ],
-      "published": "2026-11-19T07:42:23+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 5,
-          "text": "大杯咖啡全系列，同價位第2杯只要5元"
-        }
-      ]
     },
     {
       "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
@@ -5945,10 +5916,13 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
         "https://www.ettoday.net/news/20261119/3274814.htm",
-        "https://ctinews.com/news/items/qXWQ6D9RaR"
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261119/3275062.htm"
       ],
       "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -6046,57 +6020,6 @@
     {
       "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
       "store": "萊爾富",
-      "offer": "焙香鐵觀音奶茶(M)：同品項2杯特價120元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "焙香鐵觀音拿鐵咖啡(M)：同品項2杯特價127元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 127,
-          "text": "拿鐵咖啡(M)：同品項2杯特價127元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
       "offer": "用你訂平台訂購TEA TOP享限訂優惠，即日起至11月30日，購買大杯珍珠奶茶兩杯享優惠價99元",
       "status": "active",
       "start_date": "2026-11-10",
@@ -6146,29 +6069,7 @@
       "details": ""
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "紅心芭樂／巴西莓蒟蒻冰茶（蘇打）：任選2杯優惠價89元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://img.cava.tw/cava2022/news/2026/11/16/1794828081_33473.jpg",
+      "image_url": "https://cdn2.ettoday.net/images/9022/e9022087.jpg",
       "store": "萊爾富",
       "offer": "黃金蕎麥歐蕾優惠價 45元，任選2杯 80元",
       "status": "active",
@@ -6179,11 +6080,14 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
-        "https://fnc.ebc.net.tw/fncnews/life/222884",
         "https://www.ettoday.net/news/20261119/3274814.htm",
-        "https://ctinews.com/news/items/qXWQ6D9RaR"
+        "https://fnc.ebc.net.tw/fncnews/life/222884",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261119/3275062.htm"
       ],
       "published": "2026-11-19T07:42:23+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -6192,9 +6096,15 @@
       "details": "",
       "promotion_mechanisms": [
         {
+          "mechanism": "n_cups_fixed_price",
+          "count": 2,
+          "price": 80,
+          "text": "2杯80元"
+        },
+        {
           "mechanism": "single_price",
-          "price": 45,
-          "text": "單杯特價只要45元"
+          "price": 70,
+          "text": "單杯原價70元"
         }
       ]
     },
@@ -6213,6 +6123,8 @@
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "source_urls": [
         "https://ctinews.com/news/items/bKxrXQKYW9",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
       "published": "2026-10-21T07:48:41+08:00",
@@ -6222,7 +6134,7 @@
       "details": ""
     },
     {
-      "image_url": "",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "萊爾富",
       "offer": "大杯美式 7 杯組 255 元",
       "status": "active",
@@ -6235,7 +6147,8 @@
       "article_title": "快來喝！超商咖啡寄杯買30送30 限今天加10元多1杯｜中天新聞網",
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "source_urls": [
-        "https://ctinews.com/news/items/bKxrXQKYW9"
+        "https://ctinews.com/news/items/bKxrXQKYW9",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
       ],
       "published": "2026-10-22",
       "source": "人工整理／新聞文章自動擷取",
@@ -6478,10 +6391,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://supertaste.tvbs.com.tw/pack/362295",
         "https://www.nownews.com/news/6889553"
       ],
@@ -6532,13 +6445,15 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://www.ettoday.net/amp/3273004",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
+        "https://www.ettoday.net/news/20261116/3273004.htm",
         "https://supertaste.tvbs.com.tw/pack/362295",
         "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
-        "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://www.nownews.com/news/6889553"
       ],
@@ -6585,50 +6500,6 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
-      "store": "萊爾富",
-      "offer": "11/11～11/13，果昔79元系列2件99元",
-      "status": "expired",
-      "start_date": "2026-11-11",
-      "end_date": "2026-11-13",
-      "date_text": "11/11～11/13",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "超商咖啡全品項第2杯8折 特大杯買1送1剩今天",
-      "article_url": "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
-      "source_urls": [
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397"
-      ],
-      "published": "2026-11-13T07:45:53+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "related",
-      "details": ""
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "Hi café 果昔全系列：均一價特價69元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "related",
-      "details": ""
-    },
-    {
       "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
       "store": "萊爾富",
       "offer": "《紅茶老爹》買紅茶牛奶送免費紅茶！",
@@ -6651,35 +6522,6 @@
       "details": ""
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "五桐號為感謝新品上市熱銷突破10萬杯祭出慶祝活動，新品泰奶雪沙系列：杏仁凍泰奶雪沙 、金箔可可 泰奶雪沙 、焦糖脆餅 泰奶雪沙享 「 單杯現折11元 」，限門市來店限定",
-      "status": "expired",
-      "start_date": "",
-      "end_date": "2026-11-07",
-      "date_text": "即日起至11月7日",
-      "schedule_note": "",
-      "channel_scope": "store",
-      "channel_scope_text": "全台門市",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "flat_discount",
-          "amount": 11,
-          "text": "單杯現折11元"
-        }
-      ]
-    },
-    {
       "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "萊爾富",
       "offer": "即日起至2027/1/26，恐龍歐蕾8件365元",
@@ -6691,8 +6533,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -6714,8 +6558,10 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY"
       ],
@@ -6726,19 +6572,20 @@
       "details": ""
     },
     {
-      "image_url": "https://cdn2.ettoday.net/images/9020/e9020562.jpg",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
       "store": "萊爾富",
       "offer": "喬亞無糖黑咖啡，原價30元",
       "status": "active",
-      "start_date": "2026-11-18",
+      "start_date": "2026-11-19",
       "end_date": "2026-11-22",
-      "date_text": "即日起至11月22日",
+      "date_text": "即日起至11/22",
       "schedule_note": "",
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "7-11推大耳狗、史努比聖誕水晶球 咖啡聯名Kitty可加購公仔",
       "article_url": "https://www.ettoday.net/news/20261118/3274240.htm",
       "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
         "https://www.ettoday.net/news/20261118/3274240.htm"
       ],
       "published": "2026-11-18T13:47:00+08:00",
@@ -6748,55 +6595,26 @@
       "details": ""
     },
     {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
       "store": "萊爾富",
-      "offer": "大杯拿鐵全系列 第2件5折",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-10",
-      "date_text": "即日起至11月10日",
+      "offer": "活動內容： 芋頭系列果昔（芋仔憨吉、芋頭戀乳2款任選）：優惠價39元／杯",
+      "status": "active",
+      "start_date": "2026-11-19",
+      "end_date": "2026-12-08",
+      "date_text": "即日起至12/8",
       "schedule_note": "",
       "channel_scope": "unknown",
       "channel_scope_text": "",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
       "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788"
       ],
-      "published": "2026-11-10T17:16:00+08:00",
+      "published": "2026-11-19T11:00:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 1,
-          "get": 1,
-          "text": "買一送一"
-        }
-      ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "摩斯鱈魚堡＋冰紅茶(L) ： 優惠價89元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
+      "category": "related",
       "details": ""
     },
     {
@@ -6893,50 +6711,6 @@
           "text": "現折10元"
         }
       ]
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "超級大麥海洋珍珠堡＋冰紅茶(L) ： 優惠價99元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
-    },
-    {
-      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/194652/20261103-5_20261103163905.jpg_600x450.jpg",
-      "store": "萊爾富",
-      "offer": "金咖哩豬排堡＋冰紅茶(L)：優惠價79元",
-      "status": "expired",
-      "start_date": "2026-11-10",
-      "end_date": "2026-11-15",
-      "date_text": "即日起~11/15",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "APP",
-      "article_title": "雙11優惠／超商咖啡買一送一，麥當勞買一送一也來了！必勝客漢堡王達美樂…速食、手搖飲優惠懶人包",
-      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611020044",
-      "source_urls": [
-        "https://www.businesstoday.com.tw/article/category/183030/post/202611020044"
-      ],
-      "published": "2026-11-10T17:16:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": ""
     },
     {
       "image_url": "https://hips.hearstapps.com/hmg-prod/images/e065d2da-4e7a-4110-bbd8-26649f83cd53.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
@@ -7270,35 +7044,6 @@
     {
       "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
       "store": "OKmart",
-      "offer": "即日起至11/11推出OKCAFE指定風味飲品限時特價， 11款人氣飲品單杯39元、任選２杯只要69元 ，平均１杯34.5元，咖啡、奶茶、果昔通通有！",
-      "status": "expired",
-      "start_date": "2026-11-05",
-      "end_date": "2026-11-11",
-      "date_text": "即日起至11/11",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "雙11咖啡囤貨戰開打！7-11買11送11、萊爾富38杯美式加38顆蛋只要1,111元",
-      "article_url": "https://supertaste.tvbs.com.tw/pack/362295",
-      "source_urls": [
-        "https://supertaste.tvbs.com.tw/pack/362295"
-      ],
-      "published": "2026-11-05T14:38:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "single_price",
-          "price": 39,
-          "text": "單杯39元"
-        }
-      ]
-    },
-    {
-      "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
-      "store": "OKmart",
       "offer": "另外，包含皇家醇濃伯爵、黃金榛果太妃、靜岡濃抹茶、鹿兒島濃焙茶等指定風味冰飲，也推出任選14杯711元，平均１杯約51元",
       "status": "verify",
       "start_date": "",
@@ -7357,7 +7102,7 @@
       ]
     },
     {
-      "image_url": "https://s.yimg.com/lo/mysterio/api/7c47df67027d72fda5dd896794d8838c0b9760d888d5fe0e4aaf43b122cda7e0/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fsetn.com.tw%2F7437ca665b77e9ed471968f5c82153c1.jpg",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "OKmart",
       "offer": "7/23~12/31，特大杯莊園美式/拿鐵大杯買10送10",
       "status": "active",
@@ -7370,9 +7115,11 @@
       "article_title": "快來喝！超商咖啡寄杯買30送30 限今天加10元多1杯",
       "article_url": "https://ctinews.com/news/items/bKxrXQKYW9",
       "source_urls": [
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://tw.news.yahoo.com/%E5%A4%A9%E5%86%B74%E5%A4%A7%E8%B6%85%E5%95%86-%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0-%E4%BE%86%E4%BA%86-%E5%8F%AF%E4%BA%AB10%E5%85%83-%E6%9D%AF-124200960.html",
         "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
-        "https://ctinews.com/news/items/qXWQ6D9RaR",
         "https://ctinews.com/news/items/pRnYgqdPaY",
         "https://ctinews.com/news/items/bKxrXQKYW9"
       ],
@@ -7387,36 +7134,6 @@
           "buy": 10,
           "get": 10,
           "text": "買10送10"
-        }
-      ]
-    },
-    {
-      "image_url": "https://supertaste-images.tvbs.com.tw/api/v1/images/01a1aa995da07265895017c72bdf7e17.jpg",
-      "store": "OKmart",
-      "offer": "咖啡買11送11！",
-      "status": "expired",
-      "start_date": "2026-11-05",
-      "end_date": "2026-11-11",
-      "date_text": "即日起～11/11",
-      "schedule_note": "",
-      "channel_scope": "unknown",
-      "channel_scope_text": "",
-      "article_title": "雙11咖啡囤貨戰開打！7-11買11送11、萊爾富38杯美式加38顆蛋只要1,111元",
-      "article_url": "https://supertaste.tvbs.com.tw/pack/362295",
-      "source_urls": [
-        "https://supertaste.tvbs.com.tw/pack/362295"
-      ],
-      "published": "2026-11-05T14:38:00+08:00",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "buy_x_get_y",
-          "buy": 11,
-          "get": 11,
-          "text": "買11送11"
         }
       ]
     },
@@ -7519,10 +7236,10 @@
       "channel_scope": "app",
       "channel_scope_text": "線上寄杯",
       "article_title": "超商咖啡優惠！7-11美式拿鐵買2送2 全家、萊爾富「買1送1」",
-      "article_url": "https://www.ettoday.net/news/20261116/3273004.htm",
+      "article_url": "https://www.ettoday.net/amp/3273004",
       "source_urls": [
-        "https://www.ettoday.net/news/20261116/3273004.htm",
-        "https://www.ettoday.net/amp/3273004"
+        "https://www.ettoday.net/amp/3273004",
+        "https://www.ettoday.net/news/20261116/3273004.htm"
       ],
       "published": "2026-11-16T13:21:00+08:00",
       "source": "人工整理／新聞文章自動擷取",
@@ -8224,7 +7941,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
+      "image_url": "https://s.yimg.com/lo/mysterio/api/5f74d934984cddf8081ca32c430d0df2091255d4fa6a47b4a914fbf5a3270351/lightyear_networkapi/resizefill_w1200%3Bquality_80%3Bformat_jpg/https%3A%2F%2Fmedia.zenfs.com%2Fen%2Fgotv_ctitv_com_tw_678%2Ffb636fa02b8c958f5fa79b48618b4152.png",
       "store": "小北百貨",
       "offer": "超商大杯咖啡「只要5元」 還有寄杯優惠",
       "status": "verify",
@@ -8235,11 +7952,12 @@
       "channel_scope": "unknown",
       "channel_scope_text": "",
       "article_title": "要喝要快！超商大杯咖啡「只要5元」 還有寄杯優惠",
-      "article_url": "https://ctinews.com/news/items/qXWQ6D9RaR",
+      "article_url": "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
       "source_urls": [
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
         "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
-      "published": "2026-11-19T07:42:23+08:00",
+      "published": "Wed, 18 Nov 2026 23:42:23 GMT",
       "source": "人工整理／新聞文章自動擷取",
       "needs_check": true,
       "category": "coffee",
@@ -8253,7 +7971,7 @@
       ]
     },
     {
-      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278214-vWXrkTs.png",
+      "image_url": "https://storage.ctinews.com/compression/files/default/cut-1789278206-u7Sa9h5.png",
       "store": "小北百貨",
       "offer": "SHOWBA Café 大杯美式／拿鐵買 1 送 1（實際日期與門市請查公告）",
       "status": "expired",
@@ -8267,9 +7985,9 @@
       "article_url": "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
       "source_urls": [
         "https://tw.news.yahoo.com/4%E5%A4%A7%E8%B6%85%E5%95%86%E5%85%89%E5%BE%A9%E7%AF%80%E9%80%A3%E5%81%87-%E5%92%96%E5%95%A1%E8%B2%B71%E9%80%811-%E7%8F%8D%E5%A5%B610%E6%9D%AF360%E5%85%83-%E9%9C%9C%E6%B7%87%E6%B7%8B-%E6%9E%9C%E6%98%94%E5%8A%A0%E5%85%A5%E5%84%AA%E6%83%A0-014400310.html",
-        "https://life.tw/article/%E8%B6%85%E5%95%86%E5%92%96%E5%95%A1%E5%85%A8%E5%93%81%E9%A0%85%E7%AC%AC2%E6%9D%AF8%E6%8A%98-%E7%89%B9%E5%A4%A7%E6%9D%AF%E8%B2%B71%E9%80%811%E5%89%A9%E4%BB%8A%E5%A4%A9-3216397",
-        "https://ctinews.com/news/items/qXWQ6D9RaR",
-        "https://ctinews.com/news/items/pRnYgqdPaY"
+        "https://life.tw/article/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-3224788",
+        "https://tw.news.yahoo.com/%E8%A6%81%E5%96%9D%E8%A6%81%E5%BF%AB-%E8%B6%85%E5%95%86%E5%A4%A7%E6%9D%AF%E5%92%96%E5%95%A1-%E5%8F%AA%E8%A6%815%E5%85%83-%E9%82%84%E6%9C%89%E5%AF%84%E6%9D%AF%E5%84%AA%E6%83%A0-234223830.html",
+        "https://ctinews.com/news/items/qXWQ6D9RaR"
       ],
       "published": "2026-10-22",
       "source": "人工整理／新聞文章自動擷取",
@@ -9477,66 +9195,6 @@
       ]
     },
     {
-      "image_url": "",
-      "store": "全聯",
-      "offer": "OFF COFFEE拿鐵咖啡11杯送8杯，共19杯605元，平均每杯約31.8元",
-      "status": "expired",
-      "start_date": "2026-11-07",
-      "end_date": "2026-11-11",
-      "date_text": "11/7～11/11",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "分批取",
-      "article_title": "全聯、大全聯「超級週年慶」10/30開跑！超過300款商品憑卡買1送1 全聯週末最高回饋12.1%、大全聯滿千送千元激省券 補貨趁這波！",
-      "article_url": "https://www.pxmart.com.tw/about-us/news/%E5%85%A8%E8%81%AF%E6%96%B0%E8%81%9E/547",
-      "source_urls": [
-        "https://www.pxmart.com.tw/about-us/news/%E5%85%A8%E8%81%AF%E6%96%B0%E8%81%9E/547"
-      ],
-      "published": "Thu, 29 Oct 2026 07:00:00 GMT",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 19,
-          "price": 605,
-          "text": "19杯605元"
-        }
-      ]
-    },
-    {
-      "image_url": "",
-      "store": "全聯",
-      "offer": "限時5天特販同步登場 ，OFF COFFEE美式咖啡11杯送11杯，共22杯495元，平均每杯22.5元",
-      "status": "expired",
-      "start_date": "2026-11-07",
-      "end_date": "2026-11-11",
-      "date_text": "11/7～11/11",
-      "schedule_note": "",
-      "channel_scope": "app",
-      "channel_scope_text": "分批取",
-      "article_title": "全聯、大全聯「超級週年慶」10/30開跑！超過300款商品憑卡買1送1 全聯週末最高回饋12.1%、大全聯滿千送千元激省券 補貨趁這波！",
-      "article_url": "https://www.pxmart.com.tw/about-us/news/%E5%85%A8%E8%81%AF%E6%96%B0%E8%81%9E/547",
-      "source_urls": [
-        "https://www.pxmart.com.tw/about-us/news/%E5%85%A8%E8%81%AF%E6%96%B0%E8%81%9E/547"
-      ],
-      "published": "Thu, 29 Oct 2026 07:00:00 GMT",
-      "source": "人工整理／新聞文章自動擷取",
-      "needs_check": true,
-      "category": "coffee",
-      "details": "",
-      "promotion_mechanisms": [
-        {
-          "mechanism": "n_cups_fixed_price",
-          "count": 22,
-          "price": 495,
-          "text": "22杯495元"
-        }
-      ]
-    },
-    {
       "store": "全聯",
       "offer": "camacafe極珍選批次奶油胡桃咖啡豆－中焙，2包689元，平均一包345元",
       "status": "verify",
@@ -9944,6 +9602,36 @@
       ]
     },
     {
+      "image_url": "https://doqvf81n9htmm.cloudfront.net/data/crop_article/195353/shutterstock_1832293285_20261118175807.jpg_600x450.jpg",
+      "store": "品牌待確認",
+      "offer": "除了咖啡、熱飲或是其他商品，都祭出各種優惠，包含咖啡買一送一、第2件優惠價等",
+      "status": "verify",
+      "start_date": "",
+      "end_date": "",
+      "date_text": "活動日期尚待確認",
+      "schedule_note": "",
+      "channel_scope": "unknown",
+      "channel_scope_text": "",
+      "article_title": "超商咖啡買一送一！全家限時早餐優惠、萊爾富咖啡第2杯5元…最新超商優惠懶人包",
+      "article_url": "https://www.businesstoday.com.tw/article/category/183030/post/202611180048",
+      "source_urls": [
+        "https://www.businesstoday.com.tw/article/category/183030/post/202611180048"
+      ],
+      "published": "2026-11-19T11:00:00+08:00",
+      "source": "人工整理／新聞文章自動擷取",
+      "needs_check": true,
+      "category": "coffee",
+      "details": "",
+      "promotion_mechanisms": [
+        {
+          "mechanism": "buy_x_get_y",
+          "buy": 1,
+          "get": 1,
+          "text": "買一送一"
+        }
+      ]
+    },
+    {
       "store": "品牌待確認",
       "offer": "麥當勞買一送一 奶昔、咖啡優惠放送",
       "status": "verify",
@@ -10111,23 +9799,23 @@
     }
   ],
   "scrape_report": {
-    "articles_discovered": 113,
+    "articles_discovered": 110,
     "title_only_undated_candidates_rejected": 0,
-    "undated_verify_records_retained": 167,
+    "undated_verify_records_retained": 179,
     "scrapling_fallback_enabled": false,
     "scrapling_fallback_attempts": 0,
     "scrapling_fallback_successes": 0,
-    "articles_skipped_known_stale": 4,
+    "articles_skipped_known_stale": 5,
     "known_article_rescan_window_days": 3,
     "listing_discovery": {
       "nownews": {
         "ok": true,
-        "discovered": 4,
+        "discovered": 0,
         "url": "https://www.nownews.com/cat/life/"
       },
       "nownews_consumption": {
         "ok": true,
-        "discovered": 8,
+        "discovered": 6,
         "url": "https://www.nownews.com/cat/life/smart-life/"
       },
       "tvbs": {
@@ -10147,12 +9835,12 @@
       },
       "ebc": {
         "ok": true,
-        "discovered": 5,
+        "discovered": 4,
         "url": "https://fnc.ebc.net.tw/fncnews/life"
       },
       "starbucks": {
         "ok": true,
-        "discovered": 23,
+        "discovered": 24,
         "url": "https://www.starbucks.com.tw/stores/allevent.jspx"
       },
       "85c": {
@@ -10166,7 +9854,7 @@
         "url": "https://www.louisacoffee.co/news"
       }
     },
-    "listing_articles_added_before_dedup": 99,
+    "listing_articles_added_before_dedup": 93,
     "native_rss_articles_added_before_dedup": 0,
     "native_rss_discovery": {
       "蘋果仁": {
@@ -10344,7 +10032,7 @@
       "全家": {
         "ok": true,
         "queries": 2,
-        "discovered": 2,
+        "discovered": 4,
         "query_results": [
           {
             "ok": true,
@@ -10352,9 +10040,9 @@
             "unique_added": 2
           },
           {
-            "ok": false,
-            "found": 0,
-            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=%E5%85%A8%E5%AE%B6%20%E5%92%96%E5%95%A1%20%E4%BB%BB%E9%81%B82%E6%9D%AF%20%E5%84%AA%E6%83%A0%20APP%"
+            "ok": true,
+            "found": 2,
+            "unique_added": 2
           }
         ]
       },
@@ -10383,14 +10071,14 @@
         ]
       },
       "美廉社": {
-        "ok": true,
+        "ok": false,
         "queries": 1,
-        "discovered": 2,
+        "discovered": 0,
         "query_results": [
           {
-            "ok": true,
-            "found": 2,
-            "unique_added": 2
+            "ok": false,
+            "found": 0,
+            "error": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?q=%E7%BE%8E%E5%BB%89%E7%A4%BE%20%E5%92%96%E5%95%A1%E5%84%AA%E6%83%A0%20APP%20%E9%9A%A8%E8%B2%B7%E9%9"
           }
         ]
       },
@@ -10407,64 +10095,64 @@
         ]
       }
     },
-    "articles_fetched_successfully": 84,
-    "articles_failed_or_low_content": 29,
-    "urls_for_articles_with_no_extracted_offers": 24,
-    "rss_queries_failed": 1,
+    "articles_fetched_successfully": 75,
+    "articles_failed_or_low_content": 35,
+    "urls_for_articles_with_no_extracted_offers": 25,
+    "rss_queries_failed": 0,
     "google_news_decode_failures": 0,
     "google_news_decode_budget_total": 40,
     "google_news_decode_budget_remaining": 0,
     "curated_records": 11,
-    "dynamic_records_before_dedup": 946,
+    "dynamic_records_before_dedup": 678,
     "fair_schedule": {
       "max_total": 160,
       "max_per_source": 25,
       "scheduled_by_brand": {
-        "星巴克": 32,
+        "星巴克": 31,
         "7-ELEVEN": 12,
-        "全家": 16,
-        "萊爾富": 4,
-        "OKmart": 3,
-        "美廉社": 1,
+        "全家": 17,
+        "萊爾富": 3,
+        "OKmart": 2,
+        "美廉社": 0,
         "小北百貨": 0,
         "路易莎": 10,
         "85°C": 12,
         "cama": 0,
-        "全聯": 1
+        "全聯": 0
       },
       "brand_coverage": {
-        "星巴克": 33,
-        "7-ELEVEN": 14,
+        "星巴克": 32,
+        "7-ELEVEN": 13,
         "全家": 19,
-        "萊爾富": 7,
-        "OKmart": 3,
-        "美廉社": 1,
+        "萊爾富": 5,
+        "OKmart": 2,
+        "美廉社": 0,
         "小北百貨": 0,
         "路易莎": 10,
         "85°C": 12,
         "cama": 0,
-        "全聯": 1
+        "全聯": 0
       },
       "scheduled_by_source": {
         "7-ELEVEN": 4,
         "85°C": 2,
         "85°C 官方": 10,
         "Cosmopolitan": 25,
-        "ETtoday": 9,
+        "ETtoday": 10,
         "ETtoday新聞雲": 1,
-        "Life 生活網": 1,
-        "NOWnews": 6,
-        "NOWnews 生活消費": 5,
+        "LIFE 生活網": 1,
+        "NOWnews": 4,
+        "NOWnews 生活消費": 4,
+        "NOWnews今日新聞": 1,
+        "OKmart": 1,
         "Starbucks Taiwan": 2,
         "TVBS新聞": 2,
         "Yahoo新聞": 2,
         "三立新聞網SETN.com": 1,
         "中天新聞": 2,
         "今周刊": 1,
-        "全聯": 1,
         "星巴克官方": 22,
-        "東森財經": 5,
-        "美廉社": 1,
+        "東森財經": 4,
         "蘋果仁": 1,
         "路易莎官方": 10
       }
